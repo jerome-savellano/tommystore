@@ -69,7 +69,7 @@
 	<div class="modal fade" id="myModal" role="dialog">
 		<div class="modal-dialog">
 			<form:form action="${pageContext.request.contextPath}/login"
-				method="post" modelAttribute="loginUser">
+				method="post" modelAttribute="user">
 				<div class="modal-content">
 					<div class="modal-header bg-primary">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -85,14 +85,14 @@
 						</c:if>
 						<spring:bind path="email">
 							<div class="form-group">
-								<label for="exampleInputEmail1"> Email address </label> <input
-									type="email" class="form-control" id="exampleInputEmail1" />
+								<label for="exampleInputEmail1"> Email address </label> <form:input
+									path="email" type="email" class="form-control"/>
 							</div>
 						</spring:bind>
 						<spring:bind path="password">
 							<div class="form-group">
-								<label for="exampleInputPassword1"> Password </label> <input
-									type="password" class="form-control" id="exampleInputPassword1" />
+								<label for="exampleInputPassword1"> Password </label> <form:input
+									path="password" type="password" class="form-control"/>
 							</div>
 						</spring:bind>
 					</div>

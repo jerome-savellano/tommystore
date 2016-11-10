@@ -21,10 +21,10 @@ public class UserDaoImpl implements UserDao {
 	public User findUser(String email) {
 		
 		Session session = sessionFactory.getCurrentSession();
-		System.out.println(email);
+				
 		Query query = session.createQuery(GET_USER)
 							 .setParameter("email", email);
-		
+
 		return (User) query.getSingleResult();
 	}
 }

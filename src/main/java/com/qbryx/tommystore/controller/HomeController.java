@@ -1,7 +1,6 @@
 package com.qbryx.tommystore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,7 +19,7 @@ public class HomeController {
 	@RequestMapping("/initial")
 	public String initial(Model model){
 		
-		model.addAttribute("loginUser", new User());
+		model.addAttribute("user", new User());
 		return "home";
 	}
 
@@ -28,14 +27,14 @@ public class HomeController {
 	public String login(@ModelAttribute("loginUser") User loginUser, Model model){
 		
 		User user = null;
-		
+		System.out.println(loginUser.getPassword());
 		try {
 			
 			user = userService.authenticate(loginUser.getEmail(), loginUser.getPassword());
 			model.addAttribute("user", user);
 		} catch (FailedLoginException e) {
 			
-			model.addAttribute("loginUser", new User());
+			model.addAttribute("user", new User());
 			model.addAttribute("email", loginUser.getEmail());
 		}
 		
