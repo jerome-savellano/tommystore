@@ -28,7 +28,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<nav class="navbar navbar-default" role="navigation">
@@ -49,24 +49,36 @@
 						<li><a href="#">Home</a></li>
 						<li><a href="#">Items</a></li>
 					</ul>
-					<form class="navbar-form navbar-left" role="search">
+
+					<div class="navbar-form navbar-left">
 						<div class="form-group">
 							<input type="text" class="form-control" />
 						</div>
 						<button type="submit" class="btn btn-default">Search</button>
-					</form>
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#" data-toggle="modal" data-target="#myModal">Login</a></li>
-						<li><a href="#">Register</a></li>
-					</ul>
-				</div>
+					</div>
 
+					<c:choose>
+						<c:when test="${not empty user.getEmail()}">
+							<ul class="nav navbar-nav navbar-right">
+								<li><a href="#">Hi, ${user.getEmail()}</a></li>
+								<li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
+							</ul>
+						</c:when>
+						<c:otherwise>
+							<ul class="nav navbar-nav navbar-right">
+								<li><a href="#" data-toggle="modal"
+									data-target="#loginModal">Login</a></li>
+								<li><a href="#">Register</a></li>
+							</ul>
+						</c:otherwise>
+					</c:choose>
+				</div>
 				</nav>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade" id="myModal" role="dialog">
+	<div class="modal fade" id="loginModal" role="dialog">
 		<div class="modal-dialog">
 			<form:form action="${pageContext.request.contextPath}/login"
 				method="post" modelAttribute="user">
@@ -85,14 +97,14 @@
 						</c:if>
 						<spring:bind path="email">
 							<div class="form-group">
-								<label for="exampleInputEmail1"> Email address </label> <form:input
-									path="email" type="email" class="form-control"/>
+								<label for="exampleInputEmail1"> Email address </label>
+								<form:input path="email" type="email" class="form-control" />
 							</div>
 						</spring:bind>
 						<spring:bind path="password">
 							<div class="form-group">
-								<label for="exampleInputPassword1"> Password </label> <form:input
-									path="password" type="password" class="form-control"/>
+								<label for="exampleInputPassword1"> Password </label>
+								<form:input path="password" type="password" class="form-control" />
 							</div>
 						</spring:bind>
 					</div>

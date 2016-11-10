@@ -1,5 +1,7 @@
 package com.qbryx.tommystore.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,11 +35,19 @@ public class HomeController {
 			user = userService.authenticate(loginUser.getEmail(), loginUser.getPassword());
 			model.addAttribute("user", user);
 		} catch (FailedLoginException e) {
-			
+			System.out.println("Failed");
 			model.addAttribute("user", new User());
 			model.addAttribute("email", loginUser.getEmail());
 		}
 		
+		return "home";
+	}
+	
+	@RequestMapping("/logout")
+	public String logout(HttpServletRequest request, Model model){
+		
+		request.getSession().invalidate();
+		model.addAttribute("user", new User());
 		return "home";
 	}
 }

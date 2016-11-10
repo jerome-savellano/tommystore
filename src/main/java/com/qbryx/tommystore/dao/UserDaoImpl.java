@@ -1,5 +1,6 @@
 package com.qbryx.tommystore.dao;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.hibernate.Session;
@@ -20,11 +21,20 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User findUser(String email) {
 		
+		User user = null;
+		
 		Session session = sessionFactory.getCurrentSession();
 				
 		Query query = session.createQuery(GET_USER)
 							 .setParameter("email", email);
+		
+		try{
+			
+			user = (User) query.getSingleResult();
+		}catch(NoResultException e){
+			
+		}
 
-		return (User) query.getSingleResult();
+		return user;
 	}
 }
