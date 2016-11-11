@@ -5,4 +5,6 @@ import com.qbryx.tommystore.domain.User;
 public interface UserDao {
 
 	User findUser(String email);
+	
+	void createUser(User user);
 }

@@ -60,61 +60,20 @@
 					<c:choose>
 						<c:when test="${not empty user.getEmail()}">
 							<ul class="nav navbar-nav navbar-right">
-								<li><a href="#">Hi, ${user.getEmail()}</a></li>
+								<li><a href="#">Hi, <span class="text-primary">${user.getEmail()}</span></a></li>
 								<li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
 							</ul>
 						</c:when>
 						<c:otherwise>
 							<ul class="nav navbar-nav navbar-right">
-								<li><a href="#" data-toggle="modal"
-									data-target="#loginModal">Login</a></li>
-								<li><a href="#">Register</a></li>
+								<li><a href="${pageContext.request.contextPath}/login">Login</a></li>
+								<li><a href="${pageContext.request.contextPath}/register">Register</a></li>
 							</ul>
 						</c:otherwise>
 					</c:choose>
 				</div>
 				</nav>
 			</div>
-		</div>
-	</div>
-
-	<div class="modal fade" id="loginModal" role="dialog">
-		<div class="modal-dialog">
-			<form:form action="${pageContext.request.contextPath}/login"
-				method="post" modelAttribute="user">
-				<div class="modal-content">
-					<div class="modal-header bg-primary">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Login</h4>
-					</div>
-
-					<div class="modal-body">
-						<c:if test="${not empty email}">
-							<div class="alert alert-danger">
-								Login failed for user <strong>${email}</strong>. Your
-								username/password might be incorrect.
-							</div>
-						</c:if>
-						<spring:bind path="email">
-							<div class="form-group">
-								<label for="exampleInputEmail1"> Email address </label>
-								<form:input path="email" type="email" class="form-control" />
-							</div>
-						</spring:bind>
-						<spring:bind path="password">
-							<div class="form-group">
-								<label for="exampleInputPassword1"> Password </label>
-								<form:input path="password" type="password" class="form-control" />
-							</div>
-						</spring:bind>
-					</div>
-
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Login</button>
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</form:form>
 		</div>
 	</div>
 </body>
