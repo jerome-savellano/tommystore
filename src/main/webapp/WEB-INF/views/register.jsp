@@ -32,6 +32,13 @@
 		<div class="row">
 			<div class="col-md-12" style="padding: 5%;">
 				<h1 class="page-header">Register</h1>
+				<c:if test="${not empty duplicateUser}">
+					<div class="alert alert-danger fade in">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<strong>Failed!</strong> User <strong>${duplicateUser.getEmail()}</strong>
+						already exists. Please try again.
+					</div>
+				</c:if>
 				<form:form action="${pageContext.request.contextPath}/register"
 					method="post" modelAttribute="registerUser">
 					<spring:bind path="email">
@@ -73,7 +80,7 @@
 					<div class="form-inline">
 						<button type="submit" class="btn btn-primary">Submit</button>
 						<a href="${pageContext.request.contextPath}/initial"
-						   class="btn btn-secondary">Back to home</a>
+							class="btn btn-secondary">Back to home</a>
 					</div>
 				</form:form>
 			</div>

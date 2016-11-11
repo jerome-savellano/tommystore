@@ -16,6 +16,7 @@ import com.qbryx.tommystore.domain.User;
 import com.qbryx.tommystore.service.UserService;
 import com.qbryx.tommystore.validator.LoginValidator;
 import com.qbryx.tommystore.validator.RegistrationValidator;
+import com.qbryx.tommystrore.exception.DuplicateUserException;
 import com.qbryx.tommystrore.exception.FailedLoginException;
 
 @Controller
@@ -69,7 +70,7 @@ public class HomeController {
 	
 	@RequestMapping(value="/register", method = RequestMethod.POST)
 	public String register(@Valid @ModelAttribute("registerUser") User registerUser,
-			BindingResult bindingResult){
+			BindingResult bindingResult, Model model){
 		
 		registrationValidator.validate(registerUser, bindingResult);
 		
@@ -77,7 +78,14 @@ public class HomeController {
 			return "register";
 		}
 		
-		System.out.println(registerUser.toString());
+		try {
+			
+			userService.createUser(registerUser);
+		} catch (DuplicateUserException e) {
+			model.addAttribute("duplicateUser", registerUser);
+		}
+		
+		model.addAttribute("registerUser", new User());
 		return "register";
 	}
 
