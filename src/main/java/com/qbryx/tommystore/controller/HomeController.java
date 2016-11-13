@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.qbryx.tommystore.domain.User;
+import com.qbryx.tommystore.enums.UserType;
 import com.qbryx.tommystore.service.UserService;
 import com.qbryx.tommystore.validator.LoginUser;
 import com.qbryx.tommystore.validator.RegisterUser;
@@ -25,69 +26,76 @@ public class HomeController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private RegistrationValidator registrationValidator;
 
 	@RequestMapping("/initial")
-	public String initial(Model model) {
-
-		return "home";
+	public String initial(HttpServletRequest request, Model model) {
+		
+		User user = (User) request.getSession().getAttribute("user");
+		
+		return redirectToHome(user);
 	}
-	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView login() {
 
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ModelAndView login(HttpServletRequest request) {
+		
+		if(request.getSession().getAttribute("user") != null){
+			return new ModelAndView("home");
+		}
+		
 		return new ModelAndView("login", "user", new LoginUser());
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@Valid @ModelAttribute("user") LoginUser loginUser, BindingResult bindingResult, Model model) {
-		
-		if(bindingResult.hasErrors()){
+	public String processLogin(@Valid @ModelAttribute("user") LoginUser loginUser, BindingResult bindingResult,
+			HttpServletRequest request, Model model) {
+
+		if (bindingResult.hasErrors()) {
 			return "login";
 		}
-
+				
 		User user = null;
-		
+
 		try {
 
 			user = userService.authenticate(loginUser.getEmail(), loginUser.getPassword());
-			model.addAttribute("user", user);
+			request.getSession().setAttribute("user", user);
 		} catch (FailedLoginException e) {
-			
+
 			model.addAttribute("user", new LoginUser());
 			model.addAttribute("email", loginUser.getEmail());
 			return "login";
 		}
 
-		return "home";
+		return redirectToHome(user);
 	}
-	
+
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public ModelAndView registerCustomer(){
+	public ModelAndView registerCustomer() {
 		return new ModelAndView("register", "registerUser", new RegisterUser());
 	}
-	
-	@RequestMapping(value="/register", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String registerCustomer(@Valid @ModelAttribute("registerUser") RegisterUser registerUser,
-			BindingResult bindingResult, Model model){
-		
+			BindingResult bindingResult, Model model) {
+
 		registrationValidator.validate(registerUser, bindingResult);
-		
-		if(bindingResult.hasErrors()){
+
+		if (bindingResult.hasErrors()) {
 			return "register";
 		}
 		
 		try {
-			
+
 			userService.createCustomer(registerUser.buildCustomer());
 		} catch (DuplicateUserException e) {
-			
+
 			model.addAttribute("duplicateUser", registerUser);
 		}
-		
-		model.addAttribute("registerUser", new User());
+
+		model.addAttribute("registerUser", new RegisterUser());
 		return "register";
 	}
 
@@ -97,5 +105,14 @@ public class HomeController {
 		request.getSession().invalidate();
 		model.addAttribute("user", new User());
 		return "home";
+	}
+	
+	private String redirectToHome(User user){
+		
+		if(user == null){
+			return "home";
+		}
+		
+		return (user.getUserType() == UserType.CUSTOMER) ? "redirect:/customer/home" : "redirect:/admin/home";
 	}
 }

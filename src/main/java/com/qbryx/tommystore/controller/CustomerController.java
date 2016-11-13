@@ -4,13 +4,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/customer")
+public class CustomerController {
 	
 	@RequestMapping("/home")
 	public String home(){
 		
-		return "admin_home";
+		return "home";
 	}
-	
 }
