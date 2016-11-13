@@ -55,6 +55,13 @@
 							<form:errors path="password" cssClass="text-danger"></form:errors>
 						</div>
 					</spring:bind>
+					<spring:bind path="confirmPassword">
+						<div class="form-group ${status.error ? 'has-error' : ''}">
+							<label for="confirmPassword">Confirm password </label>
+							<form:input type="password" class="form-control" path="confirmPassword" />
+							<form:errors path="confirmPassword" cssClass="text-danger"></form:errors>
+						</div>
+					</spring:bind>
 					<spring:bind path="firstName">
 						<div class="form-group ${status.error ? 'has-error' : ''}">
 							<label for="firstName"> First Name </label>

@@ -14,7 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.qbryx.tommystore.domain.User;
 import com.qbryx.tommystore.service.UserService;
-import com.qbryx.tommystore.validator.LoginValidator;
+import com.qbryx.tommystore.validator.LoginUser;
+import com.qbryx.tommystore.validator.RegisterUser;
 import com.qbryx.tommystore.validator.RegistrationValidator;
 import com.qbryx.tommystrore.exception.DuplicateUserException;
 import com.qbryx.tommystrore.exception.FailedLoginException;
@@ -37,11 +38,11 @@ public class HomeController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login() {
 
-		return new ModelAndView("login", "user", new LoginValidator());
+		return new ModelAndView("login", "user", new LoginUser());
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@Valid @ModelAttribute("user") LoginValidator loginUser, BindingResult bindingResult, Model model) {
+	public String login(@Valid @ModelAttribute("user") LoginUser loginUser, BindingResult bindingResult, Model model) {
 		
 		if(bindingResult.hasErrors()){
 			return "login";
@@ -55,7 +56,7 @@ public class HomeController {
 			model.addAttribute("user", user);
 		} catch (FailedLoginException e) {
 			
-			model.addAttribute("user", new User());
+			model.addAttribute("user", new LoginUser());
 			model.addAttribute("email", loginUser.getEmail());
 			return "login";
 		}
@@ -64,12 +65,12 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public ModelAndView register(){
-		return new ModelAndView("register", "registerUser", new User());
+	public ModelAndView registerCustomer(){
+		return new ModelAndView("register", "registerUser", new RegisterUser());
 	}
 	
 	@RequestMapping(value="/register", method = RequestMethod.POST)
-	public String register(@Valid @ModelAttribute("registerUser") User registerUser,
+	public String registerCustomer(@Valid @ModelAttribute("registerUser") RegisterUser registerUser,
 			BindingResult bindingResult, Model model){
 		
 		registrationValidator.validate(registerUser, bindingResult);
@@ -80,8 +81,9 @@ public class HomeController {
 		
 		try {
 			
-			userService.createUser(registerUser);
+			userService.createCustomer(registerUser.buildCustomer());
 		} catch (DuplicateUserException e) {
+			
 			model.addAttribute("duplicateUser", registerUser);
 		}
 		

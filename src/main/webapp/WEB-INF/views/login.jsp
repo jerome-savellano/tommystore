@@ -47,7 +47,7 @@ html, body, .container-table {
 		<div class="row vertical-center-row">
 			<div class="col-md-4 col-md-offset-4">
 				<div
-					style="background-color: #007F00; padding: 15px; border-radius: 5%;">
+					style="background-color: #7EC0EE; padding: 15px; border-radius: 5%;">
 					<h1 style="text-align: center; color: white;">Tommy's Store</h1>
 					<c:if test="${not empty email}">
 						<div class="alert alert-danger">
@@ -77,7 +77,7 @@ html, body, .container-table {
 						</spring:bind>
 						
 						<div class="form-inline">
-							<button type="submit" class="btn btn-primary">Submit</button>
+							<button type="submit" class="btn btn-success">Submit</button>
 							<a
 								href="initial"
 								class="form-group btn btn-default">Back to Home</a>

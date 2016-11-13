@@ -6,20 +6,18 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.qbryx.tommystore.domain.User;
-
 @Component
 public class RegistrationValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return User.class.equals(clazz);
+		return RegisterUser.class.equals(clazz);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
 
-		User user = (User) target;
+		RegisterUser user = (RegisterUser) target;
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "error.empty.email");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "error.empty.password");
@@ -27,25 +25,29 @@ public class RegistrationValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "error.empty.lastName");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contactNumber", "error.empty.contactNumber");
 
-		String email = user.getEmail();
-		String firstName = user.getFirstName();
-		String lastName = user.getLastName();
-		String contactNumber = user.getContactNumber();
-
-		if (!new EmailValidator().isValid(email, null)) {
+		if (!new EmailValidator().isValid(user.getEmail(), null)) {
 			errors.rejectValue("email", "error.format.email");
 		}
+		
+		if(!user.getPassword().isEmpty() && user.getConfirmPassword().isEmpty()){
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmPassword", "error.empty.confirmPassword");
+		}
 
-		if (invalidName(firstName)) {
+		if (invalidName(user.getFirstName())) {
 			errors.rejectValue("firstName", "error.format.firstName");
 		}
 
-		if (invalidName(lastName)) {
+		if (invalidName(user.getLastName())) {
 			errors.rejectValue("lastName", "error.format.lastName");
 		}
 
-		if (invalidContactNumber(contactNumber)) {
+		if (invalidContactNumber(user.getContactNumber())) {
 			errors.rejectValue("contactNumber", "error.format.contactNumber");
+		}
+		
+		if(!user.getPassword().equals(user.getConfirmPassword())){
+			errors.rejectValue("password", "error.mismatch.password");
+			errors.rejectValue("confirmPassword", "error.mismatch.confirmPassword");
 		}
 	}
 	

@@ -3,7 +3,7 @@ package com.qbryx.tommystore.validator;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class LoginValidator {
+public class LoginUser {
 	
 	@Email(message="Please enter a valid email address")
 	@NotEmpty(message="Please enter your email address")

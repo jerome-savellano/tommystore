@@ -6,5 +6,5 @@ import com.qbryx.tommystrore.exception.DuplicateUserException;
 public interface UserService {
 	
 	User authenticate(String username, String password) throws com.qbryx.tommystrore.exception.FailedLoginException;
-	void createUser(User user) throws DuplicateUserException;
+	void createCustomer(User user) throws DuplicateUserException;
 }
