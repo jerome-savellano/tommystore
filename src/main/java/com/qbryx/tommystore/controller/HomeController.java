@@ -90,12 +90,15 @@ public class HomeController {
 		try {
 
 			userService.createCustomer(registerUser.buildCustomer());
+			
+			model.addAttribute("newUser", registerUser);
+			
+			model.addAttribute("registerUser", new RegisterUser());
 		} catch (DuplicateUserException e) {
-
+			
 			model.addAttribute("duplicateUser", registerUser);
 		}
 
-		model.addAttribute("registerUser", new RegisterUser());
 		return "register";
 	}
 

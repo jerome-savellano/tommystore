@@ -1,3 +1,4 @@
+
 package com.qbryx.tommystore.domain;
 
 import javax.persistence.Column;

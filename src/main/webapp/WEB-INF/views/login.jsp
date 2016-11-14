@@ -79,6 +79,9 @@ html, body, .container-table {
 						<div class="form-inline">
 							<button type="submit" class="btn btn-success">Submit</button>
 							<a
+								href="register"
+								class="form-group btn btn-success">Register</a>
+							<a
 								href="initial"
 								class="form-group btn btn-default">Back to Home</a>
 						</div>

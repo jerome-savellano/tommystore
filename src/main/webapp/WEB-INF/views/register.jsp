@@ -31,12 +31,20 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12" style="padding: 5%;">
-				<h1 class="page-header">Register</h1>
+				<h1 class="page-header" style="padding-below: 1%;">Register</h1>
 				<c:if test="${not empty duplicateUser}">
 					<div class="alert alert-danger fade in">
 						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						<strong>Failed!</strong> User <strong>${duplicateUser.getEmail()}</strong>
 						already exists. Please try again.
+					</div>
+				</c:if>
+				<c:if test="${not empty newUser}">
+					<div class="alert alert-success fade in">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<strong>Success!</strong> User <strong>${newUser.getEmail()}</strong>
+						successfully created!				
+						<a href="${pageContext.request.contextPath}/login" class="btn btn-primary">Proceed to login</a>
 					</div>
 				</c:if>
 				<form:form action="${pageContext.request.contextPath}/register"
