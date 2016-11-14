@@ -17,13 +17,13 @@ public class RegistrationValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 
-		RegisterUser user = (RegisterUser) target;
-
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "error.empty.email");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "error.empty.password");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "error.empty.firstName");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "error.empty.lastName");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contactNumber", "error.empty.contactNumber");
+		
+		RegisterUser user = (RegisterUser) target;
 
 		if (!new EmailValidator().isValid(user.getEmail(), null)) {
 			errors.rejectValue("email", "error.format.email");

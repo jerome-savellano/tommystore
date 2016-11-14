@@ -1,4 +1,3 @@
-<%--  --%>
 <div class="row">
 	<div class="col-md-12">
 		<nav class="navbar navbar-default " role="navigation"
@@ -22,15 +21,16 @@
 					<li><a href="home">Dashboard</a></li>
 					<li><a href="viewUsers">User lists</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
+						data-toggle="dropdown">More<strong class="caret"></strong></a>
 						<ul class="dropdown-menu">
 							<li class="dropdown-header">Administrator</li>
 							<li><a href="addAdmin">Add new administrator</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Category</li>
-							<li><a href="#">Add new category</a></li>
+							<li><a href="addCategory">Add new category</a></li>
 							<li><a href="#">Update category</a></li>
 							<li><a href="#">Delete category</a></li>
+							<li><a href="#">View categories</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Product</li>
 							<li><a href="#">Add new product</a></li>

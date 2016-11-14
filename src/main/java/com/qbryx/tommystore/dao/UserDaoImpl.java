@@ -17,21 +17,21 @@ import com.qbryx.tommystore.enums.UserType;
 @Repository("userDao")
 public class UserDaoImpl implements UserDao {
 	
-	private static final String GET_USER = "from User where email = :email";
-	private static final String GET_ALL = "from User";
-	private static final String GET_BY_USER_TYPE = "from User where userType = :userType";
+	private static final String FIND_BY_EMAIL = "from User where email = :email";
+	private static final String FIND_ALL = "from User";
+	private static final String FIND_BY_USER_TYPE = "from User where userType = :userType";
 	
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	@Override
-	public User findUser(String email) {
+	public User findByEmail(String email) {
 		
 		User user = null;
 		
 		Session session = sessionFactory.getCurrentSession();
 				
-		Query query = session.createQuery(GET_USER)
+		Query query = session.createQuery(FIND_BY_EMAIL)
 							 .setParameter("email", email);
 		
 		try{
@@ -57,7 +57,7 @@ public class UserDaoImpl implements UserDao {
 		
 		Session session = sessionFactory.getCurrentSession();
 		
-		users = session.createQuery(GET_ALL).getResultList();
+		users = session.createQuery(FIND_ALL).getResultList();
 			
 		return users;
 	}
@@ -70,7 +70,7 @@ public class UserDaoImpl implements UserDao {
 		
 		Session session = sessionFactory.getCurrentSession();
 		
-		users = session.createQuery(GET_BY_USER_TYPE)
+		users = session.createQuery(FIND_BY_USER_TYPE)
 					   .setParameter("userType", userType)
 					   .getResultList();
 		

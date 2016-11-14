@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User authenticate(String email, String password) throws FailedLoginException {
 		
-		User user = userDao.findUser(email);
+		User user = userDao.findByEmail(email);
 		
 		if(user == null || !user.getPassword().equals(password)){
 			throw new FailedLoginException();
@@ -38,11 +38,7 @@ public class UserServiceImpl implements UserService {
 		
 		userDao.createUser(newUser);
 	}
-	
-	private boolean isUserExisting(User user){
-		return userDao.findUser(user.getEmail()) != null;
-	}
-
+		
 	@Override
 	public List<User> findAll() {
 		return userDao.findAll();
@@ -51,5 +47,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> findByType(UserType userType) {
 		return userDao.findByType(userType);
+	}
+	
+	private boolean isUserExisting(User user){
+		return userDao.findByEmail(user.getEmail()) != null;
 	}
 }

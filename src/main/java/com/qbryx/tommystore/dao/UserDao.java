@@ -9,7 +9,7 @@ public interface UserDao {
 
 	List<User> findAll();
 	List<User> findByType(UserType userType);
-	User findUser(String email);
+	User findByEmail(String email);
 	
 	void createUser(User user);
 }

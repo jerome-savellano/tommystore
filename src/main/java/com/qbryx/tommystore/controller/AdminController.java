@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.qbryx.tommystore.domain.Category;
 import com.qbryx.tommystore.domain.User;
 import com.qbryx.tommystore.enums.AdminPage;
 import com.qbryx.tommystore.enums.UserType;
+import com.qbryx.tommystore.service.CategoryService;
 import com.qbryx.tommystore.service.UserService;
+import com.qbryx.tommystore.validator.CategoryValidator;
 import com.qbryx.tommystore.validator.RegisterUser;
 import com.qbryx.tommystore.validator.RegistrationValidator;
+import com.qbryx.tommystrore.exception.DuplicateCategoryException;
 import com.qbryx.tommystrore.exception.DuplicateUserException;
 
 @Controller
@@ -27,9 +31,15 @@ public class AdminController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private CategoryService categoryService;
 
 	@Autowired
 	private RegistrationValidator registrationValidator;
+	
+	@Autowired
+	private CategoryValidator categoryValidator;
 
 	@RequestMapping("/home")
 	public String home(Model model) {
@@ -40,7 +50,7 @@ public class AdminController {
 
 	/*
 	 * 
-	 * View user list controller
+	 * View user list 
 	 * 
 	 */
 
@@ -72,15 +82,15 @@ public class AdminController {
 
 	/*
 	 * 
-	 * Add new administrator controller
+	 * Add new administrator 
 	 * 
 	 */
-	
+
 	@RequestMapping(value = "/addAdmin", method = RequestMethod.GET)
 	public String addAdminGet(Model model) {
 
 		model.addAttribute("registerUser", new RegisterUser());
-		model.addAttribute("activePage", AdminPage.ADD_NEW_ADMINISTRATOR);
+		model.addAttribute("activePage", AdminPage.ADD_ADMINISTRATOR);
 		return "admin_home";
 	}
 
@@ -88,9 +98,49 @@ public class AdminController {
 	public String addAdminPost(@Validated @ModelAttribute("registerUser") RegisterUser registerUser,
 			BindingResult bindingResult, Model model) {
 
-		model.addAttribute("activePage", AdminPage.ADD_NEW_ADMINISTRATOR);
-		
+		model.addAttribute("activePage", AdminPage.ADD_ADMINISTRATOR);
+
 		registrationValidator.validate(registerUser, bindingResult);
+
+		if (bindingResult.hasErrors()) {
+			return "admin_home";
+		}
+
+		try {
+
+			userService.createUser(registerUser.buildAdministrator());
+
+			model.addAttribute("newUser", registerUser);
+			model.addAttribute("registerUser", new RegisterUser());
+		} catch (DuplicateUserException e) {
+
+			model.addAttribute("duplicateUser", registerUser);
+		}
+
+		return "admin_home";
+	}
+
+	/*
+	 * 
+	 * Add, update, delete category 
+	 * 
+	 */
+
+	@RequestMapping(value = "/addCategory", method = RequestMethod.GET)
+	public String addCategoryGet(Model model) {
+
+		model.addAttribute("category", new Category());
+		model.addAttribute("activePage", AdminPage.ADD_CATEGORY);
+		return "admin_home";
+	}
+
+	@RequestMapping(value = "/addCategory", method = RequestMethod.POST)
+	public String addCategoryPost(@Validated @ModelAttribute("category") Category category, BindingResult bindingResult,
+			Model model) {
+		
+		model.addAttribute("activePage", AdminPage.ADD_CATEGORY);
+		
+		categoryValidator.validate(category, bindingResult);
 		
 		if(bindingResult.hasErrors()){
 			return "admin_home";
@@ -98,13 +148,11 @@ public class AdminController {
 		
 		try {
 			
-			userService.createUser(registerUser.buildAdministrator());
+			categoryService.createCategory(category);
+			model.addAttribute("newCategory", category);
+		} catch (DuplicateCategoryException e) {
 			
-			model.addAttribute("newUser", registerUser);
-			model.addAttribute("registerUser", new RegisterUser());
-		} catch (DuplicateUserException e) {
-			
-			model.addAttribute("duplicateUser", registerUser);
+			model.addAttribute("duplicateCategory", category);
 		}
 
 		return "admin_home";
