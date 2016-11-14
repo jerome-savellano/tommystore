@@ -1,5 +1,7 @@
 package com.qbryx.tommystore.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,17 +30,26 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void createCustomer(User newUser) throws DuplicateUserException {
+	public void createUser(User newUser) throws DuplicateUserException {
 		
 		if(isUserExisting(newUser)){
 			throw new DuplicateUserException();
 		}
 		
-		newUser.setUserType(UserType.CUSTOMER);
 		userDao.createUser(newUser);
 	}
 	
 	private boolean isUserExisting(User user){
 		return userDao.findUser(user.getEmail()) != null;
+	}
+
+	@Override
+	public List<User> findAll() {
+		return userDao.findAll();
+	}
+
+	@Override
+	public List<User> findByType(UserType userType) {
+		return userDao.findByType(userType);
 	}
 }

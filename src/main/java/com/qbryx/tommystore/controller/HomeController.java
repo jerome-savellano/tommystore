@@ -29,6 +29,12 @@ public class HomeController {
 
 	@Autowired
 	private RegistrationValidator registrationValidator;
+	
+	/*
+	 * 
+	 * Initial controller
+	 * 
+	 */
 
 	@RequestMapping("/initial")
 	public String initial(HttpServletRequest request, Model model) {
@@ -47,6 +53,12 @@ public class HomeController {
 		
 		return new ModelAndView("login", "user", new LoginUser());
 	}
+	
+	/*
+	 * 
+	 * Login controller
+	 * 
+	 */
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String processLogin(@Valid @ModelAttribute("user") LoginUser loginUser, BindingResult bindingResult,
@@ -71,6 +83,12 @@ public class HomeController {
 
 		return redirectToHome(user);
 	}
+	
+	/*
+	 * 
+	 * Registration controller
+	 * 
+	 */
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView registerCustomer() {
@@ -89,10 +107,9 @@ public class HomeController {
 		
 		try {
 
-			userService.createCustomer(registerUser.buildCustomer());
+			userService.createUser(registerUser.buildCustomer());
 			
-			model.addAttribute("newUser", registerUser);
-			
+			model.addAttribute("newUser", registerUser);			
 			model.addAttribute("registerUser", new RegisterUser());
 		} catch (DuplicateUserException e) {
 			
@@ -101,6 +118,12 @@ public class HomeController {
 
 		return "register";
 	}
+	
+	/*
+	 * 
+	 * Logout controller
+	 * 
+	 */
 
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request, Model model) {
@@ -109,6 +132,12 @@ public class HomeController {
 		model.addAttribute("user", new User());
 		return "home";
 	}
+	
+	/*
+	 * 
+	 * Misc
+	 * 
+	 */
 	
 	private String redirectToHome(User user){
 		
