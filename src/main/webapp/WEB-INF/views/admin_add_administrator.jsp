@@ -67,7 +67,7 @@
 			</spring:bind>
 			<div class="form-inline">
 				<button type="submit" class="btn btn-primary">Submit</button>
-				<a href="viewUsers" class="btn btn-success">View users</a>
+				<a href="viewUsers?userType=" class="btn btn-success">View users</a>
 			</div>
 		</form:form>
 	</div>
