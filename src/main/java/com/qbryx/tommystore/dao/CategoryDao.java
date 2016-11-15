@@ -10,6 +10,8 @@ public interface CategoryDao {
 	
 	Category findByName(String name);
 	
+	Category findByCategoryId(String id);
+	
 	void createCategory(Category category);
 	
 	void updateCategory(Category category);

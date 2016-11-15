@@ -17,6 +17,7 @@ public class CategoryDaoImpl implements CategoryDao {
 	
 	private static final String FIND_ALL = "from Category";
 	private static final String FIND_BY_NAME = "from Category where name = :name";
+	private static final String FIND_BY_CATEGORY_ID = "from Category where categoryId = :categoryId";
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -51,6 +52,26 @@ public class CategoryDaoImpl implements CategoryDao {
 		
 		return category;
 	}
+	
+	@Override
+	public Category findByCategoryId(String id) {
+		
+		Category category = null;
+		
+		Session session = sessionFactory.getCurrentSession();
+		
+		try{
+			
+			category =  (Category) session.createQuery(FIND_BY_CATEGORY_ID)
+										  .setParameter("categoryId", id)
+										  .getSingleResult();
+			
+		}catch(NoResultException e){
+			
+		}
+		
+		return category;
+	}
 
 	@Override
 	public void createCategory(Category category){
@@ -59,6 +80,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
 	@Override
 	public void updateCategory(Category category) {
+		System.out.println(category.toString());
 		sessionFactory.getCurrentSession().update(category);
 	}
 

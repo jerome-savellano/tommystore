@@ -22,6 +22,7 @@ import com.qbryx.tommystore.service.UserService;
 import com.qbryx.tommystore.validator.CategoryValidator;
 import com.qbryx.tommystore.validator.RegisterUser;
 import com.qbryx.tommystore.validator.RegistrationValidator;
+import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 import com.qbryx.tommystrore.exception.DuplicateCategoryException;
 import com.qbryx.tommystrore.exception.DuplicateUserException;
 
@@ -31,13 +32,13 @@ public class AdminController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private CategoryService categoryService;
 
 	@Autowired
 	private RegistrationValidator registrationValidator;
-	
+
 	@Autowired
 	private CategoryValidator categoryValidator;
 
@@ -50,20 +51,12 @@ public class AdminController {
 
 	/*
 	 * 
-	 * View user list 
+	 * View user list
 	 * 
 	 */
 
 	@RequestMapping(value = "/viewUsers", method = RequestMethod.GET)
-	public String viewUsersGet(Model model) {
-
-		model.addAttribute("users", userService.findAll());
-		model.addAttribute("activePage", AdminPage.USER_LIST);
-		return "admin_home";
-	}
-
-	@RequestMapping(value = "/viewUsers", method = RequestMethod.POST)
-	public String viewUsersPost(@RequestParam("userType") String userType, Model model) {
+	public String viewUsersGet(@RequestParam("userType") String userType, Model model) {
 
 		List<User> users = new ArrayList<>();
 
@@ -82,7 +75,7 @@ public class AdminController {
 
 	/*
 	 * 
-	 * Add new administrator 
+	 * Add new administrator
 	 * 
 	 */
 
@@ -122,7 +115,7 @@ public class AdminController {
 
 	/*
 	 * 
-	 * Add, update, delete category 
+	 * Add category
 	 * 
 	 */
 
@@ -137,8 +130,99 @@ public class AdminController {
 	@RequestMapping(value = "/addCategory", method = RequestMethod.POST)
 	public String addCategoryPost(@Validated @ModelAttribute("category") Category category, BindingResult bindingResult,
 			Model model) {
-		
+
 		model.addAttribute("activePage", AdminPage.ADD_CATEGORY);
+
+		categoryValidator.validate(category, bindingResult);
+
+		if (bindingResult.hasErrors()) {
+			return "admin_home";
+		}
+
+		try {
+
+			categoryService.createCategory(category);
+			model.addAttribute("newCategory", category);
+			model.addAttribute("category", new Category());
+		} catch (DuplicateCategoryException e) {
+
+			model.addAttribute("duplicateCategory", category);
+		}
+
+		return "admin_home";
+	}
+
+	/*
+	 * 
+	 * View category
+	 * 
+	 */
+
+	@RequestMapping("/viewCategories")
+	public String viewCategories(Model model) {
+
+		model.addAttribute("categories", categoryService.findAll());
+		model.addAttribute("activePage", AdminPage.VIEW_CATEGORY);
+		return "admin_home";
+	}
+
+	/*
+	 * 
+	 * Delete category
+	 * 
+	 */
+
+	@RequestMapping("/deleteCategory")
+	public String deletecategory(@RequestParam("categoryName") String categoryName, Model model) {
+
+		Category category;
+		
+		try {
+			
+			category = categoryService.findByName(categoryName);
+			categoryService.deleteCategory(category);		
+		} catch (CategoryNotFoundException e) {
+			
+			e.printStackTrace();
+		}
+		
+		model.addAttribute("categories", categoryService.findAll());
+		model.addAttribute("activePage", AdminPage.VIEW_CATEGORY);
+		return "admin_home";
+	}
+
+	/*
+	 * 
+	 * Update category
+	 * 
+	 */
+
+	@RequestMapping(value = "/updateCategory", method = RequestMethod.GET)
+	public String updateCategoryGet(@RequestParam("categoryName") String categoryName, Model model) {
+
+		Category category;
+		
+		try {
+			
+			category = categoryService.findByName(categoryName);
+		} catch (CategoryNotFoundException e) {
+
+			model.addAttribute("activePage", AdminPage.VIEW_CATEGORY);
+			model.addAttribute("categories", categoryService.findAll());
+			model.addAttribute("categoryNotFound", "Category <strong>" + categoryName + "</strong> not found.");
+			return "admin_home";
+		}
+
+		model.addAttribute("category", category);
+		model.addAttribute("activePage", AdminPage.UPDATE_CATEGORY);
+		return "admin_home";
+	}
+
+	@RequestMapping(value = "/updateCategory", method = RequestMethod.POST)
+	public String updateCategoryPost(@Validated @ModelAttribute("category") Category category,
+			BindingResult bindingResult, Model model) {
+		
+		model.addAttribute("activePage", AdminPage.UPDATE_CATEGORY);
 		
 		categoryValidator.validate(category, bindingResult);
 		
@@ -148,13 +232,13 @@ public class AdminController {
 		
 		try {
 			
-			categoryService.createCategory(category);
-			model.addAttribute("newCategory", category);
+			categoryService.updateCategory(category);
+			model.addAttribute("updatedCategory", category);
 		} catch (DuplicateCategoryException e) {
 			
 			model.addAttribute("duplicateCategory", category);
 		}
-
+		
 		return "admin_home";
 	}
 }

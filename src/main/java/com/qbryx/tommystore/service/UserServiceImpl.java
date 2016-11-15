@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.qbryx.tommystore.dao.UserDao;
 import com.qbryx.tommystore.domain.User;
@@ -12,6 +13,7 @@ import com.qbryx.tommystrore.exception.DuplicateUserException;
 import com.qbryx.tommystrore.exception.FailedLoginException;
 
 @Service("userService")
+@Transactional(readOnly=true)
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional(readOnly=false)
 	public void createUser(User newUser) throws DuplicateUserException {
 		
 		if(isUserExisting(newUser)){

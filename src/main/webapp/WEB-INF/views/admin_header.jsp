@@ -19,7 +19,7 @@
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="home">Dashboard</a></li>
-					<li><a href="viewUsers">User lists</a></li>
+					<li><a href="viewUsers?userType=">User lists</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown">More<strong class="caret"></strong></a>
 						<ul class="dropdown-menu">
@@ -28,9 +28,7 @@
 							<li class="divider"></li>
 							<li class="dropdown-header">Category</li>
 							<li><a href="addCategory">Add new category</a></li>
-							<li><a href="#">Update category</a></li>
-							<li><a href="#">Delete category</a></li>
-							<li><a href="#">View categories</a></li>
+							<li><a href="viewCategories">View categories</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Product</li>
 							<li><a href="#">Add new product</a></li>

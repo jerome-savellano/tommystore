@@ -8,7 +8,7 @@
 		<form:form 
 			class="form-inline"
 			action="viewUsers"
-			method="post">
+			method="get">
 			<label for="usertype">Filter by type: </label> <select
 				class="form-control" name="userType">
 				<option selected>ALL</option>
