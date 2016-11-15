@@ -241,4 +241,17 @@ public class AdminController {
 		
 		return "admin_home";
 	}
+	
+	/*
+	 * 
+	 * Add product
+	 * 
+	 */
+	
+	@RequestMapping("/addProduct")
+	public String addProduct(Model model){
+		
+		model.addAttribute("activePage", AdminPage.ADD_PRODUCT);
+		return "admin_home";
+	}
 }

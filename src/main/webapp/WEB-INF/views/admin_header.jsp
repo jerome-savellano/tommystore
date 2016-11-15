@@ -31,7 +31,7 @@
 							<li><a href="viewCategories">View categories</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Product</li>
-							<li><a href="#">Add new product</a></li>
+							<li><a href="addProduct">Add new product</a></li>
 							<li><a href="#">View products</a></li>
 							<li><a href="#">View product history</a></li>
 							<li><a href="#">View product order</a></li>
