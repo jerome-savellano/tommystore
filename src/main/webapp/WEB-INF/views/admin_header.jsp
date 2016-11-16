@@ -32,7 +32,7 @@
 							<li class="divider"></li>
 							<li class="dropdown-header">Product</li>
 							<li><a href="addProduct">Add new product</a></li>
-							<li><a href="#">View products</a></li>
+							<li><a href="viewProducts">View products</a></li>
 							<li><a href="#">View product history</a></li>
 							<li><a href="#">View product order</a></li>
 						</ul></li>

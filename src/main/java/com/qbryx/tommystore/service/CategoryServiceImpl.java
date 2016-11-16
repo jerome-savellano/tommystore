@@ -65,7 +65,6 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		
 		category.setName(categoryToUpdate.getName());
-
 		categoryDao.updateCategory(category);
 	}
 

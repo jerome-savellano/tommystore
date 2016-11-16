@@ -18,12 +18,16 @@ import com.qbryx.tommystore.domain.User;
 import com.qbryx.tommystore.enums.AdminPage;
 import com.qbryx.tommystore.enums.UserType;
 import com.qbryx.tommystore.service.CategoryService;
+import com.qbryx.tommystore.service.ProductService;
 import com.qbryx.tommystore.service.UserService;
 import com.qbryx.tommystore.validator.CategoryValidator;
+import com.qbryx.tommystore.validator.ProductHelper;
+import com.qbryx.tommystore.validator.ProductValidator;
 import com.qbryx.tommystore.validator.RegisterUser;
 import com.qbryx.tommystore.validator.RegistrationValidator;
 import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 import com.qbryx.tommystrore.exception.DuplicateCategoryException;
+import com.qbryx.tommystrore.exception.DuplicateProductException;
 import com.qbryx.tommystrore.exception.DuplicateUserException;
 
 @Controller
@@ -35,12 +39,18 @@ public class AdminController {
 
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private ProductService productService;
 
 	@Autowired
 	private RegistrationValidator registrationValidator;
 
 	@Autowired
 	private CategoryValidator categoryValidator;
+
+	@Autowired
+	private ProductValidator productValidator;
 
 	@RequestMapping("/home")
 	public String home(Model model) {
@@ -176,16 +186,16 @@ public class AdminController {
 	public String deletecategory(@RequestParam("categoryName") String categoryName, Model model) {
 
 		Category category;
-		
+
 		try {
-			
+
 			category = categoryService.findByName(categoryName);
-			categoryService.deleteCategory(category);		
+			categoryService.deleteCategory(category);
 		} catch (CategoryNotFoundException e) {
-			
+
 			e.printStackTrace();
 		}
-		
+
 		model.addAttribute("categories", categoryService.findAll());
 		model.addAttribute("activePage", AdminPage.VIEW_CATEGORY);
 		return "admin_home";
@@ -201,9 +211,9 @@ public class AdminController {
 	public String updateCategoryGet(@RequestParam("categoryName") String categoryName, Model model) {
 
 		Category category;
-		
+
 		try {
-			
+
 			category = categoryService.findByName(categoryName);
 		} catch (CategoryNotFoundException e) {
 
@@ -221,37 +231,80 @@ public class AdminController {
 	@RequestMapping(value = "/updateCategory", method = RequestMethod.POST)
 	public String updateCategoryPost(@Validated @ModelAttribute("category") Category category,
 			BindingResult bindingResult, Model model) {
-		
+
 		model.addAttribute("activePage", AdminPage.UPDATE_CATEGORY);
-		
+
 		categoryValidator.validate(category, bindingResult);
-		
-		if(bindingResult.hasErrors()){
+
+		if (bindingResult.hasErrors()) {
 			return "admin_home";
 		}
-		
+
 		try {
-			
+
 			categoryService.updateCategory(category);
 			model.addAttribute("updatedCategory", category);
 		} catch (DuplicateCategoryException e) {
-			
+
 			model.addAttribute("duplicateCategory", category);
 		}
-		
+
 		return "admin_home";
 	}
-	
+
 	/*
 	 * 
 	 * Add product
 	 * 
 	 */
-	
-	@RequestMapping("/addProduct")
-	public String addProduct(Model model){
+
+	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
+	public String addProductGet(Model model) {
+
+		model.addAttribute("product", new ProductHelper());
+		model.addAttribute("categories", categoryService.findAll());
+		model.addAttribute("activePage", AdminPage.ADD_PRODUCT);
+		return "admin_home";
+	}
+
+	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
+	public String addProductPost(@Validated @ModelAttribute("product") ProductHelper productHelper, BindingResult bindingResult,
+			Model model) throws CategoryNotFoundException {
 		
 		model.addAttribute("activePage", AdminPage.ADD_PRODUCT);
+		model.addAttribute("categories", categoryService.findAll());
+		
+		productValidator.validate(productHelper, bindingResult);
+				
+		if(bindingResult.hasErrors()){
+						
+			return "admin_home";
+		}
+		
+		try {
+			
+			productService.createProduct(productHelper.buildProduct(categoryService));
+			model.addAttribute("newProduct", productHelper.buildProduct(categoryService));
+			model.addAttribute("product", new ProductHelper());
+		} catch (DuplicateProductException e) {
+			
+			model.addAttribute("duplicateProduct", productHelper.buildProduct(categoryService));
+		}
+			
+		return "admin_home";
+	}
+	
+	/*
+	 * 
+	 * View products
+	 * 
+	 */
+	
+	@RequestMapping("/viewProducts")
+	public String viewProduct(Model model){
+		
+		model.addAttribute("products", productService.findAll());
+		model.addAttribute("activePage", AdminPage.VIEW_PRODUCT);
 		return "admin_home";
 	}
 }
