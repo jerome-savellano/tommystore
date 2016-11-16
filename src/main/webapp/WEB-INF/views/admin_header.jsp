@@ -19,7 +19,7 @@
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="home">Dashboard</a></li>
-					<li><a href="viewUsers?userType=">User lists</a></li>
+					<li><a href="viewUsers?userType=">User list</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown">More<strong class="caret"></strong></a>
 						<ul class="dropdown-menu">
