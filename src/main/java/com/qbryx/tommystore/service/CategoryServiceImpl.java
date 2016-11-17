@@ -84,7 +84,8 @@ public class CategoryServiceImpl implements CategoryService {
 		categoryDao.deleteCategory(category);
 	}
 
-	private boolean isCategoryExisting(Category category) {
+	private boolean isCategoryExisting(Category category){
+		System.out.println(category.getName());
 		return categoryDao.findByName(category.getName()) != null;
 	}
 

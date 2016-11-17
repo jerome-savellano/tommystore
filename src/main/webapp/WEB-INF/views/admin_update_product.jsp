@@ -4,6 +4,20 @@
 
 <div class="row">
 	<h1 class="page-header">Update product</h1>
+	<c:if test="${not empty duplicateProduct}">
+			<div class="alert alert-danger fade in">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>Failed!</strong> Product <strong>${duplicateProduct.getName()}</strong>
+				already exists. Please try again.
+			</div>
+		</c:if>
+		<c:if test="${not empty newProduct}">
+			<div class="alert alert-success fade in">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>Success!</strong> Product <strong>${newProduct.getName()}</strong>
+				successfully created!
+			</div>
+		</c:if>
 	<div class="col-md-6">
 		<img
 			src="${pageContext.request.contextPath}/image?name=${product.getName()}"
@@ -13,6 +27,7 @@
 		<form:form
 			action="${pageContext.request.contextPath}/admin/updateProduct"
 			method="post" modelAttribute="product" enctype="multipart/form-data">
+			<form:input path="productId" type="hidden"/>
 			<spring:bind path="name">
 				<div class="form-group ${status.error ? 'has-error' : ''}">
 					<label for="Name">Name </label>
@@ -26,7 +41,7 @@
 					<label for="category">Category</label>
 					<form:select cssClass="form-control" path="category">
 						<c:forEach items="${categories}" var="item">
-							<option ${item.getName() == product.getCategory().getName() ? 'selected' : ''}>${item.getName()}</option>
+							<option ${item.getName() == product.getCategory() ? 'selected' : ''}>${item.getName()}</option>
 						</c:forEach>
 					</form:select>
 					<form:errors path="category" cssClass="text-danger"></form:errors>

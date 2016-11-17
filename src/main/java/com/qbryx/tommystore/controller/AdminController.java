@@ -1,10 +1,8 @@
 package com.qbryx.tommystore.controller;
 
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.fileupload.FileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.qbryx.tommystore.domain.Category;
 import com.qbryx.tommystore.domain.Product;
@@ -29,6 +26,7 @@ import com.qbryx.tommystore.validator.ProductHelper;
 import com.qbryx.tommystore.validator.ProductValidator;
 import com.qbryx.tommystore.validator.RegisterUser;
 import com.qbryx.tommystore.validator.RegistrationValidator;
+import com.qbryx.tommystore.validator.UpdateProductValidator;
 import com.qbryx.tommystrore.exception.CategoryHasProductsException;
 import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 import com.qbryx.tommystrore.exception.DuplicateCategoryException;
@@ -57,6 +55,9 @@ public class AdminController {
 
 	@Autowired
 	private ProductValidator productValidator;
+
+	@Autowired
+	private UpdateProductValidator updateProductValidator;
 
 	@RequestMapping("/home")
 	public String home(Model model) {
@@ -299,7 +300,51 @@ public class AdminController {
 
 			model.addAttribute("duplicateProduct", productHelper.buildProduct(categoryService));
 		}
+
+		return "admin_home";
+	}
+
+	/*
+	 * 
+	 * Update product
+	 * 
+	 */
+
+	@RequestMapping(value = "/updateProduct", method = RequestMethod.GET)
+	public String updateProductGet(@RequestParam("name") String name, Model model) throws ProductNotFoundException {
+
+		ProductHelper productHelper = ProductHelper.buildProductHelper(productService.findByName(name));
+
+		model.addAttribute("categories", categoryService.findAll());
+		model.addAttribute("product", productHelper);
+		model.addAttribute("activePage", AdminPage.UPDATE_PRODUCT);
+		return "admin_home";
+	}
+
+	@RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
+	public String updateProductPost(@Validated @ModelAttribute("product") ProductHelper productHelper,
+			BindingResult bindingResult, Model model) throws CategoryNotFoundException {
+
+		model.addAttribute("categories", categoryService.findAll());
+		model.addAttribute("activePage", AdminPage.UPDATE_PRODUCT);
+
+		updateProductValidator.validate(productHelper, bindingResult);
+
+		if (bindingResult.hasErrors()) {
+			return "admin_home";
+		}
 		
+		Product product = productHelper.buildProductToUpdate(productService, categoryService);
+
+		try {
+			
+			productService.updateProduct(product);
+			model.addAttribute("updatedProduct", product);
+		} catch (DuplicateProductException e) {
+			
+			model.addAttribute("duplicateProduct", product);
+		}
+
 		return "admin_home";
 	}
 
