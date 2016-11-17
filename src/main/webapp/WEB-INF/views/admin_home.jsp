@@ -32,7 +32,7 @@
 			<jsp:include page="admin_dashboard.jsp"></jsp:include>
 		</c:if>
 		<c:if test="${activePage == 'USER_LIST'}">
-			<jsp:include page="admin_userlist.jsp"></jsp:include>
+			<jsp:include page="admin_view_users.jsp"></jsp:include>
 		</c:if>
 		<c:if test="${activePage == 'ADD_ADMINISTRATOR'}">
 			<jsp:include page="admin_add_administrator.jsp"></jsp:include>
@@ -41,7 +41,7 @@
 			<jsp:include page="admin_add_category.jsp"></jsp:include>
 		</c:if>
 		<c:if test="${activePage == 'VIEW_CATEGORY'}">
-			<jsp:include page="admin_categorylist.jsp"></jsp:include>
+			<jsp:include page="admin_view_categories.jsp"></jsp:include>
 		</c:if>
 		<c:if test="${activePage == 'UPDATE_CATEGORY'}">
 			<jsp:include page="admin_update_category.jsp"></jsp:include>
@@ -51,6 +51,9 @@
 		</c:if>
 		<c:if test="${activePage == 'VIEW_PRODUCT'}">
 			<jsp:include page="admin_view_product.jsp"></jsp:include>
+		</c:if>
+		<c:if test="${activePage == 'UPDATE_PRODUCT'}">
+			<jsp:include page="admin_update_product.jsp"></jsp:include>
 		</c:if>
 	</div>
 </body>

@@ -3,6 +3,7 @@ package com.qbryx.tommystore.service;
 import java.util.List;
 
 import com.qbryx.tommystore.domain.Category;
+import com.qbryx.tommystrore.exception.CategoryHasProductsException;
 import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 import com.qbryx.tommystrore.exception.DuplicateCategoryException;
 
@@ -16,5 +17,5 @@ public interface CategoryService {
 	
 	void createCategory(Category category) throws DuplicateCategoryException;
 	void updateCategory(Category category) throws DuplicateCategoryException;
-	void deleteCategory(Category category);
+	void deleteCategory(Category category) throws CategoryHasProductsException;
 }

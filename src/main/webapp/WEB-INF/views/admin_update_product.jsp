@@ -1,25 +1,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
 <div class="row">
-	<div class="col-md-12" style="padding-left: 15%; padding-right: 15%;">
-		<h2 class="page-header">Add new product</h2>
-		<c:if test="${not empty duplicateProduct}">
-			<div class="alert alert-danger fade in">
-				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				<strong>Failed!</strong> Product <strong>${duplicateProduct.getName()}</strong>
-				already exists. Please try again.
-			</div>
-		</c:if>
-		<c:if test="${not empty newProduct}">
-			<div class="alert alert-success fade in">
-				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				<strong>Success!</strong> Product <strong>${newProduct.getName()}</strong>
-				successfully created!
-			</div>
-		</c:if>
+	<h1 class="page-header">Update product</h1>
+	<div class="col-md-6">
+		<img
+			src="${pageContext.request.contextPath}/image?name=${product.getName()}"
+			alt="Card image cap" style="max-height: 100%; max-width: 100%;">
+	</div>
+	<div class="col-md-6">
 		<form:form
-			action="${pageContext.request.contextPath}/admin/addProduct"
+			action="${pageContext.request.contextPath}/admin/updateProduct"
 			method="post" modelAttribute="product" enctype="multipart/form-data">
 			<spring:bind path="name">
 				<div class="form-group ${status.error ? 'has-error' : ''}">
@@ -33,9 +25,8 @@
 				<div class="form-group ${status.error ? 'has-error' : ''}">
 					<label for="category">Category</label>
 					<form:select cssClass="form-control" path="category">
-						<option selected disabled value="">SELECT CATEGORY</option>
 						<c:forEach items="${categories}" var="item">
-							<option>${item.getName()}</option>
+							<option ${item.getName() == product.getCategory().getName() ? 'selected' : ''}>${item.getName()}</option>
 						</c:forEach>
 					</form:select>
 					<form:errors path="category" cssClass="text-danger"></form:errors>
@@ -53,7 +44,7 @@
 
 			<spring:bind path="image">
 				<div class="form-group ${status.error ? 'has-error' : ''}">
-					<label for="inputfile">Upload image</label>
+					<label for="image">Upload image</label>
 					<form:input path="image" type="file" class="form-control-file"
 						aria-describedby="fileHelp" />
 					<form:errors path="image" cssClass="text-danger" />
@@ -63,9 +54,10 @@
 				</div>
 			</spring:bind>
 			<div class="form-inline">
-				<button type="submit" class="form-group btn btn-primary">Add
+				<button type="submit" class="form-group btn btn-primary">Update
 					product</button>
-				<a href="viewProducts?category=" class="form-group btn btn-success">View products</a>
+				<a href="viewProducts?category=" class="form-group btn btn-success">View
+					products</a>
 			</div>
 		</form:form>
 	</div>

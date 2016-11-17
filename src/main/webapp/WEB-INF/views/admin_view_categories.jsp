@@ -11,6 +11,13 @@
 				<strong>Failed!</strong> ${categoryNotFound}
 			</div>
 		</c:if>
+		<c:if test="${not empty category}">
+			<div class="alert alert-danger fade in">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>Failed!</strong> Category <strong>${category.getName()}</strong> has products under it.&nbsp; 
+				<a class="btn btn-primary btn-xs" href="viewProducts?category=${category.getName()}">View products</a>
+			</div>
+		</c:if>
 		<c:choose>
 			<c:when test="${not empty categories}">
 				<div style="padding-top: 1%">

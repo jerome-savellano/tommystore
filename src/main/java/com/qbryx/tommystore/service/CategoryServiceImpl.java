@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.qbryx.tommystore.dao.CategoryDao;
+import com.qbryx.tommystore.dao.ProductDao;
 import com.qbryx.tommystore.domain.Category;
+import com.qbryx.tommystrore.exception.CategoryHasProductsException;
 import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 import com.qbryx.tommystrore.exception.DuplicateCategoryException;
 
@@ -18,6 +20,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	private CategoryDao categoryDao;
+	
+	@Autowired
+	private ProductDao productDao;
 
 	@Override
 	public List<Category> findAll() {
@@ -70,7 +75,12 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void deleteCategory(Category category) {
+	public void deleteCategory(Category category) throws CategoryHasProductsException{
+		
+		if(productDao.findByCategory(category).size() != 0){
+			throw new CategoryHasProductsException();
+		}
+		
 		categoryDao.deleteCategory(category);
 	}
 

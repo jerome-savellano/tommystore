@@ -25,12 +25,12 @@ public class ProductValidator implements Validator {
 
 		ProductHelper productHelper = (ProductHelper) target;
 
-		if (invalidFileSize(productHelper.getImageFile())) {
-			errors.rejectValue("imageFile", "error.empty.product.imageFile");
+		if (invalidFileSize(productHelper.getImage())) {
+			errors.rejectValue("image", "error.empty.product.imageFile");
 		}
 
-		if (invalidFileType(productHelper.getImageFile())) {
-			errors.rejectValue("imageFile", "error.invalidformat.product.imageFile");
+		if (invalidFileType(productHelper.getImage())) {
+			errors.rejectValue("image", "error.invalidformat.product.imageFile");
 		}
 		
 		if(invalidName(productHelper.getName())){

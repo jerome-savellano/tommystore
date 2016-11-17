@@ -16,7 +16,7 @@ public class ProductHelper {
 	
 	private BigDecimal price;
 	
-	private CommonsMultipartFile imageFile;
+	private CommonsMultipartFile image;
 
 	public String getName() {
 		return name;
@@ -42,12 +42,12 @@ public class ProductHelper {
 		this.price = price;
 	}
 
-	public CommonsMultipartFile getImageFile() {
-		return imageFile;
+	public CommonsMultipartFile getImage() {
+		return image;
 	}
 
-	public void setImageFile(CommonsMultipartFile imageFile) {
-		this.imageFile = imageFile;
+	public void setImage(CommonsMultipartFile image) {
+		this.image = image;
 	}
 	
 	public Product buildProduct(CategoryService categoryService) throws CategoryNotFoundException{
@@ -57,8 +57,15 @@ public class ProductHelper {
 		product.setName(name);
 		product.setCategory(categoryService.findByName(category));
 		product.setPrice(price);
-		product.setImage(imageFile.getBytes());
+		product.setImage(image.getBytes());
 		
 		return product;
 	}
+
+	@Override
+	public String toString() {
+		return "ProductHelper [name=" + name + ", category=" + category + ", price=" + price + ", image=" + image + "]";
+	}
+	
+	
 }
