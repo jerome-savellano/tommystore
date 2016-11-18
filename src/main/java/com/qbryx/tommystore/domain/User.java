@@ -1,6 +1,8 @@
 
 package com.qbryx.tommystore.domain;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,13 +10,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.qbryx.tommystore.enums.UserType;
 
 @Entity 
 @Table(name="USER")
 public class User {
-	
+		
 	private long id;
 	
 	private String email;
@@ -28,6 +32,8 @@ public class User {
 	private String contactNumber;
 	
 	private UserType userType;
+	
+	private Date dateCreated;
 	
 	public User(){
 		
@@ -110,7 +116,17 @@ public class User {
 	public void setUserType(UserType userType) {
 		this.userType = userType;
 	}
+	
+	@Column(name="date_created")
+	@Temporal(value = TemporalType.TIMESTAMP)
+	public Date getDateCreated() {
+		return dateCreated;
+	}
 
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", password=" + password + ", firstName=" + firstName

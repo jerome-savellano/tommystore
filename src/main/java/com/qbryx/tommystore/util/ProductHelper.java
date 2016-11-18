@@ -1,4 +1,4 @@
-package com.qbryx.tommystore.validator;
+package com.qbryx.tommystore.util;
 
 import java.math.BigDecimal;
 

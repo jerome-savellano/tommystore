@@ -1,4 +1,4 @@
-package com.qbryx.tommystore.validator;
+package com.qbryx.tommystore.util;
 
 import com.qbryx.tommystore.domain.User;
 import com.qbryx.tommystore.enums.UserType;

@@ -8,6 +8,8 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.qbryx.tommystore.util.ProductHelper;
+
 @Component
 public class UpdateProductValidator implements Validator{
 

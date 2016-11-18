@@ -59,6 +59,7 @@
 		<property name="basename">
 			<value>messages</value>
 		</property>
+		<property name="fallbackToSystemLocale" value="false" />
 	</bean>
 	
 	<bean id="multipartResolver"
