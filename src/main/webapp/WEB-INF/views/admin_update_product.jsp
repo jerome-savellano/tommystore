@@ -2,7 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<div class="row">
+<div class="row" style="padding: 2%;">
 	<h1 class="page-header">Update product</h1>
 	<c:if test="${not empty duplicateProduct}">
 			<div class="alert alert-danger fade in">
@@ -11,11 +11,11 @@
 				already exists. Please try again.
 			</div>
 		</c:if>
-		<c:if test="${not empty newProduct}">
+		<c:if test="${not empty updatedProduct}">
 			<div class="alert alert-success fade in">
 				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				<strong>Success!</strong> Product <strong>${newProduct.getName()}</strong>
-				successfully created!
+				<strong>Success!</strong> Product <strong>${updatedProduct.getName()}</strong>
+				successfully updated!
 			</div>
 		</c:if>
 	<div class="col-md-6">

@@ -334,7 +334,7 @@ public class AdminController {
 			return "admin_home";
 		}
 		
-		Product product = productHelper.buildProductToUpdate(productService, categoryService);
+		Product product = productHelper.buildProductToUpdate(categoryService);
 
 		try {
 			
@@ -342,9 +342,34 @@ public class AdminController {
 			model.addAttribute("updatedProduct", product);
 		} catch (DuplicateProductException e) {
 			
+			model.addAttribute("product", productService.findByProductId(productHelper.getProductId()));
 			model.addAttribute("duplicateProduct", product);
 		}
 
+		return "admin_home";
+	}
+	
+	/*
+	 * 
+	 * Delete product
+	 * 
+	 */
+	
+	@RequestMapping("/deleteProduct")
+	public String deleteProduct(@RequestParam("name") String productName , Model model){
+		
+		try {
+			
+			Product product = productService.findByName(productName);
+			productService.deleteProduct(product);
+		} catch (ProductNotFoundException e) {
+
+			model.addAttribute("productNotFound",  productName);
+		}
+		
+		model.addAttribute("categories", categoryService.findAll());
+		model.addAttribute("products", productService.findAll());
+		model.addAttribute("activePage", AdminPage.VIEW_PRODUCT);
 		return "admin_home";
 	}
 

@@ -6,21 +6,12 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.qbryx.tommystore.domain.Product;
 import com.qbryx.tommystore.service.CategoryService;
-import com.qbryx.tommystore.service.ProductService;
 import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 
 public class ProductHelper {
 	
 	private String productId;
 	
-	public String getProductId() {
-		return productId;
-	}
-
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
-
 	private String name;
 	
 	private String category;
@@ -29,6 +20,14 @@ public class ProductHelper {
 	
 	private CommonsMultipartFile image;
 
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -74,10 +73,11 @@ public class ProductHelper {
 		return product;
 	}
 	
-	public Product buildProductToUpdate(ProductService productService, CategoryService categoryService) throws CategoryNotFoundException{
+	public Product buildProductToUpdate(CategoryService categoryService) throws CategoryNotFoundException{
 		
-		Product product = productService.findByProductId(productId);
+		Product product = new Product();
 		
+		product.setProductId(productId);
 		product.setName(name);
 		product.setCategory(categoryService.findByName(category));
 		product.setPrice(price);

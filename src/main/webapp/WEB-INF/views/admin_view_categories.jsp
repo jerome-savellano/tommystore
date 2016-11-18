@@ -35,7 +35,7 @@
 								varStatus="status">
 								<tr>
 									<td class="col-md-4">${category.getName()}</td>
-									<td class="text-center"><a href="google.com">View products</a></td>
+									<td class="text-center"><a href="viewProducts?category=${category.getName()}">View products</a></td>
 									<td class="text-center"><a
 										href="updateCategory?categoryName=${category.getName()}"
 										class="btn btn-success">Update</a></td>

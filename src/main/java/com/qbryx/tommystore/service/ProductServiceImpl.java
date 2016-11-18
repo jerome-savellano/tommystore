@@ -66,9 +66,12 @@ public class ProductServiceImpl implements ProductService {
 		product.setName(productToUpdate.getName());
 		product.setCategory(productToUpdate.getCategory());
 		product.setPrice(productToUpdate.getPrice());
-		product.setImage(productToUpdate.getImage());
+		
+		if(productToUpdate.getImage() != null){
+			product.setImage(productToUpdate.getImage());
+		}
 	
-//		productDao.updateProduct(product);
+		productDao.updateProduct(product);
 	}
 
 	@Override

@@ -3,6 +3,13 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="row" style="padding: 2%;">
 	<h1 class="page-header">Products</h1>
+	<c:if test="${not empty productNotFound}">
+			<div class="alert alert-success fade in">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>Success!</strong> Product <strong>${productName}</strong>
+				successfully created!
+			</div>
+		</c:if>
 	<form:form class="form-inline" action="viewProducts?category="
 		method="get">
 		<label for="usertype">Filter by category: </label>
@@ -31,7 +38,7 @@
 
 							<a href="updateProduct?name=${product.getName()}" class="btn btn-success btn-xs" role="button">Update</a>
 							<a href="" class="btn btn-success btn-xs" role="button">Re-stock</a>
-							<a href="#" class="btn btn-danger btn-xs" role="button">Delete</a>
+							<a href="deleteProduct?name=${product.getName()}" class="btn btn-danger btn-xs" role="button">Delete</a>
 						</div>
 					</div>
 				</div>
