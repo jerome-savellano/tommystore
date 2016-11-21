@@ -3,11 +3,11 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="row" style="padding: 2%;">
 	<h1 class="page-header">Products</h1>
-	<c:if test="${not empty productNotFound}">
-			<div class="alert alert-success fade in">
+	<c:if test="${not empty productName}">
+			<div class="alert alert-danger fade in">
 				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				<strong>Success!</strong> Product <strong>${productName}</strong>
-				successfully created!
+				<strong>Failed!</strong> Product <strong>${productName}</strong>
+				not found!
 			</div>
 		</c:if>
 	<form:form class="form-inline" action="viewProducts?category="

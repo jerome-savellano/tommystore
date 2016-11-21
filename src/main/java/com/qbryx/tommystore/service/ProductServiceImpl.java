@@ -32,7 +32,14 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Product findByName(String name) throws ProductNotFoundException {
-		return productDao.findByName(name);
+		
+		Product product = productDao.findByName(name);
+		
+		if(product == null){
+			throw new ProductNotFoundException();
+		}
+		
+		return product;
 	}
 
 	@Override

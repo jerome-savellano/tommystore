@@ -326,17 +326,21 @@ public class AdminController {
 	@RequestMapping(value = "/updateProduct", method = RequestMethod.GET)
 	public String updateProductGet(@RequestParam("name") String name, Model model) {
 
-		ProductHelper productHelper = null;
+		Product product = null;
 		
 		try {
 			
-			productHelper = ProductHelper.buildProductHelper(productService.findByName(name));
+			product = productService.findByName(name);
 		} catch (ProductNotFoundException e) {
 			
+			model.addAttribute("productName", name);
+			return "redirect:/admin/viewProducts?category=";
 		}
+		
+		
 
+		model.addAttribute("product", ProductHelper.buildProductHelper(product));
 		model.addAttribute("categories", categoryService.findAll());
-		model.addAttribute("product", productHelper);
 		model.addAttribute("activePage", AdminPage.UPDATE_PRODUCT);
 		return "admin_home";
 	}
@@ -443,7 +447,7 @@ public class AdminController {
 			inventory = inventoryService.findByProduct(product);
 		} catch (ProductNotFoundException e) {
 			
-
+			return "redirect:/admin/viewProducts?category=";
 		}
 
 		model.addAttribute("inventory", inventory);
