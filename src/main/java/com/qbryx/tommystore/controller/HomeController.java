@@ -145,6 +145,6 @@ public class HomeController {
 			return "home";
 		}
 		
-		return (user.getUserType() == UserType.CUSTOMER) ? "redirect:/customer/home" : "redirect:/admin/home";
+		return (user.getUserType() == UserType.CUSTOMER) ? "redirect:/customer/home" : "redirect:/admin/dashboard";
 	}
 }

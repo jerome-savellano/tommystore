@@ -55,11 +55,9 @@
 	</bean>
 	
 	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename">
-			<value>messages</value>
-		</property>
-		<property name="fallbackToSystemLocale" value="false" />
+		class="org.springframework.context.support.ResourceBundleMessageSource"
+		p:basename="/messages">
+		<property name="fallbackToSystemLocale" value="true" />
 	</bean>
 	
 	<bean id="multipartResolver"

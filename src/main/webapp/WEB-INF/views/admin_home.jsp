@@ -55,6 +55,9 @@
 		<c:if test="${activePage == 'UPDATE_PRODUCT'}">
 			<jsp:include page="admin_update_product.jsp"></jsp:include>
 		</c:if>
+		<c:if test="${activePage == 'UPDATE_INVENTORY'}">
+			<jsp:include page="admin_update_inventory.jsp"></jsp:include>
+		</c:if>
 	</div>
 </body>
 </html>

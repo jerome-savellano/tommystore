@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.qbryx.tommystore.domain.Inventory;
 import com.qbryx.tommystore.domain.Product;
 import com.qbryx.tommystore.service.CategoryService;
+import com.qbryx.tommystore.service.UserService;
 import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 
 public class ProductHelper {
@@ -19,6 +21,16 @@ public class ProductHelper {
 	private BigDecimal price;
 	
 	private CommonsMultipartFile image;
+	
+	private String email;
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	public String getProductId() {
 		return productId;
@@ -88,6 +100,18 @@ public class ProductHelper {
 		
 		return product;
 	}
+	
+	public Inventory buildInventory(Product product, UserService userService){
+		
+		Inventory inventory = new Inventory();
+		
+		inventory.setProduct(product);
+		inventory.setUpdater(userService.findByEmail(email));
+		inventory.setStock(Inventory.INITIAL_STOCK);
+		inventory.setDateUpdated(DateHelper.now());
+		
+		return inventory;
+	}
 
 	public static ProductHelper buildProductHelper(Product product){
 		
@@ -104,7 +128,5 @@ public class ProductHelper {
 	@Override
 	public String toString() {
 		return "ProductHelper [name=" + name + ", category=" + category + ", price=" + price + ", image=" + image + "]";
-	}
-	
-	
+	}	
 }

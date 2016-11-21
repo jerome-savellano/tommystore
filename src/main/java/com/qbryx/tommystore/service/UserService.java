@@ -12,6 +12,10 @@ public interface UserService {
 	
 	List<User> findByType(UserType userType);
 	
+	List<User> findNewUsers();
+	
+	User findByEmail(String email);
+	
 	User authenticate(String username, String password) throws com.qbryx.tommystrore.exception.FailedLoginException;
 	
 	void createUser(User user) throws DuplicateUserException;

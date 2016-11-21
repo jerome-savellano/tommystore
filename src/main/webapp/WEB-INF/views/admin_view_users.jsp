@@ -22,18 +22,18 @@
 				<thead class="bg-primary">
 					<tr>
 						<th>Email</th>
-						<th>First name</th>
-						<th>Last name</th>
+						<th>Name</th>
 						<th>User type</th>
+						<th>Date registered</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach items="${users}" var="eachUser" varStatus="status">
 						<tr>
 							<td>${eachUser.getEmail()}</td>
-							<td>${eachUser.getFirstName()}</td>
-							<td>${eachUser.getLastName()}</td>
+							<td>${eachUser.getFirstName()} &nbsp; ${eachUser.getLastName()}</td>
 							<td>${eachUser.getUserType()}</td>
+							<td>${eachUser.getDateCreated()}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

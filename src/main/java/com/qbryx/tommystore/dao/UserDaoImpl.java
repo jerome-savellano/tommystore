@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,14 @@ import org.springframework.stereotype.Repository;
 import com.qbryx.tommystore.domain.User;
 import com.qbryx.tommystore.enums.UserType;
 
+@SuppressWarnings("deprecation")
 @Repository("userDao")
 public class UserDaoImpl implements UserDao {
 	
 	private static final String FIND_BY_EMAIL = "from User where email = :email";
 	private static final String FIND_ALL = "from User";
 	private static final String FIND_BY_USER_TYPE = "from User where userType = :userType";
+	private static final String FIND_NEW_USERS = "SELECT * FROM USER WHERE date_created > DATE_SUB(NOW(), INTERVAL 24 HOUR) AND date_created <= NOW()";
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -73,6 +76,27 @@ public class UserDaoImpl implements UserDao {
 		users = session.createQuery(FIND_BY_USER_TYPE)
 					   .setParameter("userType", userType)
 					   .getResultList();
+		
+		return users;
+	}
+
+	@SuppressWarnings({ "unchecked" })
+	@Override
+	public List<User> findNewUsers() {
+		
+		List<User> users = new ArrayList<>();
+
+		Session session = sessionFactory.getCurrentSession();
+		
+		SQLQuery<User> query = session.createSQLQuery(FIND_NEW_USERS);
+		
+		query.addEntity(User.class);
+		
+		users = query.list();
+		
+		for(User user : users){
+			System.out.println(user.getEmail());
+		}
 		
 		return users;
 	}

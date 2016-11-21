@@ -14,16 +14,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.qbryx.tommystore.domain.Category;
+import com.qbryx.tommystore.domain.Inventory;
 import com.qbryx.tommystore.domain.Product;
 import com.qbryx.tommystore.domain.User;
 import com.qbryx.tommystore.enums.AdminPage;
 import com.qbryx.tommystore.enums.UserType;
 import com.qbryx.tommystore.service.CategoryService;
+import com.qbryx.tommystore.service.InventoryService;
 import com.qbryx.tommystore.service.ProductService;
 import com.qbryx.tommystore.service.UserService;
 import com.qbryx.tommystore.util.ProductHelper;
 import com.qbryx.tommystore.util.RegisterUser;
 import com.qbryx.tommystore.validator.CategoryValidator;
+import com.qbryx.tommystore.validator.InventoryValidator;
 import com.qbryx.tommystore.validator.ProductValidator;
 import com.qbryx.tommystore.validator.RegistrationValidator;
 import com.qbryx.tommystore.validator.UpdateProductValidator;
@@ -48,6 +51,9 @@ public class AdminController {
 	private ProductService productService;
 
 	@Autowired
+	private InventoryService inventoryService;
+
+	@Autowired
 	private RegistrationValidator registrationValidator;
 
 	@Autowired
@@ -59,9 +65,13 @@ public class AdminController {
 	@Autowired
 	private UpdateProductValidator updateProductValidator;
 
-	@RequestMapping("/home")
+	@Autowired
+	private InventoryValidator inventoryValidator;
+
+	@RequestMapping("/dashboard")
 	public String home(Model model) {
 
+		model.addAttribute("users", userService.findNewUsers());
 		model.addAttribute("activePage", AdminPage.DASHBOARD);
 		return "admin_home";
 	}
@@ -287,13 +297,16 @@ public class AdminController {
 		productValidator.validate(productHelper, bindingResult);
 
 		if (bindingResult.hasErrors()) {
-
 			return "admin_home";
 		}
 
+		Product product = productHelper.buildProduct(categoryService);
+		Inventory inventory = productHelper.buildInventory(product, userService);
+
 		try {
 
-			productService.createProduct(productHelper.buildProduct(categoryService));
+			productService.createProduct(product);
+			inventoryService.createInventory(inventory);
 			model.addAttribute("newProduct", productHelper.buildProduct(categoryService));
 			model.addAttribute("product", new ProductHelper());
 		} catch (DuplicateProductException e) {
@@ -311,9 +324,16 @@ public class AdminController {
 	 */
 
 	@RequestMapping(value = "/updateProduct", method = RequestMethod.GET)
-	public String updateProductGet(@RequestParam("name") String name, Model model) throws ProductNotFoundException {
+	public String updateProductGet(@RequestParam("name") String name, Model model) {
 
-		ProductHelper productHelper = ProductHelper.buildProductHelper(productService.findByName(name));
+		ProductHelper productHelper = null;
+		
+		try {
+			
+			productHelper = ProductHelper.buildProductHelper(productService.findByName(name));
+		} catch (ProductNotFoundException e) {
+			
+		}
 
 		model.addAttribute("categories", categoryService.findAll());
 		model.addAttribute("product", productHelper);
@@ -331,42 +351,47 @@ public class AdminController {
 		updateProductValidator.validate(productHelper, bindingResult);
 
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("product", productService.findByProductId(productHelper.getProductId()));
 			return "admin_home";
 		}
-		
+
 		Product product = productHelper.buildProductToUpdate(categoryService);
 
 		try {
-			
+
 			productService.updateProduct(product);
 			model.addAttribute("updatedProduct", product);
 		} catch (DuplicateProductException e) {
-			
+
 			model.addAttribute("product", productService.findByProductId(productHelper.getProductId()));
 			model.addAttribute("duplicateProduct", product);
 		}
 
 		return "admin_home";
 	}
-	
+
 	/*
 	 * 
 	 * Delete product
 	 * 
 	 */
-	
+
 	@RequestMapping("/deleteProduct")
-	public String deleteProduct(@RequestParam("name") String productName , Model model){
-		
+	public String deleteProduct(@RequestParam("name") String productName, Model model) {
+
 		try {
-			
+
 			Product product = productService.findByName(productName);
+
+			Inventory inventory = inventoryService.findByProduct(product);
+
+			inventoryService.deleteInventory(inventory);
 			productService.deleteProduct(product);
 		} catch (ProductNotFoundException e) {
 
-			model.addAttribute("productNotFound",  productName);
+			model.addAttribute("productNotFound", productName);
 		}
-		
+
 		model.addAttribute("categories", categoryService.findAll());
 		model.addAttribute("products", productService.findAll());
 		model.addAttribute("activePage", AdminPage.VIEW_PRODUCT);
@@ -382,20 +407,66 @@ public class AdminController {
 	@RequestMapping("/viewProducts")
 	public String viewProduct(@RequestParam("category") String categoryName, Model model) {
 
-		List<Product> products;
+		List<Inventory> inventories = null;
 
 		try {
 
-			products = productService.findByCategory(categoryService.findByName(categoryName));
-			model.addAttribute("products", products);
+			inventories = inventoryService.findByCategory(categoryService.findByName(categoryName));
+
+			model.addAttribute("inventories", inventories);
 			model.addAttribute("category", categoryName);
 		} catch (CategoryNotFoundException e) {
 
-			model.addAttribute("products", productService.findAll());
+			model.addAttribute("inventories", inventoryService.findAll());
 		}
 
 		model.addAttribute("categories", categoryService.findAll());
 		model.addAttribute("activePage", AdminPage.VIEW_PRODUCT);
+		return "admin_home";
+	}
+
+	/*
+	 * 
+	 * Update inventory
+	 * 
+	 */
+
+	@RequestMapping(value = "/updateInventory", method = RequestMethod.GET)
+	public String updateInventoryGet(@RequestParam("name") String productName, Model model) {
+
+		Product product = null;
+		Inventory inventory = null;
+
+		try {
+
+			product = productService.findByName(productName);
+			inventory = inventoryService.findByProduct(product);
+		} catch (ProductNotFoundException e) {
+			
+
+		}
+
+		model.addAttribute("inventory", inventory);
+		model.addAttribute("activePage", AdminPage.UPDATE_INVENTORY);
+		return "admin_home";
+	}
+
+	@RequestMapping(value = "/updateInventory", method = RequestMethod.POST)
+	public String updateInventoryPost(@Validated @ModelAttribute("inventory") Inventory inventory,
+			BindingResult bindingResult, Model model) {
+		
+		model.addAttribute("activePage", AdminPage.UPDATE_INVENTORY);
+
+		inventoryValidator.validate(inventory, bindingResult);
+
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("inventory", inventoryService.findById(inventory.getId()));
+			return "admin_home";
+		}
+		
+		inventoryService.updateInventory(inventory);
+		
+		model.addAttribute("inventory", inventoryService.findById(inventory.getId()));
 		return "admin_home";
 	}
 }

@@ -24,7 +24,7 @@
 			<spring:bind path="name">
 				<div class="form-group ${status.error ? 'has-error' : ''}">
 					<label for="Name">Name </label>
-					<form:input path="name" type="" class="form-control"
+					<form:input path="name" type="text" class="form-control"
 						placeHolder="Enter name" />
 					<form:errors path="name" cssClass="text-danger" />
 				</div>
@@ -67,6 +67,7 @@
 					product</button>
 				<a href="viewProducts?category=" class="form-group btn btn-success">View products</a>
 			</div>
+			<form:input path="email" type="hidden" value="${user.getEmail()}"></form:input>
 		</form:form>
 	</div>
 </div>

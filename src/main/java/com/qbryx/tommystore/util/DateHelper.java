@@ -1,14 +1,11 @@
 package com.qbryx.tommystore.util;
 
-import org.joda.time.DateTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DateHelper {
 	
-	public static void main(String[] args) {
-		System.out.println(now());
-	}
-	
-	public static DateTime now(){	
-		return new DateTime("MM/dd/yyyy HH:mm:ss");
+	public static String now(){
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 	}
 }

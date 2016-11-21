@@ -1,7 +1,5 @@
 package com.qbryx.tommystore.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.qbryx.tommystore.dao.UserDao;
 import com.qbryx.tommystore.domain.User;
 import com.qbryx.tommystore.enums.UserType;
+import com.qbryx.tommystore.util.DateHelper;
 import com.qbryx.tommystrore.exception.DuplicateUserException;
 import com.qbryx.tommystrore.exception.FailedLoginException;
 
@@ -40,8 +39,8 @@ public class UserServiceImpl implements UserService {
 		if (isUserExisting(newUser)) {
 			throw new DuplicateUserException();
 		}
-		
-		newUser.setDateCreated(new Date("yyyy-MM-dd"));
+
+		newUser.setDateCreated(DateHelper.now());
 		userDao.createUser(newUser);
 	}
 
@@ -57,5 +56,15 @@ public class UserServiceImpl implements UserService {
 
 	private boolean isUserExisting(User user) {
 		return userDao.findByEmail(user.getEmail()) != null;
+	}
+
+	@Override
+	public List<User> findNewUsers() {
+		return userDao.findNewUsers();
+	}
+
+	@Override
+	public User findByEmail(String email) {
+		return userDao.findByEmail(email);
 	}
 }

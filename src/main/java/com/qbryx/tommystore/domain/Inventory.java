@@ -1,7 +1,5 @@
 package com.qbryx.tommystore.domain;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,12 +15,14 @@ public class Inventory {
 	private long id;
 	
 	private Product product; 
-	
+	 
 	private int stock;
 	
 	private User updater;
 	
-	private Date dateUpdated;
+	private String dateUpdated;
+	
+	public static final int INITIAL_STOCK = 0;
 	
 	@Id
 	@GeneratedValue
@@ -65,11 +65,17 @@ public class Inventory {
 	}
 
 	@Column(name="last_updated")
-	public Date getDateUpdated() {
+	public String getDateUpdated() {
 		return dateUpdated;
 	}
 
-	public void setDateUpdated(Date dateUpdated) {
+	public void setDateUpdated(String dateUpdated) {
 		this.dateUpdated = dateUpdated;
+	}
+
+	@Override
+	public String toString() {
+		return "Inventory [id=" + id + ", product=" + product + ", stock=" + stock + ", updater=" + updater
+				+ ", dateUpdated=" + dateUpdated + "]";
 	}
 }
