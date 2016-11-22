@@ -85,7 +85,6 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	private boolean isCategoryExisting(Category category){
-		System.out.println(category.getName());
 		return categoryDao.findByName(category.getName()) != null;
 	}
 

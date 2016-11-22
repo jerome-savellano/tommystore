@@ -93,11 +93,7 @@ public class UserDaoImpl implements UserDao {
 		query.addEntity(User.class);
 		
 		users = query.list();
-		
-		for(User user : users){
-			System.out.println(user.getEmail());
-		}
-		
+			
 		return users;
 	}
 }

@@ -62,9 +62,9 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	@Transactional(readOnly = false)
 	public void updateProduct(Product productToUpdate) throws DuplicateProductException {
-
+		
 		Product product = productDao.findByProductId(productToUpdate.getProductId());
-
+		System.out.println(product.toString());
 		if (productDao.findByName(productToUpdate.getName()) != null
 				&& !product.getName().equals(productToUpdate.getName())) {
 			throw new DuplicateProductException();

@@ -53,7 +53,7 @@ public class UpdateProductValidator implements Validator{
 	}
 	
 	private boolean invalidName(String name){
-		return !name.matches("[a-zA-Z0-9 ]+") && !name.isEmpty();
+		return !name.matches("[a-zA-Z0-9()/' -]+") && !name.isEmpty();
 	}
 
 }

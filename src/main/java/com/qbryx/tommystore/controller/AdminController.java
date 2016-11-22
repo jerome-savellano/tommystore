@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.qbryx.tommystore.domain.Category;
 import com.qbryx.tommystore.domain.Inventory;
 import com.qbryx.tommystore.domain.Product;
+import com.qbryx.tommystore.domain.StockMonitor;
 import com.qbryx.tommystore.domain.User;
 import com.qbryx.tommystore.enums.AdminPage;
 import com.qbryx.tommystore.enums.UserType;
@@ -68,12 +69,42 @@ public class AdminController {
 	@Autowired
 	private InventoryValidator inventoryValidator;
 
+	/*
+	 * 
+	 *Dashboard 
+	 * 
+	 */
+	
 	@RequestMapping("/dashboard")
 	public String home(Model model) {
-
+		
+		StockMonitor stockMonitor = inventoryService.findStockMonitor();
+		
+		List<Inventory> inventories = inventoryService.findByStock(stockMonitor);
+		
+		model.addAttribute("stockMonitor", stockMonitor);
+		model.addAttribute("inventories", inventories);
 		model.addAttribute("users", userService.findNewUsers());
 		model.addAttribute("activePage", AdminPage.DASHBOARD);
 		return "admin_home";
+	}
+	
+	/*
+	 * 
+	 * Update stock monitor
+	 * 
+	 */
+	
+	@RequestMapping("/updateStockMonitor")
+	public String updateStockMonitor(@ModelAttribute("stockMonitor") StockMonitor stockMonitor, Model model){
+		
+		if(stockMonitor.getStock() <= 0){
+			return "redirect:/admin/dashboard";
+		}
+		
+		inventoryService.updateStockMonitor(stockMonitor);
+		
+		return "redirect:/admin/dashboard";
 	}
 
 	/*
@@ -355,7 +386,7 @@ public class AdminController {
 		updateProductValidator.validate(productHelper, bindingResult);
 
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("product", productService.findByProductId(productHelper.getProductId()));
+//			model.addAttribute("product", productService.findByProductId(productHelper.getProductId()));
 			return "admin_home";
 		}
 
@@ -397,7 +428,7 @@ public class AdminController {
 		}
 
 		model.addAttribute("categories", categoryService.findAll());
-		model.addAttribute("products", productService.findAll());
+		model.addAttribute("inventories", inventoryService.findAll());
 		model.addAttribute("activePage", AdminPage.VIEW_PRODUCT);
 		return "admin_home";
 	}
@@ -440,7 +471,7 @@ public class AdminController {
 
 		Product product = null;
 		Inventory inventory = null;
-
+		
 		try {
 
 			product = productService.findByName(productName);
@@ -470,7 +501,10 @@ public class AdminController {
 		
 		inventoryService.updateInventory(inventory);
 		
-		model.addAttribute("inventory", inventoryService.findById(inventory.getId()));
+		Inventory updatedInventory = inventoryService.findById(inventory.getId());
+		
+		model.addAttribute("inventoryUpdate", "<strong>" + updatedInventory.getProduct().getName() + "</strong> stock succesfully replenished.");
+		model.addAttribute("inventory", updatedInventory);
 		return "admin_home";
 	}
 }

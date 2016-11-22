@@ -80,7 +80,6 @@ public class CategoryDaoImpl implements CategoryDao {
 
 	@Override
 	public void updateCategory(Category category) {
-		System.out.println(category.toString());
 		sessionFactory.getCurrentSession().update(category);
 	}
 

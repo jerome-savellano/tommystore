@@ -1,6 +1,7 @@
 package com.qbryx.tommystore.domain;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -81,5 +82,11 @@ public class Product {
 
 	public void setImage(byte[] image) {
 		this.image = image;
+	}
+
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", productId=" + productId + ", name=" + name + ", category=" + category
+				+ ", price=" + price + ", image=" + Arrays.toString(image) + "]";
 	}
 }

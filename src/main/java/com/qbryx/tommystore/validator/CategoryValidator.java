@@ -28,6 +28,6 @@ public class CategoryValidator implements Validator {
 	}
 
 	private boolean invalidName(String name){
-		return !name.isEmpty() && !name.matches("[0-9a-zA-Z ]+");
+		return !name.isEmpty() && !name.matches("[0-9a-zA-Z &']+");
 	}
 }

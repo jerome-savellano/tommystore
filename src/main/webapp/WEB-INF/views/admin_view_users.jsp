@@ -21,10 +21,10 @@
 			<table class="table table-striped">
 				<thead class="bg-primary">
 					<tr>
-						<th>Email</th>
-						<th>Name</th>
-						<th>User type</th>
-						<th>Date registered</th>
+						<th class="col-xs-2">Email</th>
+						<th class="col-xs-2">Name</th>
+						<th class="col-xs-2">User type</th>
+						<th class="col-xs-2">Date registered</th>
 					</tr>
 				</thead>
 				<tbody>

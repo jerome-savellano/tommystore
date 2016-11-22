@@ -3,11 +3,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="row" style="padding: 2%;">
 	<h1 class="page-header">Update inventory</h1>
-	<c:if test="${not empty updatedProduct}">
+	<c:if test="${not empty inventoryUpdate}">
 		<div class="alert alert-success fade in">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>Success!</strong> Product <strong>${updatedProduct.getName()}</strong>
-			successfully updated!
+			${inventoryUpdate}
 		</div>
 	</c:if>
 	<div class="col-md-6">
@@ -23,6 +22,7 @@
 			action="${pageContext.request.contextPath}/admin/updateInventory"
 			method="post" modelAttribute="inventory" enctype="multipart/form-data">
 			<form:input path="id" type="hidden" value="${inventory.getId()}"/>
+			<form:input path="updater.email" type="hidden" value="${user.getEmail()}"/>
 			<spring:bind path="stock">
 				<div class="form-group ${status.error ? 'has-error' : ''}">
 					<label for="stock">Stock</label>
