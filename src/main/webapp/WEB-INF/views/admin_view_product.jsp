@@ -32,7 +32,7 @@
 						style="padding: 1%; padding-top: 2%;">
 						<div class="thumbnail">
 							<img class="card-img-top img-responsive"
-								src="${pageContext.request.contextPath}/image?name=${inventory.getProduct().getName()}"
+								src="${pageContext.request.contextPath}/image?prodId=${inventory.getProduct().getProductId()}"
 								alt="Card image cap" style="height: 200px;">
 							<div class="caption">
 								<h4>${inventory.getProduct().getName()}</h4>

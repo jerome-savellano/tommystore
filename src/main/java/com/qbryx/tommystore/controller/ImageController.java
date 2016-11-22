@@ -21,9 +21,9 @@ public class ImageController {
 	private ProductService productService;
 	
 	@RequestMapping(value="/image", method = RequestMethod.GET)
-	public void showImage(@RequestParam("name") String name, HttpServletResponse response) throws ProductNotFoundException, IOException{
+	public void showImage(@RequestParam("prodId") String prodId, HttpServletResponse response) throws ProductNotFoundException, IOException{
 		
-		Product product = productService.findByName(name);
+		Product product = productService.findByProductId(prodId);
 		
 		response.setContentType("image/jpeg, image/png, image/jpg");
 		response.getOutputStream().write(product.getImage());

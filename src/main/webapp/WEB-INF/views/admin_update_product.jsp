@@ -19,7 +19,7 @@
 		</c:if>
 	<div class="col-md-6">
 		<img
-			src="${pageContext.request.contextPath}/image?name=${product.getName()}"
+			src="${pageContext.request.contextPath}/image?prodId=${product.getProductId()}"
 			alt="Card image cap" style="max-height: 100%; max-width: 100%;">
 	</div>
 	<div class="col-md-6">
