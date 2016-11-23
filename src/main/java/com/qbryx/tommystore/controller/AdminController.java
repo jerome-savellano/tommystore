@@ -495,7 +495,6 @@ public class AdminController {
 		inventoryValidator.validate(inventory, bindingResult);
 
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("inventory", inventoryService.findById(inventory.getId()));
 			return "admin_home";
 		}
 		

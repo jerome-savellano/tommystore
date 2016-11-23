@@ -36,15 +36,15 @@
 								alt="Card image cap" style="height: 200px;">
 							<div class="caption">
 								<h4>${inventory.getProduct().getName()}</h4>
-								<h4 class="text-primary">&#8369;
-									${inventory.getProduct().getPrice()}</h4>
+								<h4 class="text-success"><strong>&#8369;
+									${inventory.getProduct().getPrice()}</strong></h4>
 								<h4 class="text-muted">
-									Stock: <span class="text-success">${inventory.getStock()}</span>
+									Stock: <span class="text-info"><strong>${inventory.getStock()}</strong></span>
 								</h4>
 								<a href="updateProduct?name=${inventory.getProduct().getName()}"
-									class="btn btn-success btn-xs" role="button">Update</a> <a
+									class="btn btn-primary btn-xs" role="button">Update</a> <a
 									href="updateInventory?name=${inventory.getProduct().getName()}"
-									class="btn btn-success btn-xs" role="button">Re-stock</a> <a
+									class="btn btn-primary btn-xs" role="button">Re-stock</a> <a
 									href="deleteProduct?name=${inventory.getProduct().getName()}"
 									class="btn btn-danger btn-xs" role="button">Delete</a>
 							</div>
