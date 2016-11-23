@@ -33,8 +33,10 @@
 							<li class="dropdown-header">Product</li>
 							<li><a href="addProduct">Add new product</a></li>
 							<li><a href="viewProducts?category=">View products</a></li>
-							<li><a href="#">View product history</a></li>
 							<li><a href="#">View product order</a></li>
+							<li class="divider"></li>
+							<li class="dropdown-header">Inventory</li>
+							<li><a href="viewInventoryHistory?prodId=">View inventory history</a></li>
 						</ul></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">

@@ -14,11 +14,11 @@ public class Inventory {
 	
 	private long id;
 	
+	private User updater;
+	
 	private Product product; 
 	 
 	private int stock;
-	
-	private User updater;
 	
 	private String dateUpdated;
 	

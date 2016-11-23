@@ -9,9 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.qbryx.tommystore.dao.InventoryDao;
 import com.qbryx.tommystore.domain.Category;
 import com.qbryx.tommystore.domain.Inventory;
+import com.qbryx.tommystore.domain.InventoryHistory;
 import com.qbryx.tommystore.domain.Product;
 import com.qbryx.tommystore.domain.StockMonitor;
 import com.qbryx.tommystore.util.DateHelper;
+import com.qbryx.tommystrore.exception.ProductNotFoundException;
 
 @Service("inventoryService")
 @Transactional(readOnly=true)
@@ -26,6 +28,11 @@ public class InventoryServiceImpl implements InventoryService{
 	@Override
 	public List<Inventory> findAll() {
 		return inventoryDao.findAll();
+	}
+	
+	@Override
+	public List<Inventory> findAllInStock() {
+		return inventoryDao.findAllInStock();
 	}
 	
 	@Override
@@ -83,5 +90,39 @@ public class InventoryServiceImpl implements InventoryService{
 	public void updateStockMonitor(StockMonitor stockMonitor) {
 		inventoryDao.updateStockMonitor(stockMonitor);
 	}
+	
+	/*
+	 * 
+	 * Inventory history
+	 * 
+	 */
+	
+	@Override
+	public List<InventoryHistory> findAllInventoryHistory() {
+		return inventoryDao.findAllInventoryHistory();
+	}
+	
+	@Override
+	public List<InventoryHistory> findInventoryHistoryByProductId(String productId) throws ProductNotFoundException {
+		
+		List<InventoryHistory> inventoryHistories = inventoryDao.findInventoryHistoryByProductId(productId);
+		
+		if(inventoryHistories.size() == 0){
+			throw new ProductNotFoundException();
+		}
+		
+		return inventoryHistories;
+	}
 
+	@Transactional(readOnly=false)
+	@Override
+	public void createInventoryHistory(InventoryHistory inventoryHistory) {
+		inventoryDao.createInventoryHistory(inventoryHistory);
+	}
+
+	@Transactional(readOnly=false)
+	@Override
+	public void deleteInventoryHistory() {
+		inventoryDao.deleteInventoryHistory();
+	}
 }

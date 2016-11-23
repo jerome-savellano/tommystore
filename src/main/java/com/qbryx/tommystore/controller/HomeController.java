@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.qbryx.tommystore.domain.User;
 import com.qbryx.tommystore.enums.UserType;
+import com.qbryx.tommystore.service.ProductService;
 import com.qbryx.tommystore.service.UserService;
 import com.qbryx.tommystore.util.LoginUser;
 import com.qbryx.tommystore.util.RegisterUser;
@@ -26,6 +27,9 @@ public class HomeController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ProductService productService;
 
 	@Autowired
 	private RegistrationValidator registrationValidator;
@@ -41,14 +45,19 @@ public class HomeController {
 		
 		User user = (User) request.getSession().getAttribute("user");
 		
-		return redirectToHome(user);
+		if(user != null){
+			return redirectUser(user);
+		}
+		
+		model.addAttribute("products", productService.findAll());
+		return "customer_home";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(HttpServletRequest request) {
 		
 		if(request.getSession().getAttribute("user") != null){
-			return new ModelAndView("home");
+			return new ModelAndView("customer_home");
 		}
 		
 		return new ModelAndView("login", "user", new LoginUser());
@@ -59,7 +68,7 @@ public class HomeController {
 	 * Login controller
 	 * 
 	 */
-
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String processLogin(@Valid @ModelAttribute("user") LoginUser loginUser, BindingResult bindingResult,
 			HttpServletRequest request, Model model) {
@@ -81,7 +90,7 @@ public class HomeController {
 			return "login";
 		}
 
-		return redirectToHome(user);
+		return redirectUser(user);
 	}
 	
 	/*
@@ -130,21 +139,10 @@ public class HomeController {
 
 		request.getSession().invalidate();
 		model.addAttribute("user", new User());
-		return "home";
+		return "customer_home";
 	}
 	
-	/*
-	 * 
-	 * Misc
-	 * 
-	 */
-	
-	private String redirectToHome(User user){
-		
-		if(user == null){
-			return "home";
-		}
-		
-		return (user.getUserType() == UserType.CUSTOMER) ? "redirect:/customer/home" : "redirect:/admin/dashboard";
+	private String redirectUser(User user){
+		return user.getUserType() == UserType.CUSTOMER ? "redirect:/customer/home" : "redirect:/admin/dashboard"; 
 	}
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.qbryx.tommystore.domain.Category;
 import com.qbryx.tommystore.domain.Inventory;
+import com.qbryx.tommystore.domain.InventoryHistory;
 import com.qbryx.tommystore.domain.Product;
 import com.qbryx.tommystore.domain.StockMonitor;
 import com.qbryx.tommystore.domain.User;
@@ -305,7 +306,7 @@ public class AdminController {
 
 	/*
 	 * 
-	 * Add product
+	 * Add product and inventory
 	 * 
 	 */
 
@@ -338,6 +339,7 @@ public class AdminController {
 
 			productService.createProduct(product);
 			inventoryService.createInventory(inventory);
+			inventoryService.createInventoryHistory(new InventoryHistory(inventory));
 			model.addAttribute("newProduct", productHelper.buildProduct(categoryService));
 			model.addAttribute("product", new ProductHelper());
 		} catch (DuplicateProductException e) {
@@ -498,12 +500,38 @@ public class AdminController {
 			return "admin_home";
 		}
 		
+		inventoryService.createInventoryHistory(new InventoryHistory(inventory));
 		inventoryService.updateInventory(inventory);
 		
 		Inventory updatedInventory = inventoryService.findById(inventory.getId());
 		
 		model.addAttribute("inventoryUpdate", "<strong>" + updatedInventory.getProduct().getName() + "</strong> stock succesfully replenished.");
 		model.addAttribute("inventory", updatedInventory);
+		return "admin_home";
+	}
+	
+	/*
+	 * 
+	 * View inventory history
+	 * 
+	 */
+	
+	@RequestMapping("/viewInventoryHistory")
+	public String viewInvetoryHistory(@RequestParam("prodId") String productId, Model model){
+		System.out.println(productId);
+		List<InventoryHistory> inventoryHistories = null;
+		
+		try {
+			
+			inventoryHistories = inventoryService.findInventoryHistoryByProductId(productId);
+			model.addAttribute("inventoryHistories", inventoryHistories);
+		} catch (ProductNotFoundException e) {
+			
+			model.addAttribute("inventoryHistories", inventoryService.findAllInventoryHistory());
+		}
+		
+		model.addAttribute("products", productService.findAll());
+		model.addAttribute("activePage", AdminPage.VIEW_INVENTORY_HISTORY);
 		return "admin_home";
 	}
 }
