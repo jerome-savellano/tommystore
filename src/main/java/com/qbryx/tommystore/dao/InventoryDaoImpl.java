@@ -32,8 +32,8 @@ public class InventoryDaoImpl implements InventoryDao {
 	 */
 	
 	private static final String DELETE_ALL_INVENTORY_HISTORY = "delete from InventoryHistory";
-	private static final String FIND_ADD_ALL_INVENTORY_HISTORY = "from InventoryHistory";
-	private static final String FIND_INVENTORY_HISTORY_BY_PRODUCT_NAME = "from InventoryHistory where inventory.product.productId = :productId";
+	private static final String FIND_ADD_ALL_INVENTORY_HISTORY = "from InventoryHistory order by dateUpdated desc";
+	private static final String FIND_INVENTORY_HISTORY_BY_PRODUCT_ID = "from InventoryHistory where product.productId = :productId order by dateUpdated desc";
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -178,7 +178,7 @@ public class InventoryDaoImpl implements InventoryDao {
 		
 		Session session = sessionFactory.getCurrentSession();
 		
-		inventoryHistories = session.createQuery(FIND_INVENTORY_HISTORY_BY_PRODUCT_NAME)
+		inventoryHistories = session.createQuery(FIND_INVENTORY_HISTORY_BY_PRODUCT_ID)
 									.setParameter("productId", productId).getResultList();
 		
 		return inventoryHistories;

@@ -1,47 +1,25 @@
 package com.qbryx.tommystore.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
 @Entity
 @Table(name="inventory_history")
-public class InventoryHistory {
-	
-	private long id;
-	
-	private Inventory inventory;
+public class InventoryHistory extends AbstractInventory{
 	
 	public InventoryHistory(){}
-
-	public InventoryHistory(Inventory inventory) {
-		super();
-		this.inventory = inventory;
+	
+	public InventoryHistory(Inventory inventory){
+		setProduct(inventory.getProduct());
+		setStock(inventory.getStock());
+		setUpdater(inventory.getUpdater());
+		setDateUpdated(inventory.getDateUpdated());
 	}
 
-	@Id
-	@GeneratedValue
-	@Column(name="id")
-	public long getId() {
-		return id;
+	@Override
+	public String toString() {
+		return "InventoryHistory [getId()=" + getId() + ", getProduct()=" + getProduct() + ", getStock()=" + getStock()
+				+ ", getUpdater()=" + getUpdater() + ", getDateUpdated()=" + getDateUpdated() + "]";
 	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	@ManyToOne
-	@JoinColumn(name="inventory_id")
-	public Inventory getInventory() {
-		return inventory;
-	}
-
-	public void setInventory(Inventory inventory) {
-		this.inventory = inventory;
-	}	
 }

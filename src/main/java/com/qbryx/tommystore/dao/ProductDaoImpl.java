@@ -16,7 +16,7 @@ import com.qbryx.tommystore.domain.Product;
 @Repository("productDao")
 public class ProductDaoImpl implements ProductDao {
 
-	private static final String FIND_ALL = "from Product";
+	private static final String FIND_ALL = "from Product order by name asc";
 	private static final String FIND_BY_NAME = "from Product where name = :name";
 	private static final String FIND_BY_CATEGORY = "from Product where category.name = :category";
 	private static final String FIND_BY_PRODUCT_ID = "from Product where productId = :productId";

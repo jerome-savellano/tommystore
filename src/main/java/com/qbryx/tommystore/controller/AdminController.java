@@ -339,7 +339,6 @@ public class AdminController {
 
 			productService.createProduct(product);
 			inventoryService.createInventory(inventory);
-			inventoryService.createInventoryHistory(new InventoryHistory(inventory));
 			model.addAttribute("newProduct", productHelper.buildProduct(categoryService));
 			model.addAttribute("product", new ProductHelper());
 		} catch (DuplicateProductException e) {
@@ -499,8 +498,7 @@ public class AdminController {
 		if (bindingResult.hasErrors()) {
 			return "admin_home";
 		}
-		
-		inventoryService.createInventoryHistory(new InventoryHistory(inventory));
+	
 		inventoryService.updateInventory(inventory);
 		
 		Inventory updatedInventory = inventoryService.findById(inventory.getId());
@@ -519,6 +517,7 @@ public class AdminController {
 	@RequestMapping("/viewInventoryHistory")
 	public String viewInvetoryHistory(@RequestParam("prodId") String productId, Model model){
 		System.out.println(productId);
+		
 		List<InventoryHistory> inventoryHistories = null;
 		
 		try {
@@ -527,7 +526,7 @@ public class AdminController {
 			model.addAttribute("inventoryHistories", inventoryHistories);
 		} catch (ProductNotFoundException e) {
 			
-			model.addAttribute("inventoryHistories", inventoryService.findAllInventoryHistory());
+			model.addAttribute("inventoryHistoriesAll", inventoryService.findAllInventoryHistory());
 		}
 		
 		model.addAttribute("products", productService.findAll());

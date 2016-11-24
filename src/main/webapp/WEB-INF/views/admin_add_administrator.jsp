@@ -2,7 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="row">
-	<div class="col-md-12" style="padding-left: 5%; padding-right: 5%;">
+	<div class="col-md-12" style="padding-left: 5%; padding-right: 5%; margin-top: -1em;">
 		<h1 class="page-header" style="padding-below: 1%;">Add new
 			administrator</h1>
 		<c:if test="${not empty duplicateUser}">

@@ -2,7 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="row"
-	style="padding: 2%; padding-left: 5%; padding-right: 5%;">
+	style="padding: 2%; padding-left: 5%; padding-right: 5%; margin-top: -3em;">
 	<div class="col-md-12">
 		<h1 class="page-header">Categories</h1>
 		<c:if test="${not empty categoryNotFound}">

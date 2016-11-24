@@ -44,6 +44,7 @@ public class InventoryServiceImpl implements InventoryService{
 	@Override
 	public void createInventory(Inventory inventory) {
 		inventoryDao.createInventory(inventory);
+		createInventoryHistory(new InventoryHistory(inventory));
 	}
 
 	@Transactional(readOnly=false)
@@ -57,6 +58,7 @@ public class InventoryServiceImpl implements InventoryService{
 		inventoryUpdate.setStock(inventory.getStock());
 		
 		inventoryDao.updateInventory(inventoryUpdate);
+		createInventoryHistory(new InventoryHistory(inventoryUpdate));
 	}
 	
 	@Override

@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<div class="row" style="padding: 2%;">
+<div class="row" style="padding: 2%; margin-top: -3em; padding-left: 5%; padding-right: 5%;">
 	<h1 class="page-header">Update product</h1>
 	<c:if test="${not empty duplicateProduct}">
 			<div class="alert alert-danger fade in">
