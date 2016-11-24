@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.qbryx.tommystore.domain.Category;
 import com.qbryx.tommystore.domain.Inventory;
+import com.qbryx.tommystore.domain.User;
 import com.qbryx.tommystore.service.CategoryService;
 import com.qbryx.tommystore.service.InventoryService;
 import com.qbryx.tommystrore.exception.CategoryNotFoundException;
@@ -17,47 +18,48 @@ import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
-	
+
 	@Autowired
 	private InventoryService inventoryService;
-	
+
 	@Autowired
 	private CategoryService categoryService;
-	
+
 	/*
 	 * 
 	 * Home
 	 *
 	 */
-	
+
 	@RequestMapping("/home")
-	public String home(Model model){
-		
+	public String home(Model model) {
+
 		model.addAttribute("categories", categoryService.findAll());
 		model.addAttribute("inventories", inventoryService.findAllInStock());
+		model.addAttribute("user", new User());
 		return "customer_home";
 	}
-	
+
 	/*
 	 * 
 	 * View products
 	 * 
 	 */
-	
+
 	@RequestMapping("/viewProducts")
-	public String viewProduct(@RequestParam("catName") String categoryName, Model model){
-		
+	public String viewProduct(@RequestParam("catName") String categoryName, Model model) {
+
 		try {
-			
+
 			Category category = categoryService.findByName(categoryName);
 			List<Inventory> inventories = inventoryService.findByCategory(category);
 			model.addAttribute("inventories", inventories);
 		} catch (CategoryNotFoundException e) {
-			
+
 			model.addAttribute("categories", categoryService.findAll());
 			model.addAttribute("inventories", inventoryService.findAllInStock());
 		}
-		
+
 		return "customer_home";
 	}
 }
