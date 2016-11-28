@@ -37,6 +37,7 @@ import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 import com.qbryx.tommystrore.exception.DuplicateCategoryException;
 import com.qbryx.tommystrore.exception.DuplicateProductException;
 import com.qbryx.tommystrore.exception.DuplicateUserException;
+import com.qbryx.tommystrore.exception.InvalidStockException;
 import com.qbryx.tommystrore.exception.ProductNotFoundException;
 
 @Controller
@@ -499,12 +500,33 @@ public class AdminController {
 			return "admin_home";
 		}
 	
-		inventoryService.updateInventory(inventory);
+		try {
+			
+			inventoryService.updateInventory(inventory);
+			
+			model.addAttribute("inventoryUpdate", "<strong>" + inventory.getProduct().getName() + "</strong> stock succesfully replenished.");
+			model.addAttribute("inventory", inventory);
+		} catch (InvalidStockException e) {
+			
+			model.addAttribute("inventoryUpdateFailed", "<strong>" + inventory.getProduct().getName() + "</strong> stock update failed. Cannot be less than the remaining stock");
+			model.addAttribute("inventory", inventoryService.findById(inventory.getId()));
+		}
 		
-		Inventory updatedInventory = inventoryService.findById(inventory.getId());
 		
-		model.addAttribute("inventoryUpdate", "<strong>" + updatedInventory.getProduct().getName() + "</strong> stock succesfully replenished.");
-		model.addAttribute("inventory", updatedInventory);
+		return "admin_home";
+	}
+	
+	/*
+	 * 
+	 * View inventory
+	 * 
+	 */
+	
+	@RequestMapping(value = "/viewInventory", method = RequestMethod.GET)
+	public String updateInventoryGet(Model model) {
+
+		model.addAttribute("inventories", inventoryService.findAll());
+		model.addAttribute("activePage", AdminPage.VIEW_INVENTORY);
 		return "admin_home";
 	}
 	

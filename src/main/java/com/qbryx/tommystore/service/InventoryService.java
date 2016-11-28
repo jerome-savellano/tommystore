@@ -7,6 +7,7 @@ import com.qbryx.tommystore.domain.Inventory;
 import com.qbryx.tommystore.domain.InventoryHistory;
 import com.qbryx.tommystore.domain.Product;
 import com.qbryx.tommystore.domain.StockMonitor;
+import com.qbryx.tommystrore.exception.InvalidStockException;
 import com.qbryx.tommystrore.exception.ProductNotFoundException;
 
 public interface InventoryService {
@@ -28,7 +29,7 @@ public interface InventoryService {
 	void updateStockMonitor(StockMonitor stockMonitor);
 
 	void createInventory(Inventory inventory);
-	void updateInventory(Inventory inventory);
+	void updateInventory(Inventory inventory) throws InvalidStockException;
 	void deleteInventory(Inventory inventory);
 	
 	/*

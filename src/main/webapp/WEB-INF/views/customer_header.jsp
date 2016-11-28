@@ -22,11 +22,11 @@
 						</div>
 						<button type="submit" class="btn btn-default">Search product</button>
 					</div>
-
 					<c:choose>
-						<c:when test="${not empty user.getEmail()}">
+						<c:when test="${not empty user.getEmail() && user.getUserType() == 'CUSTOMER'}">
 							<ul class="nav navbar-nav navbar-right">
 								<li><a href="#">Hi, <span class="text-primary">${user.getEmail()}</span></a></li>
+								<li><a href="#">Cart</a></li>
 								<li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
 							</ul>
 						</c:when>

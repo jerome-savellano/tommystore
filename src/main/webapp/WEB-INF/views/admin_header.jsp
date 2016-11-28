@@ -36,6 +36,7 @@
 							<li><a href="#">View product order</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Inventory</li>
+							<li><a href="viewInventory">View inventory</a></li>
 							<li><a href="viewInventoryHistory?prodId=">View inventory history</a></li>
 						</ul></li>
 				</ul>

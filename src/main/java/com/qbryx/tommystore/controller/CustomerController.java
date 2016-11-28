@@ -5,14 +5,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.qbryx.tommystore.domain.CartProduct;
 import com.qbryx.tommystore.domain.Category;
 import com.qbryx.tommystore.domain.Inventory;
-import com.qbryx.tommystore.domain.User;
+import com.qbryx.tommystore.service.CartProductService;
 import com.qbryx.tommystore.service.CategoryService;
 import com.qbryx.tommystore.service.InventoryService;
+import com.qbryx.tommystore.service.ProductService;
+import com.qbryx.tommystore.service.UserService;
 import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 
 @Controller
@@ -24,6 +31,15 @@ public class CustomerController {
 
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private ProductService productService;
+	
+	@Autowired
+	private CartProductService cartProductService;
 
 	/*
 	 * 
@@ -36,7 +52,7 @@ public class CustomerController {
 
 		model.addAttribute("categories", categoryService.findAll());
 		model.addAttribute("inventories", inventoryService.findAllInStock());
-		model.addAttribute("user", new User());
+		model.addAttribute("cartProduct", new CartProduct());
 		return "customer_home";
 	}
 
@@ -47,7 +63,7 @@ public class CustomerController {
 	 */
 
 	@RequestMapping("/viewProducts")
-	public String viewProduct(@RequestParam("catName") String categoryName, Model model) {
+	public String viewProduct(@RequestParam("category") String categoryName, Model model) {
 
 		try {
 
@@ -55,11 +71,41 @@ public class CustomerController {
 			List<Inventory> inventories = inventoryService.findByCategory(category);
 			model.addAttribute("inventories", inventories);
 		} catch (CategoryNotFoundException e) {
-
-			model.addAttribute("categories", categoryService.findAll());
+	
 			model.addAttribute("inventories", inventoryService.findAllInStock());
 		}
-
+		
+		model.addAttribute("categories", categoryService.findAll());
+		model.addAttribute("cartProduct", new CartProduct());	
 		return "customer_home";
 	}
+	
+	
+	@RequestMapping(value="/addToCart", method=RequestMethod.POST)
+    public @ResponseBody CartProduct createSmartphone(@ModelAttribute CartProduct smartphone) {
+		System.out.println(smartphone.getProduct().getProductId());
+        return smartphone;
+    }
+	
+	/*
+	 * 
+	 * Add product to cart
+	 * 
+	 */
+
+//	@ResponseBody
+//	@RequestMapping(value="/addToCart", method = RequestMethod.POST)
+//	public CartProduct addProductToCart(@ModelAttribute CartProduct cartProduct){
+//		
+//		User user = userService.findByEmail(cartProduct.getUser().getEmail());
+//		Product product = productService.findByProductId(cartProduct.getProduct().getProductId());
+//		
+//		cartProduct.setUser(user);
+//		cartProduct.setProduct(product);
+//		cartProduct.setQuantity(CartProduct.INITIAL_QUANTITY);
+//		
+//		cartProductService.createCartProduct(cartProduct);
+//		
+//		return cartProduct;
+//	}
 }

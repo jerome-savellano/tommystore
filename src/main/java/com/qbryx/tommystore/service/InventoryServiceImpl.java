@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.qbryx.tommystore.dao.InventoryDao;
@@ -13,6 +14,7 @@ import com.qbryx.tommystore.domain.InventoryHistory;
 import com.qbryx.tommystore.domain.Product;
 import com.qbryx.tommystore.domain.StockMonitor;
 import com.qbryx.tommystore.util.DateHelper;
+import com.qbryx.tommystrore.exception.InvalidStockException;
 import com.qbryx.tommystrore.exception.ProductNotFoundException;
 
 @Service("inventoryService")
@@ -49,16 +51,26 @@ public class InventoryServiceImpl implements InventoryService{
 
 	@Transactional(readOnly=false)
 	@Override
-	public void updateInventory(Inventory inventory) {
+	public void updateInventory(Inventory inventoryUpdate) throws InvalidStockException {
 		
-		Inventory inventoryUpdate = findById(inventory.getId());
+		Inventory inventory = findById(inventoryUpdate.getId());
 		
-		inventoryUpdate.setUpdater(userService.findByEmail(inventory.getUpdater().getEmail()));
-		inventoryUpdate.setDateUpdated(DateHelper.now());
-		inventoryUpdate.setStock(inventory.getStock());
+		int stockAdded = inventoryUpdate.getStock() - inventory.getStock();
 		
-		inventoryDao.updateInventory(inventoryUpdate);
-		createInventoryHistory(new InventoryHistory(inventoryUpdate));
+		if(inventoryUpdate.getStock() < inventory.getStock()){
+			throw new InvalidStockException();
+		}
+		
+		inventory.setUpdater(userService.findByEmail(inventoryUpdate.getUpdater().getEmail()));
+		inventory.setDateUpdated(DateHelper.now());
+		inventory.setStock(inventoryUpdate.getStock());
+		
+		inventoryDao.updateInventory(inventory);
+		
+		InventoryHistory inventoryHistory = new InventoryHistory(inventory);
+		inventoryHistory.setStock(stockAdded);
+		
+		createInventoryHistory(inventoryHistory);
 	}
 	
 	@Override

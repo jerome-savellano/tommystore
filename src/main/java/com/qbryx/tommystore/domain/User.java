@@ -13,8 +13,8 @@ import com.qbryx.tommystore.enums.UserType;
 
 @Entity 
 @Table(name="USER")
-public class User {
-		
+public class User{
+
 	private long id;
 	
 	private String email;

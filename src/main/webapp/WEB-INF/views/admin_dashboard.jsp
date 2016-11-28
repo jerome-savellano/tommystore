@@ -26,9 +26,9 @@
 						<thead class="bg-primary">
 							<tr>
 								<th class="col-xs-2">Product</th>
-								<th class="col-xs-2">Stock added</th>
+								<th class="col-xs-2">Stock</th>
 								<th class="col-xs-2">Updated by</th>
-								<th class="col-xs-2">Date updated</th>
+								<th class="col-xs-2">Last updated</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -37,7 +37,7 @@
 								<tr>
 									<td><a
 										href="updateInventory?name=${inventory.getProduct().getName()}">${inventory.getProduct().getName()}</a></td>
-									<td><span class="text-success">${inventory.getStock()}</span></td>
+									<td><span class="text-danger">${inventory.getStock()}</span></td>
 									<td>${inventory.getUpdater().getFirstName()}&nbsp;
 										${inventory.getUpdater().getLastName()}</td>
 									<td>${inventory.getDateUpdated()}</td>

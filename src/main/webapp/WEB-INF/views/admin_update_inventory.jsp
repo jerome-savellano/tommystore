@@ -9,6 +9,12 @@
 			${inventoryUpdate}
 		</div>
 	</c:if>
+	<c:if test="${not empty inventoryUpdateFailed}">
+		<div class="alert alert-danger fade in">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			${inventoryUpdateFailed}
+		</div>
+	</c:if>
 	<div class="col-md-6">
 		<img
 			src="${pageContext.request.contextPath}/image?prodId=${inventory.getProduct().getProductId()}"
