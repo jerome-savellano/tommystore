@@ -2,47 +2,23 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <script type="text/javascript"
-	src="<c:url value="/resources/js/jquery-3.1.1.min.js" />"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		
-		$("span").hide();
-		
-		var form = $("form");
-		var url = form.attr("action");
-		var formMethod = form.attr("method");
+	src="<c:url value="/resources/js/customer_view_products.js" />"></script>
 
-		form.submit(function(event) {
-
-			event.preventDefault();
-
-			$.ajax({
-
-				url : url,
-				data : $(this).serialize(),
-				type : "POST",
-				success : function(cartProduct) {
-					console.log(cartProduct.user.email);
-				}
-			});
-		});
-
-	});
-</script>
 <div class="row"
 	style="padding: 1%; padding-left: 5%; padding-right: 5%;">
-
-	<div class="form-inline">
-		<label for="productcategory">Filter by category: </label> <select
-			class="form-control" name="category" id="category">
-			<option selected>All</option>
+	<div class="dropdown">
+		<button class="btn btn-default dropdown-toggle" type="button"
+			id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+			aria-expanded="true">
+			Filter by category <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+			<li><a href="${pageContext.request.contextPath}/customer/viewProducts?category=">Show all</a></li>
 			<c:forEach items="${categories}" var="category" varStatus="status">
-				<option
-					value="${pageContext.request.contextPath}/customer/viewProducts?category=${category.getName()}">${category.getName()}</option>
+				<li><a href="${pageContext.request.contextPath}/customer/viewProducts?category=${category.getName()}">${category.getName()}</a></li>
 			</c:forEach>
-		</select> <a class="btn btn-primary">View</a>
+		</ul>
 	</div>
-
 	<c:forEach items="${inventories}" var="inventory" varStatus="varStatus">
 		<div class="col-xs-6 col-sm-3" style="padding: 2%;">
 			<div class="card">
@@ -64,8 +40,14 @@
 							${inventory.getProduct().getPrice()}</p>
 						<p class="text-success">In stock</p>
 						<p>
-							<span id="addToCartSuccess" style="text-success">Added to cart</span>
-						</p>
+						<div class="success-message-container">
+							<span class="text-success add-to-cart"><strong>&nbsp;</strong></span>
+						</div>
+						<div class="success-message vertical-center"
+							style="display: none;">
+							<span class="text-success add-to-cart"><strong>Added
+									to cart!</strong></span>
+						</div>
 						<form:button class="btn btn-block btn-warning">Add to cart</form:button>
 					</div>
 				</form:form>

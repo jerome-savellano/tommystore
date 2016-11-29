@@ -19,12 +19,12 @@
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="dashboard">Dashboard</a></li>
-					<li><a href="viewUsers?userType=">User list</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown">More<strong class="caret"></strong></a>
 						<ul class="dropdown-menu">
-							<li class="dropdown-header">Administrator</li>
+							<li class="dropdown-header">User</li>
 							<li><a href="addAdmin">Add new administrator</a></li>
+							<li><a href="viewUsers?userType=">View users</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Category</li>
 							<li><a href="addCategory">Add new category</a></li>
