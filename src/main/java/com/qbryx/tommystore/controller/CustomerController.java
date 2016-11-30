@@ -2,24 +2,22 @@ package com.qbryx.tommystore.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.qbryx.tommystore.domain.CartProduct;
 import com.qbryx.tommystore.domain.Category;
 import com.qbryx.tommystore.domain.Inventory;
-import com.qbryx.tommystore.service.CartProductService;
+import com.qbryx.tommystore.enums.CustomerPage;
 import com.qbryx.tommystore.service.CategoryService;
 import com.qbryx.tommystore.service.InventoryService;
-import com.qbryx.tommystore.service.ProductService;
-import com.qbryx.tommystore.service.UserService;
+import com.qbryx.tommystore.util.CartUtil;
+import com.qbryx.tommystore.util.Constants;
 import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 
 @Controller
@@ -32,15 +30,6 @@ public class CustomerController {
 	@Autowired
 	private CategoryService categoryService;
 	
-	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private ProductService productService;
-	
-	@Autowired
-	private CartProductService cartProductService;
-
 	/*
 	 * 
 	 * Home
@@ -48,11 +37,14 @@ public class CustomerController {
 	 */
 
 	@RequestMapping("/home")
-	public String home(Model model) {
+	public String home(HttpServletRequest request, Model model) {
 
+		CartUtil.createCart(request);
+				
 		model.addAttribute("categories", categoryService.findAll());
 		model.addAttribute("inventories", inventoryService.findAllInStock());
 		model.addAttribute("cartProduct", new CartProduct());
+		model.addAttribute(Constants.ACTIVE_PAGE, CustomerPage.HOME);
 		return "customer_home";
 	}
 
@@ -77,35 +69,21 @@ public class CustomerController {
 		
 		model.addAttribute("categories", categoryService.findAll());
 		model.addAttribute("cartProduct", new CartProduct());	
+		model.addAttribute(Constants.ACTIVE_PAGE, CustomerPage.HOME);
 		return "customer_home";
 	}
 	
-	
-	@RequestMapping(value="/addToCart", method=RequestMethod.POST)
-    public @ResponseBody CartProduct createSmartphone(@ModelAttribute CartProduct smartphone) {
-		System.out.println(smartphone.getProduct().getProductId());
-        return smartphone;
-    }
-	
 	/*
 	 * 
-	 * Add product to cart
+	 * View Cart
 	 * 
 	 */
-
-//	@ResponseBody
-//	@RequestMapping(value="/addToCart", method = RequestMethod.POST)
-//	public CartProduct addProductToCart(@ModelAttribute CartProduct cartProduct){
-//		
-//		User user = userService.findByEmail(cartProduct.getUser().getEmail());
-//		Product product = productService.findByProductId(cartProduct.getProduct().getProductId());
-//		
-//		cartProduct.setUser(user);
-//		cartProduct.setProduct(product);
-//		cartProduct.setQuantity(CartProduct.INITIAL_QUANTITY);
-//		
-//		cartProductService.createCartProduct(cartProduct);
-//		
-//		return cartProduct;
-//	}
+	
+	@RequestMapping("/viewCart")
+	public String viewCart(HttpServletRequest request, Model model){
+		
+		model.addAttribute("cartProducts", CartUtil.getProductsInCart(request, inventoryService));
+		model.addAttribute(Constants.ACTIVE_PAGE, CustomerPage.VIEW_CART);
+		return "customer_home";
+	}
 }

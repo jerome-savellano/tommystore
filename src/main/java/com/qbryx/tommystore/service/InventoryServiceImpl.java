@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.qbryx.tommystore.dao.InventoryDao;
@@ -57,7 +56,7 @@ public class InventoryServiceImpl implements InventoryService{
 		
 		int stockAdded = inventoryUpdate.getStock() - inventory.getStock();
 		
-		if(inventoryUpdate.getStock() < inventory.getStock()){
+		if(inventoryUpdate.getStock() <= inventory.getStock()){
 			throw new InvalidStockException();
 		}
 		

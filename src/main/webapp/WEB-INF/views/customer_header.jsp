@@ -27,8 +27,8 @@
 					<c:when
 						test="${not empty user.getEmail() && user.getUserType() == 'CUSTOMER'}">
 						<ul class="nav navbar-nav navbar-right">
-							<li><a href="#" class="text-info">Hi, <span class="text-info">${user.getFirstName()}</span></a></li>
-							<li><a href="#">Cart</a></li>
+							<li><a href="${pageContext.request.contextPath}/customer/home" class="text-info">Hi, <span class="text-info">${user.getFirstName()}</span></a></li>
+							<li><a id="header_cart" href="${pageContext.request.contextPath}/customer/viewCart">Cart</a></li>
 							<li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
 						</ul>
 					</c:when>
@@ -36,7 +36,7 @@
 						<ul class="nav navbar-nav navbar-right">
 							<li><a href="${pageContext.request.contextPath}/login">Login</a></li>
 							<li><a href="${pageContext.request.contextPath}/register">Register</a></li>
-						</ul>
+						</ul> 
 					</c:otherwise>
 				</c:choose>
 			</div>

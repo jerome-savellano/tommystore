@@ -508,7 +508,7 @@ public class AdminController {
 			model.addAttribute("inventory", inventory);
 		} catch (InvalidStockException e) {
 			
-			model.addAttribute("inventoryUpdateFailed", "<strong>" + inventory.getProduct().getName() + "</strong> stock update failed. Cannot be less than the remaining stock");
+			model.addAttribute("inventoryUpdateFailed", "<strong>" + inventory.getProduct().getName() + "</strong> stock update failed. Must be greater than the remaining stock");
 			model.addAttribute("inventory", inventoryService.findById(inventory.getId()));
 		}
 		

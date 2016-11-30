@@ -3,7 +3,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <script type="text/javascript"
 	src="<c:url value="/resources/js/customer_view_products.js" />"></script>
-
 <div class="row"
 	style="padding: 1%; padding-left: 5%; padding-right: 5%;">
 	<div class="dropdown">
@@ -25,11 +24,9 @@
 				<img class="card-img-top"
 					src="${pageContext.request.contextPath}/image?prodId=${inventory.getProduct().getProductId()}"
 					alt="Card image cap"
-					style="height: 200px; width: 100% px; display: block; margin: auto;">
+					style="height: 200px; width: 100%; display: block; margin: auto;">
 				<form:form id="add_to_cart_form" action="addToCart" method="POST"
 					modelAttribute="cartProduct">
-					<form:input type="hidden" path="user.email"
-						value="${user.getEmail()}" />
 					<form:input type="hidden" path="product.productId"
 						value="${inventory.getProduct().getProductId()}" />
 					<div class="card-block" style="overflow: hidden; padding: 2%">
@@ -38,7 +35,6 @@
 						</h5>
 						<p class="card-text text-danger">&#8369;
 							${inventory.getProduct().getPrice()}</p>
-						<p class="text-success">In stock</p>
 						<p>
 						<div class="success-message-container">
 							<span class="text-success add-to-cart"><strong>&nbsp;</strong></span>
@@ -48,7 +44,8 @@
 							<span class="text-success add-to-cart"><strong>Added
 									to cart!</strong></span>
 						</div>
-						<form:button class="btn btn-block btn-warning">Add to cart</form:button>
+						<form:button id="addToCart" class="btn btn-block btn-warning">Add to cart</form:button>
+						<a id="viewCart" href="viewCart" class="btn btn-block btn-warning" style="display: none;">View cart</a>
 					</div>
 				</form:form>
 			</div>

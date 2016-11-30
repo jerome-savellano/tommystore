@@ -34,7 +34,12 @@
 <body>
 	<div class="container">
 		<jsp:include page="customer_header.jsp"></jsp:include>
-		<jsp:include page="customer_view_products.jsp"></jsp:include>
+		<c:if test="${activePage  == 'HOME'}">
+			<jsp:include page="customer_view_products.jsp"></jsp:include>
+		</c:if>
+		<c:if test="${activePage  == 'VIEW_CART'}">
+			<jsp:include page="customer_view_cart.jsp"></jsp:include>
+		</c:if>
 	</div>
 </body>
 </html>
