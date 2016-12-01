@@ -1,10 +1,9 @@
 $(document).ready(function(){
 	
-	var form = $("form");
-	var url = form.attr("action");
-	var formMethod = form.attr("method");
+	var deleteForm = $(".delete-form");
+	var deleteUrl = deleteForm.attr("action");
 	
-	form.submit(function(event) {
+	deleteForm.submit(function(event) {
 
 		event.preventDefault();
 		
@@ -12,22 +11,45 @@ $(document).ready(function(){
 		
 		var thisTableRow = $(this).closest('tr');
 
+		
 		$.ajax({
 			
-			url : url,
+			url : deleteUrl,
 			data : $(this).serialize(),
 			dataType : 'json',
 			type : "POST",
 			success : function(callback) {
 				
-				$(thisTableRow).hide("slow");
+				$(thisTableRow).hide('fast', function(){ 
+					$(this).remove(); 
+				});
 				
-				if(callback === 0){				
-					setTimeout(function(){// wait for 5 secs(2)
-				           location.reload(); // then reload the page.(3)
-				      }, 500);
+				if(callback === 0){
+					location.reload();
 				}
 			}
 		});
+	});
+	
+	var quantityUpdateForm = $(".quantity-update-form");
+	var quantityUpdateUrl = quantityUpdateForm.attr("action");
+	
+	quantityUpdateForm.submit(function(event) {
+
+		event.preventDefault();
+
+		var thisForm = this;
+		
+		$.ajax({
+			
+			url : quantityUpdateUrl,
+			data : $(this).serialize(),
+			dataType : 'json',
+			type : "POST"
+		});
+	});
+	
+	$('.quantityList').change(function() {
+	    quantityUpdateForm.submit();
 	});
 });

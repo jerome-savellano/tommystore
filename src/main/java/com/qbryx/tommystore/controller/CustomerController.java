@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.qbryx.tommystore.domain.CartProduct;
@@ -89,5 +90,19 @@ public class CustomerController {
 		model.addAttribute("cartProduct", new CartProduct());	
 		model.addAttribute(Constants.ACTIVE_PAGE, CustomerPage.VIEW_CART);
 		return "customer_home";
+	}
+	
+	/*
+	 * 
+	 * Clear cart
+	 * 
+	 */
+	
+	@RequestMapping(value="/clearCart", method = RequestMethod.POST)
+	public String clearCart(HttpServletRequest request, Model model){
+		
+		cartHelper.getCart(request).clear();
+	
+		return "redirect:/customer/home";
 	}
 }

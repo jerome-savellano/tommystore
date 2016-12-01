@@ -86,7 +86,16 @@ public class CartHelper {
 		
 		CartProduct existingCartProduct = cart.get(productId);
 		
-		int updateQuantity = existingCartProduct.getQuantity() + cartProduct.getQuantity();
+		int updateQuantity = cartProduct.getQuantity();
+		
+//		if(cartProduct.getQuantity() > existingCartProduct.getQuantity()){
+//			
+//			updateQuantity = existingCartProduct.getQuantity() + cartProduct.getQuantity();
+//		}else{
+//			
+//			updateQuantity = existingCartProduct.getQuantity() - cartProduct.getQuantity();
+//		}
+		
 		
 		existingCartProduct.setQuantity(updateQuantity);
 		

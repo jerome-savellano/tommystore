@@ -12,9 +12,12 @@
 			Filter by category <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-			<li><a href="${pageContext.request.contextPath}/customer/viewProducts?category=">Show all</a></li>
+			<li><a
+				href="${pageContext.request.contextPath}/customer/viewProducts?category=">Show
+					all</a></li>
 			<c:forEach items="${categories}" var="category" varStatus="status">
-				<li><a href="${pageContext.request.contextPath}/customer/viewProducts?category=${category.getName()}">${category.getName()}</a></li>
+				<li><a
+					href="${pageContext.request.contextPath}/customer/viewProducts?category=${category.getName()}">${category.getName()}</a></li>
 			</c:forEach>
 		</ul>
 	</div>
@@ -30,12 +33,23 @@
 					<form:input type="hidden" path="product.productId"
 						value="${inventory.getProduct().getProductId()}" />
 					<div class="card-block" style="overflow: hidden; padding: 2%">
-						<h5 style="white-space: nowrap">
-							<a href="#" class="text-primary card-title">${inventory.getProduct().getName()}</a>
-						</h5>
-						<p class="card-text text-danger">&#8369;
-							${inventory.getProduct().getPrice()}</p>
-						<p>
+						<div class="form-inline">
+							<h5 style="white-space: nowrap">
+								<a href="#" class=" form-group text-primary card-title">${inventory.getProduct().getName()}</a>
+							</h5>
+
+							<form:select class="pull-right"
+								style="height: 30px; width: 60px;" path="quantity">
+								<c:forEach begin="1" end="20" varStatus="loop">
+   									<option value="${loop.index}">${loop.index}</option>
+								</c:forEach>
+							</form:select>
+						</div>
+						<div>
+							<p class="card-text text-danger">&#8369;
+								${inventory.getProduct().getPrice()}</p>
+							<p>
+						</div>
 						<div class="success-message-container">
 							<span class="text-success add-to-cart"><strong>&nbsp;</strong></span>
 						</div>
@@ -45,7 +59,8 @@
 									to cart!</strong></span>
 						</div>
 						<form:button id="addToCart" class="btn btn-block btn-primary">Add to cart</form:button>
-						<a id="viewCart" href="viewCart" class="btn btn-block btn-warning" style="display: none; margin: 0px;">View cart</a>
+						<a id="viewCart" href="viewCart" class="btn btn-block btn-warning"
+							style="display: none; margin: 0px;">View cart</a>
 					</div>
 				</form:form>
 			</div>

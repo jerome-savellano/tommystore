@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.qbryx.tommystore.domain.CartProduct;
 import com.qbryx.tommystore.service.ProductService;
 import com.qbryx.tommystore.util.CartHelper;
-import com.qbryx.tommystore.util.Constants;
 
 @RestController
 @RequestMapping("/customer")
@@ -26,7 +25,6 @@ public class CustomerRestController {
 	@RequestMapping(value="/addToCart", method = RequestMethod.POST)
 	public CartProduct addToCart(@ModelAttribute CartProduct cartProduct, HttpServletRequest request){
 		
-		cartProduct.setQuantity(Constants.INITIAL_QUANTITY_IN_CART);
 		cartProduct.setProduct(productService.findByProductId(cartProduct.getProduct().getProductId()));
 		
 		cartHelper.addProductToCart(request, cartProduct);
