@@ -9,6 +9,8 @@ $(document).ready(function(){
 		event.preventDefault();
 		
 		var thisForm = this;
+		
+		var thisTableRow = $(this).closest('tr');
 
 		$.ajax({
 			
@@ -17,7 +19,7 @@ $(document).ready(function(){
 			dataType : 'json',
 			type : "POST",
 			success : function(cartProduct) {
-				$(thisForm).closest("div").hide("slow");
+				$(thisTableRow).hide("slow");
 			}
 		});
 	});

@@ -30,40 +30,37 @@
 							<tbody>
 								<c:forEach items="${cartProducts}" var="product"
 									varStatus="status">
-									<div>
-										<form:form modelAttribute="cartProduct"
-											action="${pageContext.request.contextPath}/customer/removeFromCart"
-											method="post">
-											<form:input type="hidden" path="product.productId"
-												value="${product.getProduct().getProductId()}" />
-											<tr id="cartRow">
-												<td><img class="card-img-top img-responsive"
-													src="${pageContext.request.contextPath}/image?prodId=${product.getProduct().getProductId()}"
-													alt="Card image cap" style="height: 120px; width: 100%;"></td>
-												<td><h4 class="text-primary"
-														style="padding: 0px; margin: 0px;">
-														<a href="#">${product.getProduct().getName()}</a>
-													</h4> <c:choose>
-														<c:when test="${product.getStock() >= 50}">
-															<h6 class="text-success">In stock</h6>
-														</c:when>
-														<c:when
-															test="${product.getStock() < 50 && product.getStock() > 1}">
-															<h6 class="text-warning">Only ${product.getStock()}
-																left</h6>
-														</c:when>
-														<c:otherwise>
-															<h6 class="text-danger">No stock</h6>
-														</c:otherwise>
-													</c:choose>
-													<button class="btn btn-warning btn-xs remove-button">Delete</button></td>
-												<td><h4 class="text-danger"
-														style="margin: 0px; padding: 0px;">&#8369;
-														${product.getProduct().getPrice()}</h4></td>
-												<td>${product.getQuantity()}</td>
-											</tr>
-										</form:form>
-									</div>
+									<tr id="cartRow">
+										<td><img class="card-img-top img-responsive"
+											src="${pageContext.request.contextPath}/image?prodId=${product.getProduct().getProductId()}"
+											alt="Card image cap" style="height: 120px; width: 100%;"></td>
+										<td><h4 class="text-primary"
+												style="padding: 0px; margin: 0px;">
+												<a href="#">${product.getProduct().getName()}</a>
+											</h4> <c:choose>
+												<c:when test="${product.getStock() >= 50}">
+													<h6 class="text-success">In stock</h6>
+												</c:when>
+												<c:when
+													test="${product.getStock() < 50 && product.getStock() > 1}">
+													<h6 class="text-warning">Only ${product.getStock()}
+														left</h6>
+												</c:when>
+												<c:otherwise>
+													<h6 class="text-danger">No stock</h6>
+												</c:otherwise>
+											</c:choose> <form:form modelAttribute="cartProduct"
+												action="${pageContext.request.contextPath}/customer/removeFromCart"
+												method="post">
+												<form:input type="hidden" path="product.productId"
+													value="${product.getProduct().getProductId()}" />
+												<button class="btn btn-warning btn-xs remove-button">Delete</button>
+											</form:form></td>
+										<td><h4 class="text-danger"
+												style="margin: 0px; padding: 0px;">&#8369;
+												${product.getProduct().getPrice()}</h4></td>
+										<td>${product.getQuantity()}</td>
+									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
