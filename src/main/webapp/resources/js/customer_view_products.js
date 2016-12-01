@@ -9,11 +9,12 @@ $(document).ready(function() {
 		event.preventDefault();
 
 		var thisForm = this;
-
+		
 		$.ajax({
-
+			
 			url : url,
 			data : $(this).serialize(),
+			dataType : 'json',
 			type : "POST",
 			success : function(cartProduct) {
 				$(thisForm).find('.success-message-container').remove();

@@ -16,7 +16,7 @@ import com.qbryx.tommystore.domain.Inventory;
 import com.qbryx.tommystore.enums.CustomerPage;
 import com.qbryx.tommystore.service.CategoryService;
 import com.qbryx.tommystore.service.InventoryService;
-import com.qbryx.tommystore.util.CartUtil;
+import com.qbryx.tommystore.util.CartHelper;
 import com.qbryx.tommystore.util.Constants;
 import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 
@@ -30,6 +30,9 @@ public class CustomerController {
 	@Autowired
 	private CategoryService categoryService;
 	
+	@Autowired
+	private CartHelper cartHelper;
+	
 	/*
 	 * 
 	 * Home
@@ -39,7 +42,7 @@ public class CustomerController {
 	@RequestMapping("/home")
 	public String home(HttpServletRequest request, Model model) {
 
-		CartUtil.createCart(request);
+		cartHelper.createCart(request);
 				
 		model.addAttribute("categories", categoryService.findAll());
 		model.addAttribute("inventories", inventoryService.findAllInStock());
@@ -81,8 +84,9 @@ public class CustomerController {
 	
 	@RequestMapping("/viewCart")
 	public String viewCart(HttpServletRequest request, Model model){
-		
-		model.addAttribute("cartProducts", CartUtil.getProductsInCart(request, inventoryService));
+				
+		model.addAttribute("cartProducts", cartHelper.getProductsInCart(request, inventoryService));
+		model.addAttribute("cartProduct", new CartProduct());	
 		model.addAttribute(Constants.ACTIVE_PAGE, CustomerPage.VIEW_CART);
 		return "customer_home";
 	}

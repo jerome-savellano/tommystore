@@ -1,16 +1,20 @@
 package com.qbryx.tommystore.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class CartProduct {
+public class CartProduct implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Product product;
 	
 	private int quantity;
 	
 	private int stock;
-	
-	public static final int INITIAL_QUANTITY = 1;
 
 	public CartProduct(){}
 	

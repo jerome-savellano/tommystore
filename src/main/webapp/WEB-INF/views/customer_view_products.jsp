@@ -25,7 +25,7 @@
 					src="${pageContext.request.contextPath}/image?prodId=${inventory.getProduct().getProductId()}"
 					alt="Card image cap"
 					style="height: 200px; width: 100%; display: block; margin: auto;">
-				<form:form id="add_to_cart_form" action="addToCart" method="POST"
+				<form:form action="addToCart" method="POST"
 					modelAttribute="cartProduct">
 					<form:input type="hidden" path="product.productId"
 						value="${inventory.getProduct().getProductId()}" />
@@ -44,8 +44,8 @@
 							<span class="text-success add-to-cart"><strong>Added
 									to cart!</strong></span>
 						</div>
-						<form:button id="addToCart" class="btn btn-block btn-warning">Add to cart</form:button>
-						<a id="viewCart" href="viewCart" class="btn btn-block btn-warning" style="display: none;">View cart</a>
+						<form:button id="addToCart" class="btn btn-block btn-primary">Add to cart</form:button>
+						<a id="viewCart" href="viewCart" class="btn btn-block btn-warning" style="display: none; margin: 0px;">View cart</a>
 					</div>
 				</form:form>
 			</div>
