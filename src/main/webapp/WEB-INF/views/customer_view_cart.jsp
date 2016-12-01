@@ -16,7 +16,6 @@
 						<div class="form-inline pull-right">
 							<button type="submit" class="form-group btn btn-primary">Check
 								out</button>
-
 							<form class="form-group"
 								action="clearCart"
 								method="post">
