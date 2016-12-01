@@ -68,11 +68,13 @@
 				</div>
 			</c:when>
 			<c:otherwise>
-				<h1 class="text-center text-muted">No items in cart. Start
-					shopping!</h1>
-				<div class="text-center">
-					<a href="${pageContext.request.contextPath}/customer/home"
-						class="align-center btn btn-primary btn-lg">Home</a>
+				<div id="cartEmpty">
+					<h1 class="text-center text-muted">No items in cart. Start
+						shopping!</h1>
+					<div class="text-center">
+						<a href="${pageContext.request.contextPath}/customer/home"
+							class="align-center btn btn-primary btn-lg">Home</a>
+					</div>
 				</div>
 			</c:otherwise>
 		</c:choose>

@@ -35,9 +35,9 @@ public class CustomerRestController {
 	}
 	
 	@RequestMapping(value="/removeFromCart", method = RequestMethod.POST)
-	public CartProduct removeFromCart(@ModelAttribute CartProduct cartProduct, HttpServletRequest request){
+	public int removeFromCart(@ModelAttribute CartProduct cartProduct, HttpServletRequest request){
 	
 		cartHelper.removeProductFromCart(request, cartProduct);
-		return cartProduct;
+		return cartHelper.getCartSize(request);
 	}
 }

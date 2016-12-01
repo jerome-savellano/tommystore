@@ -65,6 +65,10 @@ public class CartHelper {
 		return cartProducts;
 	}
 	
+	public int getCartSize(HttpServletRequest request){		
+		return getCart(request).size();
+	}
+	
 	private boolean isCartExisting(HttpServletRequest request){
 		
 		if(request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_CART) != null){

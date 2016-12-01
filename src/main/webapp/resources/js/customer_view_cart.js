@@ -18,8 +18,15 @@ $(document).ready(function(){
 			data : $(this).serialize(),
 			dataType : 'json',
 			type : "POST",
-			success : function(cartProduct) {
+			success : function(callback) {
+				
 				$(thisTableRow).hide("slow");
+				
+				if(callback === 0){				
+					setTimeout(function(){// wait for 5 secs(2)
+				           location.reload(); // then reload the page.(3)
+				      }, 500);
+				}
 			}
 		});
 	});
