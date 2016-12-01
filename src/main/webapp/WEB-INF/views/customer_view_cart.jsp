@@ -14,8 +14,8 @@
 				<c:when test="${not empty cartProducts}">
 					<div id="customerCart">
 						<div class="form-inline pull-right">
-							<button type="submit" class="form-group btn btn-primary">Check
-								out</button>
+							<a href="selectShippingAddress" class="form-group btn btn-primary">Check
+								out</a>
 							<form class="form-group"
 								action="clearCart"
 								method="post">

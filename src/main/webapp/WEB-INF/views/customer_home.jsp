@@ -40,6 +40,12 @@
 		<c:if test="${activePage  == 'VIEW_CART'}">
 			<jsp:include page="customer_view_cart.jsp"></jsp:include>
 		</c:if>
+		<c:if test="${activePage  == 'SELECT_SHIPPING_ADDRESS'}">
+			<jsp:include page="customer_shipping_address.jsp"></jsp:include>
+		</c:if>
+		<c:if test="${activePage  == 'CREATE_SHIPPING_ADDRESS'}">
+			<jsp:include page="customer_create_shipping_address.jsp"></jsp:include>
+		</c:if>
 	</div>
 </body>
 </html>

@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.qbryx.tommystore.domain.CartProduct;
 import com.qbryx.tommystore.domain.Category;
 import com.qbryx.tommystore.domain.Inventory;
+import com.qbryx.tommystore.domain.ShippingAddress;
+import com.qbryx.tommystore.domain.User;
+import com.qbryx.tommystore.enums.Country;
 import com.qbryx.tommystore.enums.CustomerPage;
 import com.qbryx.tommystore.service.CategoryService;
+import com.qbryx.tommystore.service.CustomerService;
 import com.qbryx.tommystore.service.InventoryService;
 import com.qbryx.tommystore.util.CartHelper;
 import com.qbryx.tommystore.util.Constants;
@@ -30,6 +34,9 @@ public class CustomerController {
 
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private CustomerService customerService;
 	
 	@Autowired
 	private CartHelper cartHelper;
@@ -104,5 +111,36 @@ public class CustomerController {
 		cartHelper.getCart(request).clear();
 	
 		return "redirect:/customer/home";
+	}
+	
+	/*
+	 * 
+	 * Select shipping address
+	 * 
+	 */
+	
+	@RequestMapping("/selectShippingAddress")
+	public String selectShippingAddress(HttpServletRequest request, Model model){
+		
+		User user = (User) request.getSession().getAttribute("user");
+		
+		model.addAttribute("shippingAddresses", customerService.findShippingAddresses(user));
+		model.addAttribute(Constants.ACTIVE_PAGE, CustomerPage.SELECT_SHIPPING_ADDRESS);
+		return "customer_home";
+	}
+	
+	/*
+	 * 
+	 * Create shipping address
+	 * 
+	 */
+	
+	@RequestMapping("/createShippingAddress")
+	public String createShippingAddress(HttpServletRequest request, Model model){
+		
+		model.addAttribute("countries", Country.values());
+		model.addAttribute("shippingAddress", new ShippingAddress());
+		model.addAttribute(Constants.ACTIVE_PAGE, CustomerPage.CREATE_SHIPPING_ADDRESS);
+		return "customer_home";
 	}
 }

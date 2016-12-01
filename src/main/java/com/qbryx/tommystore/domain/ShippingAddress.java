@@ -7,18 +7,18 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.qbryx.tommystore.enums.Country;
 
 @Entity
-@Table(name="CUSTOMER")
-public class Customer {
+@Table(name="SHIPPING_ADDRESS")
+public class ShippingAddress {
 	
 	private long id;
 	
-	private User user;
+	private User user; 
 	
 	private String address1;
 	
@@ -27,27 +27,6 @@ public class Customer {
 	private String zipCode;
 	
 	private Country country;
-	
-	private String creditCardNumber;
-	
-	private String creditSecurityCode;
-	
-	public Customer(){
-		
-	}
-
-	public Customer(long id, User user, String address1, String address2, String zipCode, Country country,
-			String creditCardNumber, String creditSecurityCode) {
-		super();
-		this.id = id;
-		this.user = user;
-		this.address1 = address1;
-		this.address2 = address2;
-		this.zipCode = zipCode;
-		this.country = country;
-		this.creditCardNumber = creditCardNumber;
-		this.creditSecurityCode = creditSecurityCode;
-	}
 
 	@Id
 	@GeneratedValue
@@ -60,7 +39,7 @@ public class Customer {
 		this.id = id;
 	}
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="user_id")
 	public User getUser() {
 		return user;
@@ -96,7 +75,7 @@ public class Customer {
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
-
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name="country")
 	public Country getCountry() {
@@ -107,21 +86,9 @@ public class Customer {
 		this.country = country;
 	}
 
-	@Column(name="credit_card_number")
-	public String getCreditCardNumber() {
-		return creditCardNumber;
-	}
-
-	public void setCreditCardNumber(String creditCardNumber) {
-		this.creditCardNumber = creditCardNumber;
-	}
-
-	@Column(name="credit_security_code")
-	public String getCreditSecurityCode() {
-		return creditSecurityCode;
-	}
-
-	public void setCreditSecurityCode(String creditSecurityCode) {
-		this.creditSecurityCode = creditSecurityCode;
+	@Override
+	public String toString() {
+		return "ShippingAddress [id=" + id + ", user=" + user + ", address1=" + address1 + ", address2=" + address2
+				+ ", zipCode=" + zipCode + ", country=" + country + "]";
 	}
 }

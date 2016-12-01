@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.qbryx.tommystore.domain.CartProduct;
+import com.qbryx.tommystore.domain.ShippingAddress;
+import com.qbryx.tommystore.service.CustomerService;
 import com.qbryx.tommystore.service.ProductService;
+import com.qbryx.tommystore.service.UserService;
 import com.qbryx.tommystore.util.CartHelper;
 
 @RestController
@@ -18,6 +21,12 @@ public class CustomerRestController {
 	
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private CustomerService customerService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private CartHelper cartHelper;
@@ -37,5 +46,15 @@ public class CustomerRestController {
 	
 		cartHelper.removeProductFromCart(request, cartProduct);
 		return cartHelper.getCartSize(request);
+	}
+	
+	@RequestMapping(value="/addShippingAddress", method = RequestMethod.POST)
+	public ShippingAddress addShippingAddress(@ModelAttribute ShippingAddress shippingAddress){
+		
+		shippingAddress.setUser(userService.findByEmail(shippingAddress.getUser().getEmail()));
+
+		customerService.createShippingAddress(shippingAddress);
+		
+		return shippingAddress;
 	}
 }
