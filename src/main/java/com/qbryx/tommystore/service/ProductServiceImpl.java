@@ -121,4 +121,9 @@ public class ProductServiceImpl implements ProductService {
 	public List<Order> findAllOrders() {
 		return orderDao.findAll();
 	}
+
+	@Override
+	public List<Product> findByNameOrCategory(String name) {
+		return productDao.findByNameOrCategory(name);
+	}
 }

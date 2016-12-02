@@ -27,21 +27,21 @@
 	</div>
 
 
-	<c:forEach items="${inventories}" var="inventory" varStatus="varStatus">
+	<c:forEach items="${products}" var="product" varStatus="varStatus">
 		<div class="col-xs-6 col-sm-3" style="padding: 2%;">
 			<div class="card">
 				<img class="card-img-top"
-					src="${pageContext.request.contextPath}/image?prodId=${inventory.getProduct().getProductId()}"
+					src="${pageContext.request.contextPath}/image?prodId=${product.getProductId()}"
 					alt="Card image cap"
 					style="height: 200px; width: 100%; display: block; margin: auto;">
 				<form:form action="addToCart" method="POST"
 					modelAttribute="cartProduct">
 					<form:input type="hidden" path="product.productId"
-						value="${inventory.getProduct().getProductId()}" />
+						value="${product.getProductId()}" />
 					<div class="card-block" style="overflow: hidden; padding: 2%">
 						<div class="form-inline">
 							<h5 style="white-space: nowrap">
-								<a href="#" class=" form-group text-primary card-title">${inventory.getProduct().getName()}</a>
+								<a href="#" class=" form-group text-primary card-title">${product.getName()}</a>
 							</h5>
 
 							<form:select class="pull-right"
@@ -53,7 +53,7 @@
 						</div>
 						<div>
 							<p class="card-text text-danger">&#8369;
-								${inventory.getProduct().getPrice()}</p>
+								${product.getPrice()}</p>
 							<p>
 						</div>
 						<div class="success-message-container">

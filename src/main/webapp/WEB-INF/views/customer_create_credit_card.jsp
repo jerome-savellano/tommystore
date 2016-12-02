@@ -3,14 +3,23 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <script type="text/javascript"
 	src="<c:url value="/resources/js/customer_create_credit_card.js"/>">
+	
 </script>
 <div class="row"
 	style="padding: 2%; padding-left: 5%; padding-right: 5%; margin-top: -3em;">
 	<div class="col-md-12">
 		<h1 class="page-header">Add credit card</h1>
-		<div id="saa" class="alert alert-success fade in" style="display: none;">
-						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						<strong>Success!</strong> Credit card has been added!
+		<div id="ccas" class="alert alert-success fade in"
+			style="display: none;">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Success!</strong> Credit card has been added!
+		</div>
+		<div id="ccaf" class="alert alert-danger fade in"
+			style="display: none;">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Failed!</strong> Make sure fields are not empty. Card number
+			and security code should contain digits only. Card number should 10
+			digits and security code 5 digits long.
 		</div>
 		<div style="padding-left: 5%; padding-right: 5%;">
 			<form:form action="addCreditCard" method="post"
@@ -32,9 +41,9 @@
 					</div>
 				</spring:bind>
 				<div class="form-inline" style="padding-top: 2%;">
-					<button type="submit" class="btn btn-primary">Submit</button>
-					<a href="selectCreditCard"
-						class="btn btn-secondary">Select credit card</a>
+					<button id="submitCreditCard" type="submit" class="btn btn-primary">Submit</button>
+					<a href="selectCreditCard" class="btn btn-secondary">Select
+						credit card</a>
 				</div>
 			</form:form>
 		</div>

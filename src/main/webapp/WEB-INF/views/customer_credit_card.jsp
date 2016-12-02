@@ -14,9 +14,8 @@
 				<div style="padding-left: 5%; padding-right: 5%;">
 					<div class="panel-group">
 						<c:forEach items="${creditCards}" var="creditCard">
-
 							<form:form modelAttribute="creditCard" action="selectCreditCard"
-								method="post">
+								method="post" style="margin: 1%">
 								<form:input path="id" type="hidden"
 									value="${creditCard.getId()}" />
 								<div class="panel panel-primary">

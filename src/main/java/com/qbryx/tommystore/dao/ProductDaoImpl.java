@@ -20,6 +20,7 @@ public class ProductDaoImpl implements ProductDao {
 	private static final String FIND_BY_NAME = "from Product where name = :name";
 	private static final String FIND_BY_CATEGORY = "from Product where category.name = :category";
 	private static final String FIND_BY_PRODUCT_ID = "from Product where productId = :productId";
+	private static final String FIND_BY_NAME_OR_CATEGORY = "from Product where name like :pattern%";
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -40,7 +41,7 @@ public class ProductDaoImpl implements ProductDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Product> findByCategory(Category category) {
-
+		
 		List<Product> products = new ArrayList<>();
 
 		Session session = sessionFactory.getCurrentSession();
@@ -100,4 +101,16 @@ public class ProductDaoImpl implements ProductDao {
 		sessionFactory.getCurrentSession().delete(product);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Product> findByNameOrCategory(String name) {
+		
+		List<Product> products = new ArrayList<>();
+		
+		Session session = sessionFactory.getCurrentSession();
+		
+		products = session.createQuery(FIND_BY_NAME_OR_CATEGORY).setParameter("pattern", name).getResultList();
+		
+		return products;
+	}
 }

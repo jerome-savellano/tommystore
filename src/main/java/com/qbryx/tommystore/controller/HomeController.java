@@ -1,5 +1,7 @@
 package com.qbryx.tommystore.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -10,19 +12,26 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.qbryx.tommystore.domain.CartProduct;
+import com.qbryx.tommystore.domain.Category;
+import com.qbryx.tommystore.domain.Product;
 import com.qbryx.tommystore.domain.User;
-import com.qbryx.tommystore.enums.CustomerPage;
 import com.qbryx.tommystore.enums.UserType;
+import com.qbryx.tommystore.enums.VisitorPage;
 import com.qbryx.tommystore.service.CategoryService;
 import com.qbryx.tommystore.service.InventoryService;
+import com.qbryx.tommystore.service.ProductService;
 import com.qbryx.tommystore.service.UserService;
+import com.qbryx.tommystore.util.CartHelper;
 import com.qbryx.tommystore.util.Constants;
 import com.qbryx.tommystore.util.LoginUser;
 import com.qbryx.tommystore.util.RegisterUser;
 import com.qbryx.tommystore.validator.RegistrationValidator;
+import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 import com.qbryx.tommystrore.exception.DuplicateUserException;
 import com.qbryx.tommystrore.exception.FailedLoginException;
 
@@ -34,12 +43,18 @@ public class HomeController {
 
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private ProductService productService;
 
 	@Autowired
 	private UserService userService;
 	
 	@Autowired
 	private RegistrationValidator registrationValidator;
+	
+	@Autowired
+	private CartHelper cartHelper;
 	
 	/*
 	 * 
@@ -56,11 +71,13 @@ public class HomeController {
 			return redirectUser(user);
 		}
 		
+		cartHelper.createCart(request);
+		
 		model.addAttribute("categories", categoryService.findAll());
-		model.addAttribute("inventories", inventoryService.findAll());
+		model.addAttribute("products", productService.findAll());
 		model.addAttribute("cartProduct", new CartProduct());
-		model.addAttribute(Constants.ACTIVE_PAGE, CustomerPage.HOME);
-		return "customer_home";
+		model.addAttribute(Constants.ACTIVE_PAGE, VisitorPage.HOME);
+		return "visitor_home";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -151,7 +168,122 @@ public class HomeController {
 		return "redirect:/initial";
 	}
 	
+	/*
+	 * 
+	 * View visitor cart
+	 * 
+	 */
+	
+	@RequestMapping("/viewCart")
+	public String viewCart(HttpServletRequest request, Model model){
+				
+		model.addAttribute("cartProducts", cartHelper.getProductsInCart(request, inventoryService));
+		model.addAttribute("cartProduct", new CartProduct());	
+		model.addAttribute(Constants.ACTIVE_PAGE, VisitorPage.VIEW_CART);
+		return "visitor_home";
+	}
+	
 	private String redirectUser(User user){
 		return user.getUserType() == UserType.CUSTOMER ? "redirect:/customer/home" : "redirect:/admin/dashboard"; 
+	}
+	
+	/*
+	 * 
+	 * Visitor view products
+	 * 
+	 */
+	
+	@RequestMapping("/viewProducts")
+	public String viewProduct(@RequestParam("category") String categoryName, Model model) {
+
+		try {
+			Category category = categoryService.findByName(categoryName);
+			
+			List<Product> products= productService.findByCategory(category);
+			model.addAttribute("products", products);
+		} catch (CategoryNotFoundException e) {
+	
+			model.addAttribute("products", productService.findAll());
+		}
+		
+		model.addAttribute("categories", categoryService.findAll());
+		model.addAttribute("cartProduct", new CartProduct());	
+		model.addAttribute(Constants.ACTIVE_PAGE, VisitorPage.HOME);
+		return "visitor_home";
+	}
+	
+	/*
+	 * 
+	 * Categories
+	 * 
+	 */
+	
+	@RequestMapping("/categories")
+	public String categories(Model model){
+		
+		model.addAttribute("categories", categoryService.findAll());
+		model.addAttribute(Constants.ACTIVE_PAGE, VisitorPage.CATEGORIES);
+		return "visitor_home";
+	}
+	
+	/*
+	 * 
+	 * Add to cart (AJAX)
+	 * 
+	 */
+	
+	@RequestMapping(value="/addToCart", method = RequestMethod.POST)
+	public @ResponseBody CartProduct addToCart(@ModelAttribute CartProduct cartProduct, HttpServletRequest request){
+		
+		cartProduct.setProduct(productService.findByProductId(cartProduct.getProduct().getProductId()));
+		
+		cartHelper.addProductToCart(request, cartProduct);
+		
+		return cartProduct;
+	}
+	
+	/*
+	 * 
+	 * Remove from cart (AJAX)
+	 * 
+	 */
+	
+	@RequestMapping(value="/removeFromCart", method = RequestMethod.POST)
+	public @ResponseBody int removeFromCart(@ModelAttribute CartProduct cartProduct, HttpServletRequest request){
+	
+		cartHelper.removeProductFromCart(request, cartProduct);
+		return cartHelper.getCartSize(request);
+	}
+	
+	/*
+	 * 
+	 * Clear cart
+	 * 
+	 */
+	
+	@RequestMapping(value="/clearCart", method = RequestMethod.POST)
+	public String clearCart(HttpServletRequest request, Model model){
+		
+		cartHelper.clearCart(request);
+	
+		return "redirect:/initial";
+	}	
+	
+	/*
+	 * 
+	 * Find by name or category
+	 * 
+	 */
+	
+	@RequestMapping("/findProduct")
+	public String findByNameOrCategory(@RequestParam("name") String name, Model model){
+	
+		List<Product> products = productService.findByNameOrCategory(name);
+		
+		model.addAttribute("products", products);
+		model.addAttribute("cartProduct", new CartProduct());
+		model.addAttribute("categories", categoryService.findAll());
+		model.addAttribute(Constants.ACTIVE_PAGE, VisitorPage.HOME);
+		return "visitor_home";
 	}
 }

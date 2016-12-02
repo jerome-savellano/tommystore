@@ -11,6 +11,8 @@ public interface ProductDao {
 	
 	List<Product> findByCategory(Category category);
 	
+	List<Product> findByNameOrCategory(String name);
+	
 	Product findByName(String name);
 	
 	Product findByProductId(String productId);

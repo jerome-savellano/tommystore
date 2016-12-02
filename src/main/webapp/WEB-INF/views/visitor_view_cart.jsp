@@ -13,7 +13,7 @@
 				<c:when test="${not empty cartProducts}">
 					<div id="customerCart">
 						<div class="form-inline pull-right">
-							<a href="selectShippingAddress" class="form-group btn btn-primary">Check
+							<a href="register" class="form-group btn btn-primary">Check
 								out</a>
 							<form class="form-group"
 								action="clearCart"
@@ -90,7 +90,7 @@
 						<h1 class="text-center text-muted">No items in cart. Start
 							shopping!</h1>
 						<div class="text-center">
-							<a href="${pageContext.request.contextPath}/customer/home"
+							<a href="${pageContext.request.contextPath}/initial"
 								class="align-center btn btn-primary btn-lg">Home</a>
 						</div>
 					</div>

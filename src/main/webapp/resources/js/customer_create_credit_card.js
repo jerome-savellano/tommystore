@@ -15,9 +15,16 @@ $(document).ready(function() {
 			data : $(this).serialize(),
 			dataType : 'json',
 			type : "POST",
-			success : function(cartProduct) {
-				$("#saa").toggle();
-				$(thisForm).trigger("reset");
+			success : function(callback) {
+				if(callback.status == 'ok'){
+					$("#ccaf").hide();
+					$("#ccas").slideDown(500);
+					$(thisForm).trigger("reset");
+				}else{
+					$("#ccas").hide();	
+					$("#ccaf").slideDown(500);
+					$(thisForm).trigger("reset");
+				}
 			}
 		});
 	});

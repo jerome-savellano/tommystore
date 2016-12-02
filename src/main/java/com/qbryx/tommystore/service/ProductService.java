@@ -16,6 +16,8 @@ public interface ProductService {
 	List<Product> findByCategory(Category category);
 	
 	List<Order> findAllOrders();
+	
+	List<Product> findByNameOrCategory(String name);
 
 	Product findByName(String name) throws ProductNotFoundException;
 

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.qbryx.tommystore.domain.CartProduct;
 import com.qbryx.tommystore.domain.Category;
 import com.qbryx.tommystore.domain.CreditCard;
-import com.qbryx.tommystore.domain.Inventory;
+import com.qbryx.tommystore.domain.Product;
 import com.qbryx.tommystore.domain.ShippingAddress;
 import com.qbryx.tommystore.domain.User;
 import com.qbryx.tommystore.enums.Country;
@@ -24,6 +24,7 @@ import com.qbryx.tommystore.enums.PaymentType;
 import com.qbryx.tommystore.service.CategoryService;
 import com.qbryx.tommystore.service.CustomerService;
 import com.qbryx.tommystore.service.InventoryService;
+import com.qbryx.tommystore.service.ProductService;
 import com.qbryx.tommystore.util.CartHelper;
 import com.qbryx.tommystore.util.Constants;
 import com.qbryx.tommystore.util.UserPaymentType;
@@ -40,6 +41,9 @@ public class CustomerController {
 
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private ProductService productService;
 	
 	@Autowired
 	private CustomerService customerService;
@@ -59,7 +63,7 @@ public class CustomerController {
 		cartHelper.createCart(request);
 				
 		model.addAttribute("categories", categoryService.findAll());
-		model.addAttribute("inventories", inventoryService.findAllInStock());
+		model.addAttribute("products", productService.findAll());
 		model.addAttribute("cartProduct", new CartProduct());
 		model.addAttribute(Constants.ACTIVE_PAGE, CustomerPage.HOME);
 		return "customer_home";
@@ -77,11 +81,11 @@ public class CustomerController {
 		try {
 
 			Category category = categoryService.findByName(categoryName);
-			List<Inventory> inventories = inventoryService.findByCategory(category);
-			model.addAttribute("inventories", inventories);
+			List<Product> products = productService.findByCategory(category);
+			model.addAttribute("products", products);
 		} catch (CategoryNotFoundException e) {
 	
-			model.addAttribute("inventories", inventoryService.findAllInStock());
+			model.addAttribute("products", productService.findAll());
 		}
 		
 		model.addAttribute("categories", categoryService.findAll());

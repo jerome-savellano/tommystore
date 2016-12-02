@@ -449,17 +449,17 @@ public class AdminController {
 	@RequestMapping("/viewProducts")
 	public String viewProduct(@RequestParam("category") String categoryName, Model model) {
 
-		List<Inventory> inventories = null;
+		List<Product> products = null;
 
 		try {
 
-			inventories = inventoryService.findByCategory(categoryService.findByName(categoryName));
+			products = productService.findByCategory(categoryService.findByName(categoryName));
 
-			model.addAttribute("inventories", inventories);
+			model.addAttribute("products", products);
 			model.addAttribute("category", categoryName);
 		} catch (CategoryNotFoundException e) {
 
-			model.addAttribute("inventories", inventoryService.findAll());
+			model.addAttribute("products", productService.findAll());
 		}
 
 		model.addAttribute("categories", categoryService.findAll());
