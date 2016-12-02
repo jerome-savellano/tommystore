@@ -161,7 +161,7 @@ public class AdminController {
 
 		try {
 
-			userService.createUser(registerUser.buildAdministrator());
+			userService.save(registerUser.buildAdministrator());
 
 			model.addAttribute("newUser", registerUser);
 			model.addAttribute("registerUser", new RegisterUser());
@@ -201,7 +201,7 @@ public class AdminController {
 
 		try {
 
-			categoryService.createCategory(category);
+			categoryService.save(category);
 			model.addAttribute("newCategory", category);
 			model.addAttribute("category", new Category());
 		} catch (DuplicateCategoryException e) {
@@ -240,7 +240,7 @@ public class AdminController {
 		try {
 
 			category = categoryService.findByName(categoryName);
-			categoryService.deleteCategory(category);
+			categoryService.delete(category);
 		} catch (CategoryHasProductsException e) {
 
 			model.addAttribute("category", category);
@@ -295,7 +295,7 @@ public class AdminController {
 
 		try {
 
-			categoryService.updateCategory(category);
+			categoryService.update(category);
 			model.addAttribute("updatedCategory", category);
 		} catch (DuplicateCategoryException e) {
 
@@ -338,8 +338,8 @@ public class AdminController {
 
 		try {
 
-			productService.createProduct(product);
-			inventoryService.createInventory(inventory);
+			productService.save(product);
+			inventoryService.save(inventory);
 			model.addAttribute("newProduct", productHelper.buildProduct(categoryService));
 			model.addAttribute("product", new ProductHelper());
 		} catch (DuplicateProductException e) {
@@ -396,7 +396,7 @@ public class AdminController {
 
 		try {
 
-			productService.updateProduct(product);
+			productService.update(product);
 			model.addAttribute("updatedProduct", product);
 		} catch (DuplicateProductException e) {
 
@@ -422,8 +422,8 @@ public class AdminController {
 
 			Inventory inventory = inventoryService.findByProduct(product);
 
-			inventoryService.deleteInventory(inventory);
-			productService.deleteProduct(product);
+			inventoryService.delete(inventory);
+			productService.delete(product);
 		} catch (ProductNotFoundException e) {
 
 			model.addAttribute("productNotFound", productName);
@@ -502,7 +502,7 @@ public class AdminController {
 	
 		try {
 			
-			inventoryService.updateInventory(inventory);
+			inventoryService.updateRestock(inventory);
 			
 			model.addAttribute("inventoryUpdate", "<strong>" + inventory.getProduct().getName() + "</strong> stock succesfully replenished.");
 			model.addAttribute("inventory", inventory);

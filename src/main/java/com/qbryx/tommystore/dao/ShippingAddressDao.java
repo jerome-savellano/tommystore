@@ -9,5 +9,7 @@ public interface ShippingAddressDao {
 	
 	List<ShippingAddress> findByUser(User user);
 	
-	void createShippingAddress(ShippingAddress shippingAddress);
+	ShippingAddress findById(long id);
+	
+	void save(ShippingAddress shippingAddress);
 }

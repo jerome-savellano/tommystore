@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.qbryx.tommystore.dao.UserDao;
 import com.qbryx.tommystore.domain.User;
 import com.qbryx.tommystore.enums.UserType;
-import com.qbryx.tommystore.util.DateHelper;
+import com.qbryx.tommystore.util.DateUtil;
 import com.qbryx.tommystrore.exception.DuplicateUserException;
 import com.qbryx.tommystrore.exception.FailedLoginException;
 
@@ -34,14 +34,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void createUser(User newUser) throws DuplicateUserException {
+	public void save(User newUser) throws DuplicateUserException {
 
 		if (isUserExisting(newUser)) {
 			throw new DuplicateUserException();
 		}
 
-		newUser.setDateCreated(DateHelper.now());
-		userDao.createUser(newUser);
+		newUser.setDateCreated(DateUtil.now());
+		userDao.save(newUser);
 	}
 
 	@Override

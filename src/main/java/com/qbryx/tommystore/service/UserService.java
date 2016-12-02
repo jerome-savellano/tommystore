@@ -18,5 +18,5 @@ public interface UserService {
 	
 	User authenticate(String username, String password) throws com.qbryx.tommystrore.exception.FailedLoginException;
 	
-	void createUser(User user) throws DuplicateUserException;
+	void save(User user) throws DuplicateUserException;
 }

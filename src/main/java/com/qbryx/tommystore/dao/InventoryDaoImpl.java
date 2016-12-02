@@ -3,6 +3,8 @@ package com.qbryx.tommystore.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ public class InventoryDaoImpl implements InventoryDao {
 	private static final String FIND_BY_ID = "from Inventory where id = :id";
 	private static final String FIND_STOCK_MONITOR = "from StockMonitor";
 	private static final String FIND_BY_STOCK = "from Inventory where stock <= :stock";
+	private static final int INITIAL_STOCK_MONITOR = 0;
 	
 	/*
 	 * 
@@ -31,7 +34,6 @@ public class InventoryDaoImpl implements InventoryDao {
 	 * 
 	 */
 	
-	private static final String DELETE_ALL_INVENTORY_HISTORY = "delete from InventoryHistory";
 	private static final String FIND_ADD_ALL_INVENTORY_HISTORY = "from InventoryHistory order by dateUpdated desc";
 	private static final String FIND_INVENTORY_HISTORY_BY_PRODUCT_ID = "from InventoryHistory where product.productId = :productId order by dateUpdated desc";
 	
@@ -97,8 +99,16 @@ public class InventoryDaoImpl implements InventoryDao {
 		
 		Session session = sessionFactory.getCurrentSession();
 		
-		stockMonitor = (StockMonitor) session.createQuery(FIND_STOCK_MONITOR)
-											 .getSingleResult();
+		try{
+			
+			stockMonitor = (StockMonitor) session.createQuery(FIND_STOCK_MONITOR)
+					 .getSingleResult();
+		}catch(NoResultException e){
+			
+			stockMonitor = new StockMonitor();
+			stockMonitor.setStock(INITIAL_STOCK_MONITOR);
+			saveStockMonitor(stockMonitor);
+		}
 		
 		return stockMonitor;
 	}
@@ -132,19 +142,26 @@ public class InventoryDaoImpl implements InventoryDao {
 	}
 
 	@Override
-	public void createInventory(Inventory inventory) {
+	public void save(Inventory inventory) {
 		sessionFactory.getCurrentSession().save(inventory);
 	}
 
 	@Override
-	public void updateInventory(Inventory inventory) {
+	public void update(Inventory inventory) {
 		sessionFactory.getCurrentSession().saveOrUpdate(inventory);
 	}
 
 	@Override
-	public void deleteInventory(Inventory inventory) {
+	public void delete(Inventory inventory) {
 		sessionFactory.getCurrentSession().delete(inventory);
 	}
+	
+
+	@Override
+	public void saveStockMonitor(StockMonitor stockMonitor) {
+		sessionFactory.getCurrentSession().save(stockMonitor);
+	}
+
 
 	@Override
 	public void updateStockMonitor(StockMonitor stockMonitor) {
@@ -185,12 +202,7 @@ public class InventoryDaoImpl implements InventoryDao {
 	}
 
 	@Override
-	public void createInventoryHistory(InventoryHistory inventoryHistory) {
+	public void saveInventoryHistory(InventoryHistory inventoryHistory) {
 		sessionFactory.getCurrentSession().save(inventoryHistory);
-	}
-
-	@Override
-	public void deleteInventoryHistory() {
-		sessionFactory.getCurrentSession().createQuery(DELETE_ALL_INVENTORY_HISTORY).executeUpdate();
 	}
 }

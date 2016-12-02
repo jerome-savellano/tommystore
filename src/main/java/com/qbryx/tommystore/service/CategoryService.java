@@ -15,7 +15,7 @@ public interface CategoryService {
 	
 	Category findByCategoryId(String categoryId);
 	
-	void createCategory(Category category) throws DuplicateCategoryException;
-	void updateCategory(Category category) throws DuplicateCategoryException;
-	void deleteCategory(Category category) throws CategoryHasProductsException;
+	void save(Category category) throws DuplicateCategoryException;
+	void update(Category category) throws DuplicateCategoryException;
+	void delete(Category category) throws CategoryHasProductsException;
 }

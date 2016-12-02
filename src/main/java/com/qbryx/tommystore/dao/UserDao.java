@@ -15,5 +15,5 @@ public interface UserDao {
 		
 	User findByEmail(String email);
 	
-	void createUser(User user);
+	void save(User user);
 }

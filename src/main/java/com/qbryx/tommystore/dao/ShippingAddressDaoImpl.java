@@ -15,6 +15,7 @@ import com.qbryx.tommystore.domain.User;
 public class ShippingAddressDaoImpl implements ShippingAddressDao{
 	
 	private static final String FIND_BY_USER = "from ShippingAddress where user = :user";
+	private static final String FIND_BY_ID = "from ShippingAddress where id = :id";
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -32,10 +33,21 @@ public class ShippingAddressDaoImpl implements ShippingAddressDao{
 				
 		return shippingAddresses;
 	}
-
+	
 	@Override
-	public void createShippingAddress(ShippingAddress shippingAddress) {
-		sessionFactory.getCurrentSession().save(shippingAddress);
+	public ShippingAddress findById(long id) {
+
+		ShippingAddress shippingAddress = null;
+		
+		Session session = sessionFactory.getCurrentSession();
+		
+		shippingAddress = (ShippingAddress) session.createQuery(FIND_BY_ID).setParameter("id", id).getSingleResult();
+		
+		return shippingAddress;
 	}
 
+	@Override
+	public void save(ShippingAddress shippingAddress) {
+		sessionFactory.getCurrentSession().save(shippingAddress);
+	}
 }

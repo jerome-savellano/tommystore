@@ -74,17 +74,17 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	@Override
-	public void createCategory(Category category){
+	public void save(Category category){
 		sessionFactory.getCurrentSession().save(category);
 	}
 
 	@Override
-	public void updateCategory(Category category) {
+	public void update(Category category) {
 		sessionFactory.getCurrentSession().update(category);
 	}
 
 	@Override
-	public void deleteCategory(Category category) {
+	public void delete(Category category) {
 		sessionFactory.getCurrentSession().delete(category);
 	}
 }

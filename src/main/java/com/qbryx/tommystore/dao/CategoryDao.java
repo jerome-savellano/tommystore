@@ -12,9 +12,9 @@ public interface CategoryDao {
 	
 	Category findByCategoryId(String id);
 	
-	void createCategory(Category category);
+	void save(Category category);
 	
-	void updateCategory(Category category);
+	void update(Category category);
 	
-	void deleteCategory(Category category);
+	void delete(Category category);
 }

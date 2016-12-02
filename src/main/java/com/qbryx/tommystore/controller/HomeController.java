@@ -116,7 +116,7 @@ public class HomeController {
 		
 		try {
 
-			userService.createUser(registerUser.buildCustomer());
+			userService.save(registerUser.buildCustomer());
 			
 			model.addAttribute("newUser", registerUser);			
 			model.addAttribute("registerUser", new RegisterUser());

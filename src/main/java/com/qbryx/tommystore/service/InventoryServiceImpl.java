@@ -12,7 +12,7 @@ import com.qbryx.tommystore.domain.Inventory;
 import com.qbryx.tommystore.domain.InventoryHistory;
 import com.qbryx.tommystore.domain.Product;
 import com.qbryx.tommystore.domain.StockMonitor;
-import com.qbryx.tommystore.util.DateHelper;
+import com.qbryx.tommystore.util.DateUtil;
 import com.qbryx.tommystrore.exception.InvalidStockException;
 import com.qbryx.tommystrore.exception.ProductNotFoundException;
 
@@ -43,14 +43,14 @@ public class InventoryServiceImpl implements InventoryService{
 
 	@Transactional(readOnly=false)
 	@Override
-	public void createInventory(Inventory inventory) {
-		inventoryDao.createInventory(inventory);
-		createInventoryHistory(new InventoryHistory(inventory));
+	public void save(Inventory inventory) {
+		inventoryDao.save(inventory);
+		saveInventoryHistory(new InventoryHistory(inventory));
 	}
 
 	@Transactional(readOnly=false)
 	@Override
-	public void updateInventory(Inventory inventoryUpdate) throws InvalidStockException {
+	public void updateRestock(Inventory inventoryUpdate) throws InvalidStockException {
 		
 		Inventory inventory = findById(inventoryUpdate.getId());
 		
@@ -61,17 +61,24 @@ public class InventoryServiceImpl implements InventoryService{
 		}
 		
 		inventory.setUpdater(userService.findByEmail(inventoryUpdate.getUpdater().getEmail()));
-		inventory.setDateUpdated(DateHelper.now());
+		inventory.setDateUpdated(DateUtil.now());
 		inventory.setStock(inventoryUpdate.getStock());
 		
-		inventoryDao.updateInventory(inventory);
+		inventoryDao.update(inventory);
 		
 		InventoryHistory inventoryHistory = new InventoryHistory(inventory);
 		inventoryHistory.setStock(stockAdded);
 		
-		createInventoryHistory(inventoryHistory);
+		saveInventoryHistory(inventoryHistory);
 	}
 	
+	@Transactional(readOnly=false)
+	@Override
+	public void updatePurchase(Inventory inventoryPurchase) {
+	
+		inventoryDao.update(inventoryPurchase);
+	}
+
 	@Override
 	public StockMonitor findStockMonitor() {
 		return inventoryDao.findStockMonitor();
@@ -84,8 +91,8 @@ public class InventoryServiceImpl implements InventoryService{
 
 	@Transactional(readOnly=false)
 	@Override
-	public void deleteInventory(Inventory inventory) {
-		inventoryDao.deleteInventory(inventory);
+	public void delete(Inventory inventory) {
+		inventoryDao.delete(inventory);
 	}
 
 	@Override
@@ -96,6 +103,13 @@ public class InventoryServiceImpl implements InventoryService{
 	@Override
 	public Inventory findById(long id) {
 		return inventoryDao.findById(id);
+	}
+	
+
+	@Transactional(readOnly=false)
+	@Override
+	public void saveStockMonitor(StockMonitor stockMonitor) {
+		inventoryDao.saveStockMonitor(stockMonitor);
 	}
 
 	@Transactional(readOnly=false)
@@ -129,13 +143,7 @@ public class InventoryServiceImpl implements InventoryService{
 
 	@Transactional(readOnly=false)
 	@Override
-	public void createInventoryHistory(InventoryHistory inventoryHistory) {
-		inventoryDao.createInventoryHistory(inventoryHistory);
-	}
-
-	@Transactional(readOnly=false)
-	@Override
-	public void deleteInventoryHistory() {
-		inventoryDao.deleteInventoryHistory();
+	public void saveInventoryHistory(InventoryHistory inventoryHistory) {
+		inventoryDao.saveInventoryHistory(inventoryHistory);
 	}
 }

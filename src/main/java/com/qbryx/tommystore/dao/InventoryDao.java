@@ -24,11 +24,13 @@ public interface InventoryDao {
 	
 	StockMonitor findStockMonitor();
 	
+	void saveStockMonitor(StockMonitor stockMonitor);
+	
 	void updateStockMonitor(StockMonitor stockMonitor);
 	
-	void createInventory(Inventory inventory);
-	void updateInventory(Inventory inventory);
-	void deleteInventory(Inventory inventory);
+	void save(Inventory inventory);
+	void update(Inventory inventory);
+	void delete(Inventory inventory);
 	
 	/*
 	 * 
@@ -40,6 +42,5 @@ public interface InventoryDao {
 	
 	List<InventoryHistory> findInventoryHistoryByProductId(String productId);
 	
-	void createInventoryHistory(InventoryHistory inventoryHistory);
-	void deleteInventoryHistory(); 
+	void saveInventoryHistory(InventoryHistory inventoryHistory);
 }

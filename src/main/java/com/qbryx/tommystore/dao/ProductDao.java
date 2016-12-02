@@ -15,9 +15,9 @@ public interface ProductDao {
 	
 	Product findByProductId(String productId);
 	
-	void createProduct(Product product);
+	void save(Product product);
 	
-	void updateProduct(Product product);
+	void update(Product product);
 	
-	void deleteProduct(Product product);
+	void delete(Product product);
 }

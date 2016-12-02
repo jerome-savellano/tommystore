@@ -31,6 +31,10 @@ public class CartHelper {
 		return (Map<String, CartProduct>) request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_CART);
  	}
 	
+	public void clearCart(HttpServletRequest request){
+		getCart(request).clear();
+	}
+	
 	public void addProductToCart(HttpServletRequest request, CartProduct cartProduct){
 		
 		Map<String, CartProduct> cart = getCart(request);

@@ -46,6 +46,18 @@
 		<c:if test="${activePage  == 'CREATE_SHIPPING_ADDRESS'}">
 			<jsp:include page="customer_create_shipping_address.jsp"></jsp:include>
 		</c:if>
+		<c:if test="${activePage  == 'PAYMENT_TYPE'}">
+			<jsp:include page="customer_payment_type.jsp"></jsp:include>
+		</c:if>
+		<c:if test="${activePage  == 'SELECT_CREDIT_CARD'}">
+			<jsp:include page="customer_credit_card.jsp"></jsp:include>
+		</c:if>
+		<c:if test="${activePage  == 'CREATE_CREDIT_CARD'}">
+			<jsp:include page="customer_create_credit_card.jsp"></jsp:include>
+		</c:if>
+		<c:if test="${activePage  == 'CHECKOUT'}">
+			<jsp:include page="customer_checkout.jsp"></jsp:include>
+		</c:if>
 	</div>
 </body>
 </html>

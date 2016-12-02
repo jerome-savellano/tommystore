@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.qbryx.tommystore.domain.CartProduct;
+import com.qbryx.tommystore.domain.CreditCard;
 import com.qbryx.tommystore.domain.ShippingAddress;
 import com.qbryx.tommystore.service.CustomerService;
 import com.qbryx.tommystore.service.ProductService;
@@ -53,8 +54,18 @@ public class CustomerRestController {
 		
 		shippingAddress.setUser(userService.findByEmail(shippingAddress.getUser().getEmail()));
 
-		customerService.createShippingAddress(shippingAddress);
+		customerService.saveShippingAddress(shippingAddress);
 		
 		return shippingAddress;
+	}
+	
+	@RequestMapping(value="/addCreditCard", method = RequestMethod.POST)
+	public CreditCard addCreditCard(@ModelAttribute CreditCard creditCard){
+		
+		creditCard.setUser(userService.findByEmail(creditCard.getUser().getEmail()));
+
+		customerService.saveCreditCard(creditCard);
+		
+		return creditCard;
 	}
 }

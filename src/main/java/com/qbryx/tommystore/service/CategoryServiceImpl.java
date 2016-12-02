@@ -48,19 +48,19 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void createCategory(Category category) throws DuplicateCategoryException {
+	public void save(Category category) throws DuplicateCategoryException {
 
 		if (isCategoryExisting(category)) {
 			throw new DuplicateCategoryException();
 		}
 
 		category.setCategoryId(generateCategoryId());
-		categoryDao.createCategory(category);
+		categoryDao.save(category);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void updateCategory(Category categoryToUpdate) throws DuplicateCategoryException {
+	public void update(Category categoryToUpdate) throws DuplicateCategoryException {
 
 		Category category = categoryDao.findByCategoryId(categoryToUpdate.getCategoryId());
 
@@ -70,18 +70,18 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		
 		category.setName(categoryToUpdate.getName());
-		categoryDao.updateCategory(category);
+		categoryDao.update(category);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void deleteCategory(Category category) throws CategoryHasProductsException{
+	public void delete(Category category) throws CategoryHasProductsException{
 		
 		if(productDao.findByCategory(category).size() != 0){
 			throw new CategoryHasProductsException();
 		}
 		
-		categoryDao.deleteCategory(category);
+		categoryDao.delete(category);
 	}
 
 	private boolean isCategoryExisting(Category category){

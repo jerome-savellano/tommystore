@@ -26,11 +26,14 @@ public interface InventoryService {
 	
 	StockMonitor findStockMonitor();
 	
+	void saveStockMonitor(StockMonitor stockMonitor);
+	
 	void updateStockMonitor(StockMonitor stockMonitor);
 
-	void createInventory(Inventory inventory);
-	void updateInventory(Inventory inventory) throws InvalidStockException;
-	void deleteInventory(Inventory inventory);
+	void save(Inventory inventory);
+	void updateRestock(Inventory inventory) throws InvalidStockException;
+	void updatePurchase(Inventory inventory);
+	void delete(Inventory inventory);
 	
 	/*
 	 * 
@@ -42,6 +45,5 @@ public interface InventoryService {
 	
 	List<InventoryHistory> findInventoryHistoryByProductId(String productId) throws ProductNotFoundException;
 	
-	void createInventoryHistory(InventoryHistory inventoryHistory);
-	void deleteInventoryHistory(); 
+	void saveInventoryHistory(InventoryHistory inventoryHistory); 
 }

@@ -49,19 +49,19 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void createProduct(Product product) throws DuplicateProductException {
+	public void save(Product product) throws DuplicateProductException {
 
 		if (isProductExisting(product)) {
 			throw new DuplicateProductException();
 		}
 
 		product.setProductId(generateProductId());
-		productDao.createProduct(product);
+		productDao.save(product);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void updateProduct(Product productToUpdate) throws DuplicateProductException {
+	public void update(Product productToUpdate) throws DuplicateProductException {
 		
 		Product product = productDao.findByProductId(productToUpdate.getProductId());
 
@@ -78,13 +78,13 @@ public class ProductServiceImpl implements ProductService {
 			product.setImage(productToUpdate.getImage());
 		}
 	
-		productDao.updateProduct(product);
+		productDao.update(product);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void deleteProduct(Product product) {
-		productDao.deleteProduct(product);
+	public void delete(Product product) {
+		productDao.delete(product);
 	}
 
 	private boolean isProductExisting(Product product) {

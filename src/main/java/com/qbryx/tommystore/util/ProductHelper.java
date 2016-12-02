@@ -108,7 +108,7 @@ public class ProductHelper {
 		inventory.setProduct(product);
 		inventory.setUpdater(userService.findByEmail(email));
 		inventory.setStock(Inventory.INITIAL_STOCK);
-		inventory.setDateUpdated(DateHelper.now());
+		inventory.setDateUpdated(DateUtil.now());
 		
 		return inventory;
 	}

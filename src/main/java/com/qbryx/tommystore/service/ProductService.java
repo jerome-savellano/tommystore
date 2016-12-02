@@ -17,9 +17,9 @@ public interface ProductService {
 
 	Product findByProductId(String ProductId);
 
-	void createProduct(Product Product) throws DuplicateProductException;
+	void save(Product Product) throws DuplicateProductException;
 
-	void updateProduct(Product Product) throws DuplicateProductException;
+	void update(Product Product) throws DuplicateProductException;
 
-	void deleteProduct(Product Product);
+	void delete(Product Product);
 }

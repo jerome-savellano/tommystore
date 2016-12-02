@@ -86,17 +86,17 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	@Override
-	public void createProduct(Product product) {
+	public void save(Product product) {
 		sessionFactory.getCurrentSession().save(product);
 	}
 
 	@Override
-	public void updateProduct(Product product) {
+	public void update(Product product) {
 		sessionFactory.getCurrentSession().update(product);
 	}
 
 	@Override
-	public void deleteProduct(Product product) {
+	public void delete(Product product) {
 		sessionFactory.getCurrentSession().delete(product);
 	}
 
