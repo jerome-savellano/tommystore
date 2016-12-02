@@ -249,7 +249,7 @@ public class CustomerController {
 	}
 	
 	@RequestMapping(value="/checkout", method = RequestMethod.POST)
-	public String checkoutPost(HttpServletRequest request, Model model) throws InvalidStockException{
+	public String checkoutPost(HttpServletRequest request, Model model) throws InvalidStockException, InsufficientStockException{
 		
 		User user = (User) request.getSession().getAttribute("user");
 		
@@ -264,11 +264,24 @@ public class CustomerController {
 			cartHelper.clearCart(request);
 		} catch (InsufficientStockException e) {
 			
-			System.out.println("checkout failed");
-			model.addAttribute("checkoutFailed", "Please check if the stock of the product matches the quantity of your intended purchase.");
+			throw new InsufficientStockException();
 		}
 		
 		model.addAttribute(Constants.ACTIVE_PAGE, CustomerPage.CHECKOUT);
+		return "customer_home";
+	}
+	
+	/*
+	 * 
+	 * Categories
+	 * 
+	 */
+	
+	@RequestMapping("/categories")
+	public String categories(Model model){
+		
+		model.addAttribute("categories", categoryService.findAll());
+		model.addAttribute(Constants.ACTIVE_PAGE, CustomerPage.CATEGORIES);
 		return "customer_home";
 	}
 }

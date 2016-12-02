@@ -25,6 +25,7 @@ import com.qbryx.tommystore.service.CategoryService;
 import com.qbryx.tommystore.service.InventoryService;
 import com.qbryx.tommystore.service.ProductService;
 import com.qbryx.tommystore.service.UserService;
+import com.qbryx.tommystore.util.Constants;
 import com.qbryx.tommystore.util.ProductHelper;
 import com.qbryx.tommystore.util.RegisterUser;
 import com.qbryx.tommystore.validator.CategoryValidator;
@@ -37,6 +38,7 @@ import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 import com.qbryx.tommystrore.exception.DuplicateCategoryException;
 import com.qbryx.tommystrore.exception.DuplicateProductException;
 import com.qbryx.tommystrore.exception.DuplicateUserException;
+import com.qbryx.tommystrore.exception.ExistingOrderException;
 import com.qbryx.tommystrore.exception.InvalidStockException;
 import com.qbryx.tommystrore.exception.ProductNotFoundException;
 
@@ -421,12 +423,15 @@ public class AdminController {
 			Product product = productService.findByName(productName);
 
 			Inventory inventory = inventoryService.findByProduct(product);
-
-			inventoryService.delete(inventory);
+			
 			productService.delete(product);
+			inventoryService.delete(inventory);
 		} catch (ProductNotFoundException e) {
 
 			model.addAttribute("productNotFound", productName);
+		} catch (ExistingOrderException e) {
+
+			model.addAttribute("existingOrder", productName);
 		}
 
 		model.addAttribute("categories", categoryService.findAll());
@@ -538,7 +543,6 @@ public class AdminController {
 	
 	@RequestMapping("/viewInventoryHistory")
 	public String viewInvetoryHistory(@RequestParam("prodId") String productId, Model model){
-		System.out.println(productId);
 		
 		List<InventoryHistory> inventoryHistories = null;
 		
@@ -553,6 +557,20 @@ public class AdminController {
 		
 		model.addAttribute("products", productService.findAll());
 		model.addAttribute("activePage", AdminPage.VIEW_INVENTORY_HISTORY);
+		return "admin_home";
+	}
+	
+	/*
+	 * 
+	 * View orders 
+	 * 
+	 */
+	
+	@RequestMapping("/viewOrders")
+	public String viewOrders(Model model){
+		
+		model.addAttribute("orders", productService.findAllOrders());
+		model.addAttribute(Constants.ACTIVE_PAGE, AdminPage.VIEW_ORDERS);
 		return "admin_home";
 	}
 }

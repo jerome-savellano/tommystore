@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.qbryx.tommystore.domain.CartProduct;
 import com.qbryx.tommystore.domain.User;
+import com.qbryx.tommystore.enums.CustomerPage;
 import com.qbryx.tommystore.enums.UserType;
-import com.qbryx.tommystore.service.ProductService;
+import com.qbryx.tommystore.service.CategoryService;
+import com.qbryx.tommystore.service.InventoryService;
 import com.qbryx.tommystore.service.UserService;
+import com.qbryx.tommystore.util.Constants;
 import com.qbryx.tommystore.util.LoginUser;
 import com.qbryx.tommystore.util.RegisterUser;
 import com.qbryx.tommystore.validator.RegistrationValidator;
@@ -24,13 +28,16 @@ import com.qbryx.tommystrore.exception.FailedLoginException;
 
 @Controller
 public class HomeController {
+	
+	@Autowired
+	private InventoryService inventoryService;
+
+	@Autowired
+	private CategoryService categoryService;
 
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private ProductService productService;
-
 	@Autowired
 	private RegistrationValidator registrationValidator;
 	
@@ -49,7 +56,10 @@ public class HomeController {
 			return redirectUser(user);
 		}
 		
-		model.addAttribute("products", productService.findAll());
+		model.addAttribute("categories", categoryService.findAll());
+		model.addAttribute("inventories", inventoryService.findAll());
+		model.addAttribute("cartProduct", new CartProduct());
+		model.addAttribute(Constants.ACTIVE_PAGE, CustomerPage.HOME);
 		return "customer_home";
 	}
 
@@ -138,8 +148,7 @@ public class HomeController {
 	public String logout(HttpServletRequest request, Model model) {
 
 		request.getSession().invalidate();
-		model.addAttribute("user", new User());
-		return "customer_home";
+		return "redirect:/initial";
 	}
 	
 	private String redirectUser(User user){

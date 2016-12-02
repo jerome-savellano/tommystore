@@ -14,6 +14,8 @@ public class Order {
 	
 	private long id;
 	
+	private String orderNumber;
+
 	private User user;
 	
 	private Product product;
@@ -33,6 +35,15 @@ public class Order {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	@Column(name="order_number")
+	public String getOrderNumber() {
+		return orderNumber;
+	}
+
+	public void setOrderNumber(String orderNumber) {
+		this.orderNumber = orderNumber;
 	}
 
 	@OneToOne

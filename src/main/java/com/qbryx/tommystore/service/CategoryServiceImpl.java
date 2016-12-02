@@ -1,7 +1,6 @@
 package com.qbryx.tommystore.service;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.qbryx.tommystore.dao.CategoryDao;
 import com.qbryx.tommystore.dao.ProductDao;
 import com.qbryx.tommystore.domain.Category;
+import com.qbryx.tommystore.util.DateUtil;
 import com.qbryx.tommystrore.exception.CategoryHasProductsException;
 import com.qbryx.tommystrore.exception.CategoryNotFoundException;
 import com.qbryx.tommystrore.exception.DuplicateCategoryException;
@@ -90,11 +90,11 @@ public class CategoryServiceImpl implements CategoryService {
 
 	private String generateCategoryId() {
 
-		String initialCategoryId = "CAT-" + UUID.randomUUID().toString().replaceAll("[a-zA-Z-]", "");
+		String initialCategoryId = "CAT-" + DateUtil.timeStamp();
 		String categoryId = "";
 
 		while (categoryDao.findByCategoryId(initialCategoryId) != null) {
-			initialCategoryId = "CAT-" + UUID.randomUUID().toString().replaceAll("[a-zA-Z-]", "");
+			initialCategoryId = "CAT-" + DateUtil.timeStamp();
 		}
 
 		categoryId = initialCategoryId;

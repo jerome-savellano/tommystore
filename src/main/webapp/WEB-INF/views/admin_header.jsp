@@ -33,7 +33,7 @@
 							<li class="dropdown-header">Product</li>
 							<li><a href="addProduct">Add new product</a></li>
 							<li><a href="viewProducts?category=">View products</a></li>
-							<li><a href="#">View product order</a></li>
+							<li><a href="viewOrders">View product orders</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Inventory</li>
 							<li><a href="viewInventory">View inventory</a></li>

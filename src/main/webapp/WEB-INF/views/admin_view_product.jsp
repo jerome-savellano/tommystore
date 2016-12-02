@@ -10,6 +10,12 @@
 			found!
 		</div>
 	</c:if>
+	<c:if test="${not empty existingOrder}">
+		<div class="alert alert-danger fade in">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Failed!</strong> Product <strong>${existingOrder}</strong> has an existing order!
+		</div>
+	</c:if>
 	<form:form class="form-inline" action="viewProducts?category="
 		method="get">
 		<label for="usertype">Filter by category: </label>

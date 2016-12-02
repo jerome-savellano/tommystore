@@ -88,6 +88,7 @@ public class CustomerServiceImpl implements CustomerService {
 				
 				order = new Order();
 				order.setUser(user);
+				order.setOrderNumber(DateUtil.timeStamp());
 				order.setShippingAddress(shippingAddress);
 				order.setProduct(cartProduct.getProduct());
 				order.setQuantity(cartProduct.getQuantity());

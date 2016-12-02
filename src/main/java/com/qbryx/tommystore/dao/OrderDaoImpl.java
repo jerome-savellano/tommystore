@@ -15,6 +15,7 @@ import com.qbryx.tommystore.domain.Product;
 public class OrderDaoImpl implements OrderDao{
 	
 	private static final String FIND_BY_PRODUCT = "from Order where product = :product";
+	private static final String FIND_ALL = "from Order order by orderDate";
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -35,5 +36,18 @@ public class OrderDaoImpl implements OrderDao{
 	@Override
 	public void save(Order order) {
 		sessionFactory.getCurrentSession().save(order);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Order> findAll() {
+		
+		List<Order> orders = new ArrayList<>();
+		
+		Session session = sessionFactory.getCurrentSession();
+		
+		orders = session.createQuery(FIND_ALL).getResultList();
+		
+		return orders;
 	}
 }

@@ -1,16 +1,19 @@
 package com.qbryx.tommystore.service;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.qbryx.tommystore.dao.OrderDao;
 import com.qbryx.tommystore.dao.ProductDao;
 import com.qbryx.tommystore.domain.Category;
+import com.qbryx.tommystore.domain.Order;
 import com.qbryx.tommystore.domain.Product;
+import com.qbryx.tommystore.util.DateUtil;
 import com.qbryx.tommystrore.exception.DuplicateProductException;
+import com.qbryx.tommystrore.exception.ExistingOrderException;
 import com.qbryx.tommystrore.exception.ProductNotFoundException;
 
 @Service("productService")
@@ -19,6 +22,9 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private ProductDao productDao;
+	
+	@Autowired
+	private OrderDao orderDao;
 	
 	@Override
 	public List<Product> findAll() {
@@ -82,9 +88,15 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	@Transactional(readOnly = false)
-	public void delete(Product product) {
-		productDao.delete(product);
+	@Transactional(readOnly = false, rollbackFor = ExistingOrderException.class)
+	public void delete(Product product) throws ExistingOrderException {
+		if(orderDao.findByProduct(product) != null){
+			
+			throw new ExistingOrderException();
+		}else{
+			
+			productDao.delete(product);
+		}
 	}
 
 	private boolean isProductExisting(Product product) {
@@ -93,15 +105,20 @@ public class ProductServiceImpl implements ProductService {
 
 	private String generateProductId() {
 
-		String initialProductId = "PROD-" + UUID.randomUUID().toString().replaceAll("[a-zA-Z-]", "");
+		String initialProductId = "PROD-" + DateUtil.timeStamp();
 		String productId = "";
 
 		while (productDao.findByProductId(initialProductId) != null) {
-			initialProductId = "PROD-" + UUID.randomUUID().toString().replaceAll("[a-zA-Z-]", "");
+			initialProductId = "PROD-" + DateUtil.timeStamp();
 		}
 
 		productId = initialProductId;
 
 		return productId;
+	}
+
+	@Override
+	public List<Order> findAllOrders() {
+		return orderDao.findAll();
 	}
 }

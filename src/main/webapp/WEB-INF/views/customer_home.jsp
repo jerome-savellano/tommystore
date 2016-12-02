@@ -58,6 +58,9 @@
 		<c:if test="${activePage  == 'CHECKOUT'}">
 			<jsp:include page="customer_checkout.jsp"></jsp:include>
 		</c:if>
+		<c:if test="${activePage  == 'CATEGORIES'}">
+			<jsp:include page="customer_categories.jsp"></jsp:include>
+		</c:if>
 	</div>
 </body>
 </html>

@@ -5,22 +5,28 @@
 	src="<c:url value="/resources/js/customer_view_products.js" />"></script>
 <div class="row"
 	style="padding: 1%; padding-left: 5%; padding-right: 5%;">
-	<div class="dropdown">
-		<button class="btn btn-default dropdown-toggle" type="button"
-			id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
-			aria-expanded="true">
-			Filter by category <span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-			<li><a
-				href="${pageContext.request.contextPath}/customer/viewProducts?category=">Show
-					all</a></li>
-			<c:forEach items="${categories}" var="category" varStatus="status">
+	<div class="form-inline">
+		<input type="text" class="form-control" />
+		<button type="submit" class="btn btn-default">Search product</button>
+		<div class="dropdown form-group">
+			<button class="btn btn-default dropdown-toggle" type="button"
+				id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+				aria-expanded="true">
+				Filter by category <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 				<li><a
-					href="${pageContext.request.contextPath}/customer/viewProducts?category=${category.getName()}">${category.getName()}</a></li>
-			</c:forEach>
-		</ul>
+					href="${pageContext.request.contextPath}/customer/viewProducts?category=">Show
+						all</a></li>
+				<c:forEach items="${categories}" var="category" varStatus="status">
+					<li><a
+						href="${pageContext.request.contextPath}/customer/viewProducts?category=${category.getName()}">${category.getName()}</a></li>
+				</c:forEach>
+			</ul>
+		</div>
 	</div>
+
+
 	<c:forEach items="${inventories}" var="inventory" varStatus="varStatus">
 		<div class="col-xs-6 col-sm-3" style="padding: 2%;">
 			<div class="card">
@@ -41,7 +47,7 @@
 							<form:select class="pull-right"
 								style="height: 30px; width: 60px;" path="quantity">
 								<c:forEach begin="1" end="20" varStatus="loop">
-   									<option value="${loop.index}">${loop.index}</option>
+									<option value="${loop.index}">${loop.index}</option>
 								</c:forEach>
 							</form:select>
 						</div>

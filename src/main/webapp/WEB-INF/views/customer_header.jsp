@@ -16,25 +16,20 @@
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 
-				<div class="navbar-form navbar-left">
-					<div class="form-group">
-						<input type="text" class="form-control" />
-					</div>
-					<button type="submit" class="btn btn-default">Search
-						product</button>
-				</div>
 				<c:choose>
 					<c:when
 						test="${not empty user.getEmail() && user.getUserType() == 'CUSTOMER'}">
 						<ul class="nav navbar-nav navbar-right">
 							<li><a href="${pageContext.request.contextPath}/customer/home" class="text-info">Hi, <span class="text-info">${user.getFirstName()}</span></a></li>
 							<li><a id="header_cart" href="${pageContext.request.contextPath}/customer/viewCart">Cart</a></li>
+							<li><a id="header_cart" href="${pageContext.request.contextPath}/customer/categories">Categories</a></li>
 							<li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
 						</ul>
 					</c:when>
 					<c:otherwise>
 						<ul class="nav navbar-nav navbar-right">
 							<li><a href="${pageContext.request.contextPath}/login">Login</a></li>
+							<li><a id="header_cart" href="${pageContext.request.contextPath}/viewCart">Cart</a></li>
 							<li><a href="${pageContext.request.contextPath}/register">Register</a></li>
 						</ul> 
 					</c:otherwise>

@@ -13,6 +13,7 @@ import com.qbryx.tommystore.domain.InventoryHistory;
 import com.qbryx.tommystore.domain.Product;
 import com.qbryx.tommystore.domain.StockMonitor;
 import com.qbryx.tommystore.util.DateUtil;
+import com.qbryx.tommystrore.exception.ExistingOrderException;
 import com.qbryx.tommystrore.exception.InvalidStockException;
 import com.qbryx.tommystrore.exception.ProductNotFoundException;
 
@@ -89,7 +90,7 @@ public class InventoryServiceImpl implements InventoryService{
 		return inventoryDao.findByStock(stockMonitor);
 	}
 
-	@Transactional(readOnly=false)
+	@Transactional(readOnly=false, rollbackFor=ExistingOrderException.class)
 	@Override
 	public void delete(Inventory inventory) {
 		inventoryDao.delete(inventory);

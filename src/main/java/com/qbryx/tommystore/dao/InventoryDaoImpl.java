@@ -49,6 +49,8 @@ public class InventoryDaoImpl implements InventoryDao {
 		Session session = sessionFactory.getCurrentSession();
 
 		inventories = (List<Inventory>) session.createQuery(FIND_ALL).getResultList();
+		
+		System.out.println(inventories.size());
 
 		return inventories;
 	}

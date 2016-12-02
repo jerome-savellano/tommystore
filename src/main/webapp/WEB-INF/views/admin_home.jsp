@@ -70,6 +70,9 @@
 		<c:if test="${activePage == 'VIEW_INVENTORY'}">
 			<jsp:include page="admin_view_inventory.jsp"></jsp:include>
 		</c:if>
+		<c:if test="${activePage == 'VIEW_ORDERS'}">
+			<jsp:include page="admin_view_orders.jsp"></jsp:include>
+		</c:if>
 	</div>
 </body>
 </html>
